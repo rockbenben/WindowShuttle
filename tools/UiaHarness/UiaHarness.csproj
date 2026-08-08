@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    round4 Part 1: the real, DPI-aware UI Automation measurement harness. Deliberately not wired
+    into WindowShuttle.sln or ci.yml: it drives real windows on real monitors and is a diagnostic tool
+    (run manually via "dotnet run", project tools/UiaHarness), not a build/test-time dependency.
+    No NuGet package: UIAutomationClient/UIAutomationTypes ship in-box with the WPF shared framework
+    (UseWPF=true), same as PresentationCore already gives WindowShuttle.App's own AutomationProperties use.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>WindowShuttle.UiaHarness</RootNamespace>
+    <AssemblyName>WindowShuttle.UiaHarness</AssemblyName>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\WindowShuttle.Core\WindowShuttle.Core.csproj" />
+    <ProjectReference Include="..\..\src\WindowShuttle.App\WindowShuttle.App.csproj" />
+  </ItemGroup>
+</Project>

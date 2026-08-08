@@ -1,0 +1,24 @@
+bin/
+obj/
+.vs/
+*.user
+
+# 发布输出由 pubxml 的 PublishDir 决定，都落在 bin/ 下（已被上面忽略）。
+# 这条是历史遗留：早先照着 `dotnet publish -o publish` 跑过的机器，仓库根还留着这个目录。
+publish/
+
+# 测试结果：MTP 跑失败时会在 bin 下写日志；这条留给任何显式传 --results-directory 的本地调用
+TestResults/
+
+# 临时 / 系统 / 工具
+*.log
+Thumbs.db
+desktop.ini
+.claude/
+
+# SDD 执行期的账本 / 简报 / 审查包（纯本地草稿，随计划完成即删）
+.superpowers/
+
+# SDD 的 specs/plans：本地生成的设计草稿，不入库（房规同 020-Clockwork）。
+# docs/ 其余内容用于真实文档：manual-checks.md（发版清单）、images/（README 首屏图）。
+docs/superpowers/

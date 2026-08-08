@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>Échanger les écrans</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>Échange les fenêtres entre son écran et l'écran principal ; déjà dessus, avec le dernier</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>Échanger les fenêtres de devant</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>N'échange que la fenêtre au premier plan de chacun de ces deux écrans</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>Envoyer vers le principal</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>Envoie la fenêtre vers l'écran principal</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>Tout rassembler</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>Rassemble toutes les fenêtres sur l'écran principal, y compris celles coincées hors écran</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>Annuler</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>Restaure les positions d'avant le dernier déplacement</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>Numéro d'écran</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>Principal</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>Ouvrir WindowShuttle</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>Redémarrer en administrateur</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Quitter</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>{0} fenêtres nécessitent des droits d'administrateur. Cliquez pour redémarrer en administrateur</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>1 fenêtre nécessite des droits d'administrateur. Cliquez pour redémarrer en administrateur</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>Aucun geste de souris ne fonctionne tant qu'un programme administrateur est au premier plan. Cliquez pour redémarrer en administrateur</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>Rien à annuler</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>Impossible de déplacer {0} fenêtres</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>Impossible de déplacer 1 fenêtre</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>Un seul écran</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>Aucune fenêtre à déplacer</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>Aucune fenêtre sous le curseur</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>La fenêtre active ne peut pas être déplacée</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>Déjà sur l'écran cible</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>Aucun écran dans cette direction</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>Le déplacement a échoué ; rien n'a bougé</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>WindowShuttle doit être lancé en administrateur pour déplacer les fenêtres des programmes élevés. Redémarrer maintenant ?</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>Redémarrer</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>Annuler</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>Langue</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>Suivre le système</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>Lancer avec Windows</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>En administrateur</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Démarrage élevé via une tâche planifiée : une invite UAC au moment de cocher, puis chaque démarrage se fait silencieusement en administrateur. Les fenêtres des programmes élevés deviennent déplaçables et les gestes ne meurent plus quand l'un d'eux est au premier plan</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Ignorer les applications en plein écran</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>Rester dans la zone de notification à la fermeture</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>La langue changera après un redémarrage. Redémarrer maintenant ?</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>Un geste de souris confisque cette combinaison à toutes les applications et, contrairement à un raccourci clavier, ne peut pas détecter de conflit.</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>Ce raccourci est pris par un autre programme</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>Non assigné</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Une direction ne peut que se tracer — un raccourci n'en porte aucune</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Appuyez sur une combinaison de touches…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>Cliquez pour enregistrer un geste de souris</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Maintenez Ctrl, Alt ou Maj et cliquez…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>Disposition des écrans</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>Actions</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>Actualiser</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Faites glisser une fenêtre vers un autre écran pour la déplacer</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Dessiné selon la taille apparente de chaque écran sur votre bureau et sa position, pas selon ses pixels</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>Cliquez sur une case pour enregistrer un raccourci ou un geste de souris ; Suppr l'efface</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>Curseur</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>Envoyer vers l'écran suivant</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>Envoie la fenêtre vers l'écran à sa droite, puis revient au plus à gauche</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>Envoyer par direction</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>Maintenez le bouton attribué et faites un geste dans une direction ; la fenêtre sous le curseur passe à l'écran de ce côté</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>système {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>{0} fenêtres hors écran récupérées</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>1 fenêtre hors écran récupérée</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Récupérer les fenêtres hors écran quand un écran se déconnecte</value></data>
+</root>

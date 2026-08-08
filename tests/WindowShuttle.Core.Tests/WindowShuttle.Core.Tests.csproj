@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <UseWPF>true</UseWPF>
+    <!-- xunit v3 test assemblies are self-executing, so the project must build an exe. -->
+    <OutputType>Exe</OutputType>
+    <!--
+      Run on Microsoft.Testing.Platform instead of the VSTest bridge. That is what makes the
+      platform's own `minimum-expected-tests` option available (see how ci.yml passes it), which is
+      the whole reason CI no longer parses a .trx by hand to catch a silent 0-test run.
+
+      With MTP driving the run, Microsoft.NET.Test.Sdk and xunit.runner.visualstudio are VSTest-side
+      pieces with nothing left to do. Trade-off: IDE test discovery now needs MTP support enabled
+      (VS 17.14+, recent Rider). Put those two packages back if you run tests from Test Explorer.
+    -->
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\WindowShuttle.Core\WindowShuttle.Core.csproj" />
+    <ProjectReference Include="..\..\src\WindowShuttle.App\WindowShuttle.App.csproj" />
+  </ItemGroup>
+</Project>

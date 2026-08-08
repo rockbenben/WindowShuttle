@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>Ekranları takas et</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>Penceresinin ekranı ile ana ekran arasındaki pencereleri takas eder; zaten oradaysa son takas edilenle</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>Öndeki pencereleri takas et</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>Yalnızca bu iki ekranın en öndeki birer penceresini takas eder</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>Ana ekrana gönder</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>Pencereyi ana monitöre gönderir</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>Tümünü topla</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>Ekran dışında kalanlar dahil tüm pencereleri ana monitörde toplar</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>Geri al</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>Son taşımadan önceki konumları geri yükler</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>Ekran numarası</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>Ana ekran</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>WindowShuttle'ı aç</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>Yönetici olarak yeniden başlat</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Çıkış</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>{0} pencere yönetici izni gerektiriyor. Yönetici olarak yeniden başlatmak için tıklayın</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>1 pencere yönetici izni gerektiriyor. Yönetici olarak yeniden başlatmak için tıklayın</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>Ön planda bir yönetici programı varken hiçbir fare hareketi çalışmaz. Yönetici olarak yeniden başlatmak için tıklayın</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>Geri alınacak bir şey yok</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>{0} pencere taşınamadı</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>1 pencere taşınamadı</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>Yalnızca bir monitör var</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>Taşınacak pencere yok</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>İmlecin altında pencere yok</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>Etkin pencere taşınamıyor</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>Zaten hedef monitörde</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>O yönde ekran yok</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>Taşıma tamamlanamadı; hiçbir pencere yer değiştirmedi</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>Yükseltilmiş programların pencerelerini taşımak için WindowShuttle'ın yönetici olarak çalışması gerekir. Şimdi yeniden başlatılsın mı?</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>Yeniden başlat</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>İptal</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>Dil</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>Sistemi izle</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>Windows ile başlat</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>Yönetici olarak</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Zamanlanmış görevle yükseltilmiş başlatma: işaretlerken bir kez UAC sorar, sonra her açılış sessizce yönetici olarak başlar. Yönetici programların pencereleri taşınabilir olur ve biri ön plandayken hareketler artık ölmez</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Tam ekran uygulamaları atla</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>Kapatınca tepside çalışmaya devam et</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>Dil, yeniden başlatmadan sonra geçerli olur. Şimdi yeniden başlatılsın mı?</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>Fare hareketi bu kombinasyonu tüm uygulamalardan alır ve kısayolun aksine çakışmayı algılayamaz.</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>Bu kısayolu başka bir program kullanıyor</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>Atanmadı</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Yön yalnızca kaydırarak verilir — kısayol yön taşıyamaz</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Bir tuş kombinasyonuna basın…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>Fare hareketi kaydetmek için tıklayın</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Ctrl, Alt veya Shift basılı tutup tıklayın…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>Monitör düzeni</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>Eylemler</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>Yenile</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Taşımak için pencereyi başka bir monitöre sürükleyin</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Her ekranın masadaki görünen boyutuna ve konumuna göre çizilir, piksel sayısına göre değil</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>Kısayol veya fare hareketi kaydetmek için tuş alanına tıklayın; Delete siler</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>İmleç</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>Sonraki monitöre gönder</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>Pencereyi sağındaki monitöre gönderir, en sağdaysa en sola döner</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>Yöne göre gönder</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>Atanan düğmeyi basılı tutup bir yöne kaydırın; imlecin altındaki pencere o yöndeki ekrana geçer</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>sistem {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>{0} ekran dışı pencere kurtarıldı</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>1 ekran dışı pencere kurtarıldı</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Monitör ayrılınca ekran dışı pencereleri kurtar</value></data>
+</root>

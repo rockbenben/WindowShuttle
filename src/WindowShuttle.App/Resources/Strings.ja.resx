@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>画面をまるごと入れ替え</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>そのウィンドウのある画面と主画面のウィンドウを全部入れ替え。主画面にいるときは前回の画面と</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>最前面どうしを入れ替え</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>その 2 つの画面それぞれで最前面のウィンドウだけを入れ替えます</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>メインへ送る</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>ウィンドウをメインモニターへ送ります</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>すべて集める</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>画面外に取り残されたものも含め、すべてのウィンドウをメインモニターへ集めます</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>元に戻す</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>直前の移動前の位置を復元します</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>画面番号</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>メイン</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>WindowShuttle を開く</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>管理者として再起動</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>終了</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>{0} 個のウィンドウには管理者権限が必要です。クリックして管理者として再起動</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>{0} 個のウィンドウには管理者権限が必要です。クリックして管理者として再起動</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>管理者プログラムが前面にある間はマウスジェスチャがまったく届きません。クリックして管理者として再起動</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>元に戻せる移動はありません</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>{0} 個のウィンドウを移動できませんでした</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>{0} 個のウィンドウを移動できませんでした</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>モニターが 1 台しかありません</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>移動できるウィンドウがありません</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>カーソルの下にウィンドウがありません</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>アクティブなウィンドウは移動できません</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>すでに対象のモニターにあります</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>その方向に画面がありません</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>移動を完了できませんでした。ウィンドウの位置は変わっていません</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>管理者権限で動くプログラムのウィンドウを移動するには、管理者として再起動する必要があります。今すぐ再起動しますか？</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>再起動</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>キャンセル</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>言語</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>システムに従う</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>Windows 起動時に実行</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>管理者として</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>タスクスケジューラ経由の管理者自動起動：チェック時に一度だけ UAC が出て、以後は毎回起動時に静かに管理者として立ち上がります。管理者プログラムのウィンドウが移動できるようになり、それらが前面にある間ジェスチャが死ぬこともなくなります</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>全画面アプリをスキップ</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>閉じてもトレイに常駐する</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>言語は再起動後に反映されます。今すぐ再起動しますか？</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>マウスジェスチャーはこの組み合わせをすべてのアプリから奪います。ショートカットと違い、競合を検出できません。</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>このショートカットは他のプログラムに使われています</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>未割り当て</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>方向は払ってしか伝えられません。ショートカットでは方向を運べません</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>キーの組み合わせを押してください…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>クリックしてマウスジェスチャーを記録</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Ctrl / Alt / Shift を押しながらクリック…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>モニター配置</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>操作</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>更新</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>ウィンドウを別のモニターへドラッグすると移動できます</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>各画面の机の上での見た目の大きさと位置関係で描いています。ピクセル数ではありません</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>キー欄をクリックしてショートカットやマウスジェスチャーを記録。Delete で解除</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>カーソル</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>次のモニターへ送る</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>ウィンドウを右隣の画面へ送ります。右端まで行くと左端へ戻ります</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>方向で送る</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>割り当てたボタンを押したまま方向へ払うと、カーソル下のウィンドウがその方向の画面へ移ります</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>システム {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>画面外のウィンドウ {0} 個を救出しました</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>画面外のウィンドウ {0} 個を救出しました</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>モニター切断時に画面外のウィンドウを救出</value></data>
+</root>

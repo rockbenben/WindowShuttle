@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>Trocar telas</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>Troca as janelas entre a tela dela e a principal; se já estiver nela, com a última usada</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>Trocar janelas da frente</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>Troca apenas a janela da frente de cada uma dessas duas telas</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>Enviar ao principal</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>Envia a janela para o monitor principal</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>Reunir tudo</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>Reúne todas as janelas no monitor principal, inclusive as presas fora da tela</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>Desfazer</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>Restaura as posições de antes da última movimentação</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>Número da tela</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>Principal</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>Abrir o WindowShuttle</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>Reiniciar como administrador</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Sair</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>{0} janelas precisam de direitos de administrador. Clique para reiniciar como administrador</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>1 janela precisa de direitos de administrador. Clique para reiniciar como administrador</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>Nenhum gesto do mouse funciona enquanto um programa de administrador está em primeiro plano. Clique para reiniciar como administrador</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>Nada para desfazer</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>Não foi possível mover {0} janelas</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>Não foi possível mover 1 janela</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>Há apenas um monitor</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>Nenhuma janela para mover</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>Nenhuma janela sob o cursor</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>A janela ativa não pode ser movida</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>Já está no monitor de destino</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>Nenhuma tela nessa direção</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>Não foi possível concluir a movimentação; nada mudou de lugar</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>O WindowShuttle precisa ser executado como administrador para mover janelas de programas elevados. Reiniciar agora?</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>Reiniciar</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>Cancelar</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>Idioma</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>Seguir o sistema</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>Iniciar com o Windows</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>Como administrador</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Início elevado por tarefa agendada: um aviso de UAC ao marcar e, depois, cada arranque inicia em silêncio como administrador. As janelas de programas elevados passam a poder ser movidas e os gestos deixam de morrer quando um deles está em primeiro plano</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Ignorar aplicativos em tela cheia</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>Continuar na bandeja ao fechar</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>O idioma muda após reiniciar. Reiniciar agora?</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>Um gesto do mouse toma essa combinação de todos os aplicativos e, ao contrário de um atalho, não consegue detectar conflitos.</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>Este atalho está em uso por outro programa</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>Não definido</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Uma direção só pode ser desenhada — um atalho não carrega uma</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Pressione uma combinação de teclas…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>Clique para gravar um gesto do mouse</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Segure Ctrl, Alt ou Shift e clique…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>Disposição dos monitores</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>Ações</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>Atualizar</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Arraste uma janela para outro monitor para movê-la</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Desenhado pelo tamanho aparente de cada tela na sua mesa e pela posição, não pelos pixels</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>Clique em um espaço de tecla para gravar um atalho ou gesto do mouse; Delete apaga</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>Cursor</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>Enviar ao próximo monitor</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>Envia a janela para o monitor à direita, voltando ao mais à esquerda</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>Enviar por direção</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>Segure o botão atribuído e deslize numa direção; a janela sob o cursor vai para a tela desse lado</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>sistema {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>{0} janelas fora da tela resgatadas</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>1 janela fora da tela resgatada</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Resgatar janelas fora da tela quando um monitor desconectar</value></data>
+</root>

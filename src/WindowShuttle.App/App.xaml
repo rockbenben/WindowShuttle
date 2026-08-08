@@ -1,0 +1,21 @@
+<Application x:Class="WindowShuttle.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             ShutdownMode="OnExplicitShutdown">
+    <!-- WPF-UI's own control chrome (FluentWindow titlebar, ui:Button, and the Fluent restyle it
+         applies to plain CheckBox/ComboBox app-wide) lives in these two dictionaries. Theme starts
+         Light here only as a placeholder — App.OnStartup immediately calls ApplicationThemeManager.
+         Apply(GetSystemTheme()) before any window is created, which swaps this ThemesDictionary's
+         Theme in place; AppTheme.Apply (this app's own bespoke palette — the map/keycaps/badges no
+         library control draws) is wired to fire in lockstep from the same ApplicationThemeManager.
+         Changed event, see App.xaml.cs. -->
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ui:ThemesDictionary Theme="Light" />
+                <ui:ControlsDictionary />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

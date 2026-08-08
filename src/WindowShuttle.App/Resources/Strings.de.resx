@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>Bildschirme tauschen</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>Tauscht alle Fenster zwischen seinem Bildschirm und dem Hauptbildschirm; schon dort, dann mit dem zuletzt getauschten</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>Vorderste Fenster tauschen</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>Tauscht nur das vorderste Fenster dieser beiden Bildschirme</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>Zum Hauptbildschirm senden</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>Sendet das Fenster auf den Hauptbildschirm</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>Alle einsammeln</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>Sammelt alle Fenster auf dem Hauptbildschirm ein, auch außerhalb gestrandete</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>Rückgängig</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>Stellt die Positionen von vor der letzten Verschiebung wieder her</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>Bildschirmnummer</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>Hauptmonitor</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>WindowShuttle öffnen</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>Als Administrator neu starten</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Beenden</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>{0} Fenster benötigen Administratorrechte. Klicken, um als Administrator neu zu starten</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>1 Fenster benötigt Administratorrechte. Klicken, um als Administrator neu zu starten</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>Solange ein Administratorprogramm im Vordergrund ist, funktioniert keine Mausgeste. Zum Neustart als Administrator klicken</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>Nichts rückgängig zu machen</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>{0} Fenster konnten nicht verschoben werden</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>1 Fenster konnte nicht verschoben werden</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>Nur ein Bildschirm</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>Keine Fenster zu verschieben</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>Kein Fenster unter dem Cursor</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>Das aktive Fenster lässt sich nicht verschieben</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>Bereits auf dem Zielmonitor</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>Kein Bildschirm in dieser Richtung</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>Verschieben fehlgeschlagen; nichts wurde verändert</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>WindowShuttle muss als Administrator laufen, um Fenster erhöhter Programme zu verschieben. Jetzt neu starten?</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>Neu starten</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>Abbrechen</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>Sprache</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>Systemsprache</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>Mit Windows starten</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>Als Administrator</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Start mit erhöhten Rechten über eine geplante Aufgabe: einmal UAC beim Ankreuzen, danach startet jeder Systemstart still als Administrator. Fenster erhöhter Programme lassen sich dann verschieben, und Gesten fallen nicht mehr aus, solange eines im Vordergrund ist</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Vollbild-Apps überspringen</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>Beim Schließen im Infobereich weiterlaufen</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>Die Sprache gilt nach einem Neustart. Jetzt neu starten?</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>Eine Mausgeste entzieht diese Kombination allen Programmen und kann anders als ein Tastenkürzel keine Konflikte erkennen.</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>Dieses Tastenkürzel wird von einem anderen Programm verwendet</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>Nicht belegt</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Eine Richtung lässt sich nur wischen — ein Tastenkürzel kann keine tragen</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Tastenkombination drücken…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>Klicken, um eine Mausgeste aufzunehmen</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Strg, Alt oder Umschalt halten und klicken…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>Bildschirmanordnung</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>Aktionen</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>Aktualisieren</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Fenster auf einen anderen Bildschirm ziehen, um es zu verschieben</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Gezeichnet nach der gefühlten Größe und Lage jedes Bildschirms auf dem Schreibtisch, nicht nach Pixeln</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>Auf ein Tastenfeld klicken, um ein Kürzel oder eine Mausgeste aufzunehmen; Entf löscht es</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>Cursor</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>Zum nächsten Bildschirm senden</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>Sendet das Fenster an den Bildschirm rechts daneben, danach zurück zum linkesten</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>Per Richtung senden</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>Die zugewiesene Taste halten und in eine Richtung wischen; das Fenster unter dem Zeiger wandert auf den Bildschirm dort</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>System {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>{0} Fenster außerhalb des Bildschirms gerettet</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>1 Fenster außerhalb des Bildschirms gerettet</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Fenster retten, wenn ein Bildschirm getrennt wird</value></data>
+</root>

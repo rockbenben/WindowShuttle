@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>整螢幕互換</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>把它所在螢幕和主螢幕的視窗全部對調；已在主螢幕時，與上次那個對調</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>對調最前視窗</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>只對調這兩個螢幕各自最前面的那一個視窗</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>送去主螢幕</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>把視窗送到主螢幕</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>全部收攏</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>把所有視窗收攏回主螢幕，包括拔掉顯示器後卡在螢幕外的</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>復原</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>恢復上一次搬移前的位置</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>螢幕序號</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>主螢幕</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>開啟 WindowShuttle</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>以系統管理員身分重新啟動</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>結束</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>{0} 個視窗需要系統管理員權限。點按以系統管理員身分重新啟動</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>{0} 個視窗需要系統管理員權限。點按以系統管理員身分重新啟動</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>管理員程式在前景時，所有滑鼠手勢都收不到。點擊以系統管理員身分重新啟動</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>沒有可復原的搬移</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>無法搬動 {0} 個視窗</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>無法搬動 {0} 個視窗</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>只有一個螢幕</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>沒有可搬移的視窗</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>滑鼠下沒有視窗</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>目前視窗搬不動</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>視窗已在目標螢幕上</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>那個方向沒有螢幕</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>無法完成搬移，視窗位置沒有變動</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>以系統管理員身分重新啟動後，才能搬移系統管理員程式的視窗。現在重新啟動？</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>重新啟動</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>取消</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>語言</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>跟隨系統</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>開機自動啟動</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>以系統管理員身分</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>透過工作排程器提權自啟：勾選時過一次 UAC，之後每次開機都靜默以系統管理員身分啟動。系統管理員程式的視窗從此搬得動，手勢也不再因為它們佔前景而失靈</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>略過全螢幕應用程式</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>關閉後留在系統匣執行</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>語言將在重新啟動後生效。現在重新啟動？</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>滑鼠手勢會從所有程式奪走這個組合，且無法像快速鍵那樣偵測衝突。</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>快速鍵被其他程式佔用</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>未綁定</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>方向只有劃得出來，快捷鍵帶不了方向</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>按下組合鍵…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>點按錄製滑鼠手勢</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>按住 Ctrl / Alt / Shift 點擊滑鼠…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>螢幕配置</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>動作</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>重新整理</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>把視窗拖到另一個螢幕即可搬移</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>依各螢幕在桌面上的實際觀感大小和相對位置繪製，不是依像素數</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>點按鍵位區錄製快速鍵或滑鼠手勢，Delete 清除</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>滑鼠</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>送去下一個螢幕</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>把視窗送往右邊那個螢幕，到底繞回最左</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>按方向送螢幕</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>按住綁定的鍵往某個方向劃一下，滑鼠下的視窗就搬到那個方向的螢幕上</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>系統 {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>已救回 {0} 個螢幕外視窗</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>已救回 {0} 個螢幕外視窗</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>拔除螢幕後自動救回螢幕外視窗</value></data>
+</root>

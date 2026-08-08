@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\WindowShuttle.Core\WindowShuttle.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- H.NotifyIcon.Wpf 是 Hardcodet.NotifyIcon.Wpf 的维护继任：同一个控件、API 同源，只是
+         命名空间换了。原包停更在 2024-10（2.0.1 在 net10 下仍能跑，所以这不是修 bug，是别把新代码
+         压在停更包上）；继任包持续更新并明确列出 net10.0-windows 支持。 -->
+    <PackageReference Include="H.NotifyIcon.Wpf" Version="2.4.1" />
+    <PackageReference Include="WPF-UI" Version="4.3.0" />
+  </ItemGroup>
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>WindowShuttle.App</RootNamespace>
+    <AssemblyName>WindowShuttle</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>..\..\assets\branding\windowshuttle.ico</ApplicationIcon>
+    <!-- 显式写出：i18n 靠 CultureInfo 查 zh-CN / en 的卫星资源，裁掉 ICU 会让语言切换在
+         自包含构建里静默退化。默认就是 false，写出来是为了没人顺手改成 true 省体积。 -->
+    <InvariantGlobalization>false</InvariantGlobalization>
+
+    <!-- 版本号不手动维护：本地构建从最近的 git tag 取（见文件末尾的 VersionFromGitTag），
+         正式发版由 CI 用 -p:Version=<tag 去 v> 覆盖。下面这个值只在两者都不适用时兜底
+         ——从源码 zip 构建、目录里没有 .git，或者仓库还没打过任何 tag。
+         按房规跟最近一次发布对齐（见 020-Clockwork）：打了 v1.0.0 之后这里就该是 1.0.0。 -->
+    <VersionFallback>1.0.0</VersionFallback>
+    <Version>$(VersionFallback)</Version>
+    <Product>WindowShuttle</Product>
+    <Company>rockbenben</Company>
+    <Authors>rockbenben</Authors>
+    <AssemblyTitle>WindowShuttle</AssemblyTitle>
+    <Description>Hotkey window swapper for multi-monitor Windows: swap the cursor's monitor with the primary in one keystroke.</Description>
+    <Copyright>Copyright © 2026 rockbenben</Copyright>
+    <RepositoryUrl>https://github.com/rockbenben/WindowShuttle</RepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <Resource Include="..\..\assets\branding\windowshuttle.ico" Link="Assets\windowshuttle.ico" />
+  </ItemGroup>
+
+  <!--
+    让自建版本号自己跟上，不依赖任何人记得改字面量。exe 的文件属性、以及将来任何读程序集版本
+    的地方，都会报当前工作树所基于的那次发布，而不是一个越来越旧的常量。
+
+    Condition 是承重件，不是保险：target 内部的 PropertyGroup 会覆盖命令行传入的全局属性
+    （020-Clockwork 实测过），少了这道判断，CI 的 -p:Version=<tag> 反而会被顶掉，打 v1.0.0
+    的 tag 却发出标着兜底号码的 exe。Version 只有在没人从外部传值时才等于 VersionFallback。
+    git describe 失败（无 git、无 tag、源码 zip）就保留兜底值——版本号是门面，不该让构建失败。
+
+    IgnoreExitCode 而非 ContinueOnError：后者只是把失败降级成警告，仍会留下 MSB3073。
+    而「没有 tag」是 CI 的常态而非异常——actions/checkout 默认浅克隆不带 tag，测试步骤也不传
+    -p:Version，于是每次跑都稳定刷警告。退出码照样经 _GitTagExit 判断，逻辑不变。
+  -->
+  <Target Name="VersionFromGitTag" BeforeTargets="GetAssemblyVersion" Condition="'$(Version)' == '$(VersionFallback)'">
+    <Exec Command="git describe --tags --abbrev=0" ConsoleToMSBuild="true" IgnoreExitCode="true" StandardOutputImportance="low" StandardErrorImportance="low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitTag" />
+      <Output TaskParameter="ExitCode" PropertyName="_GitTagExit" />
+    </Exec>
+    <PropertyGroup Condition="'$(_GitTagExit)' == '0' AND $([System.Text.RegularExpressions.Regex]::IsMatch($(_GitTag), '^v?[0-9]+\.[0-9]+\.[0-9]+$'))">
+      <Version>$(_GitTag.TrimStart('v'))</Version>
+    </PropertyGroup>
+  </Target>
+
+</Project>

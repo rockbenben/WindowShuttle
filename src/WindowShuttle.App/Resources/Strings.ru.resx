@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>Поменять экраны местами</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>Меняет местами окна его экрана и основного; если оно уже там — с прошлым экраном</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>Поменять передние окна</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>Меняет местами только по одному переднему окну с каждого из этих двух экранов</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>Отправить на основной</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>Отправляет окно на основной монитор</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>Собрать все</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>Собирает все окна на основном мониторе, включая застрявшие за пределами экрана</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>Отменить</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>Возвращает позиции, какими они были до последнего переноса</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>Номер экрана</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>Основной</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>Открыть WindowShuttle</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>Перезапустить от имени администратора</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Выход</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>Для {0} окон нужны права администратора. Нажмите, чтобы перезапустить от имени администратора</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>Для 1 окна нужны права администратора. Нажмите, чтобы перезапустить от имени администратора</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>Пока активна программа с правами администратора, ни один жест мыши не срабатывает. Нажмите, чтобы перезапустить от имени администратора</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>Нечего отменять</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>Не удалось переместить некоторые окна ({0})</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>Не удалось переместить 1 окно</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>Монитор только один</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>Нет окон для переноса</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>Под курсором нет окна</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>Активное окно нельзя переместить</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>Окно уже на целевом мониторе</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>В этом направлении нет экрана</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>Перенос не удался; положение окон не изменилось</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>Чтобы перемещать окна программ с правами администратора, WindowShuttle нужно перезапустить от имени администратора. Перезапустить сейчас?</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>Перезапустить</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>Отмена</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>Язык</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>Как в системе</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>Запускать вместе с Windows</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>От имени администратора</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Запуск с правами администратора через планировщик: один запрос UAC при включении, дальше каждая загрузка стартует тихо от имени администратора. Окна программ с правами администратора становятся перемещаемыми, а жесты перестают отключаться, пока такое окно на переднем плане</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Пропускать полноэкранные приложения</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>При закрытии оставаться в трее</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>Язык изменится после перезапуска. Перезапустить сейчас?</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>Жест мыши отбирает эту комбинацию у всех программ и, в отличие от горячей клавиши, не может обнаружить конфликт.</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>Эта комбинация занята другой программой</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>Не назначено</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Направление можно только провести — сочетание клавиш его не несёт</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Нажмите сочетание клавиш…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>Нажмите, чтобы записать жест мыши</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Удерживая Ctrl, Alt или Shift, щёлкните…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>Расположение мониторов</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>Действия</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>Обновить</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Перетащите окно на другой монитор, чтобы перенести его</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Нарисовано по видимому размеру и взаимному расположению экранов на столе, а не по пикселям</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>Щёлкните по ячейке, чтобы записать сочетание клавиш или жест мыши; Delete очищает</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>Курсор</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>Отправить на следующий монитор</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>Отправляет окно на экран справа, а с самого правого — к самому левому</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>Отправить по направлению</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>Удерживая назначенную кнопку, проведите в нужную сторону — окно под курсором уйдёт на экран с той стороны</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>система {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>Спасено окон за пределами экрана: {0}</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>Спасено 1 окно за пределами экрана</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Спасать окна за пределами экрана при отключении монитора</value></data>
+</root>

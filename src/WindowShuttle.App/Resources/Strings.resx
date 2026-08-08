@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>整屏互换</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>把它所在屏和主屏的窗口全部对调；已在主屏时，与上次那块对调</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>对调最前窗口</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>只对调这两块屏各自最前面的那一个窗口</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>送去主屏</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>把窗口送到主屏</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>全部收拢</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>把所有窗口收拢回主屏，包括拔掉显示器后卡在屏外的</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>撤销</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>恢复上一次搬运前的位置</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>屏幕序号</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>主屏</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>打开 WindowShuttle</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>以管理员身份重启</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>退出</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>{0} 个窗口需要管理员权限。点击以管理员身份重启</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>{0} 个窗口需要管理员权限。点击以管理员身份重启</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>管理员程序在前台时，所有鼠标手势都收不到。点击以管理员身份重启</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>没有可撤销的搬运</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>没能搬动 {0} 个窗口</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>没能搬动 {0} 个窗口</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>只有一块显示器</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>没有可搬运的窗口</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>鼠标下没有窗口</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>当前窗口搬不动</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>窗口已在目标屏上</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>那个方向没有屏幕</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>没能完成搬运，窗口位置没有改动</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>以管理员身份重启后才能搬动管理员程序的窗口。现在重启？</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>重启</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>取消</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>语言</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>跟随系统</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>开机自启</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>以管理员身份</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>通过计划任务提权自启：勾选时过一次 UAC，之后每次开机都静默以管理员身份启动。管理员程序的窗口从此搬得动，手势也不再因为它们占前台而失灵</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>跳过全屏应用</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>关闭后留在托盘运行</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>语言将在重启后生效。现在重启？</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>鼠标手势会从所有程序夺走这个组合，且无法像快捷键那样检测冲突。</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>快捷键被其他程序占用</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>未绑定</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>方向只有划得出来，快捷键带不了方向</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>按下组合键…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>点击录制鼠标手势</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>按住 Ctrl / Alt / Shift 点击鼠标…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>显示器布局</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>动作</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>刷新</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>把窗口拖到另一块屏即可搬运</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>按各屏在桌面上的实际观感大小和相对位置绘制，不是按像素数</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>点击键位区录制快捷键或鼠标手势，Delete 清除</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>鼠标</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>送去下一块屏</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>把窗口送往右边那块屏，到头绕回最左</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>按方向送屏</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>按住绑定的键往某个方向划一下，鼠标下的窗口就搬到那个方向的屏上</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>系统 {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>已救回 {0} 个屏外窗口</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>已救回 {0} 个屏外窗口</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>拔屏后自动救回屏外窗口</value></data>
+</root>

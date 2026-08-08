@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>Scambia schermi</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>Scambia le finestre tra il suo schermo e quello principale; se è già lì, con l'ultimo usato</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>Scambia finestre in primo piano</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>Scambia solo la finestra in primo piano di ciascuno dei due schermi</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>Manda al principale</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>Manda la finestra sul monitor principale</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>Raccogli tutto</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>Raccoglie tutte le finestre sul monitor principale, comprese quelle bloccate fuori schermo</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>Annulla</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>Ripristina le posizioni precedenti all'ultimo spostamento</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>Numero schermo</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>Principale</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>Apri WindowShuttle</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>Riavvia come amministratore</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Esci</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>{0} finestre richiedono i diritti di amministratore. Fai clic per riavviare come amministratore</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>1 finestra richiede i diritti di amministratore. Fai clic per riavviare come amministratore</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>Nessun gesto del mouse funziona mentre un programma amministratore è in primo piano. Fai clic per riavviare come amministratore</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>Niente da annullare</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>Impossibile spostare {0} finestre</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>Impossibile spostare 1 finestra</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>C'è un solo monitor</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>Nessuna finestra da spostare</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>Nessuna finestra sotto il cursore</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>La finestra attiva non può essere spostata</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>Già sul monitor di destinazione</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>Nessuno schermo in quella direzione</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>Spostamento non completato; nulla è stato riposizionato</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>WindowShuttle deve essere eseguito come amministratore per spostare le finestre dei programmi elevati. Riavviare ora?</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>Riavvia</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>Annulla</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>Lingua</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>Come il sistema</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>Avvia con Windows</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>Come amministratore</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Avvio elevato tramite attività pianificata: una richiesta UAC quando la spunti, poi ogni avvio parte in silenzio come amministratore. Le finestre dei programmi elevati diventano spostabili e i gesti smettono di morire quando uno di essi è in primo piano</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Ignora le app a schermo intero</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>Resta nella barra di sistema alla chiusura</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>La lingua cambia dopo un riavvio. Riavviare ora?</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>Un gesto del mouse sottrae quella combinazione a tutte le applicazioni e, a differenza di una scorciatoia, non può rilevare conflitti.</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>Questa scorciatoia è usata da un altro programma</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>Non assegnata</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Una direzione si può solo tracciare — una scorciatoia non ne porta nessuna</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Premi una combinazione di tasti…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>Clic per registrare un gesto del mouse</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Tieni premuto Ctrl, Alt o Maiusc e fai clic…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>Disposizione dei monitor</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>Azioni</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>Aggiorna</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Trascina una finestra su un altro monitor per spostarla</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Disegnato secondo la grandezza apparente di ogni schermo sulla scrivania e la sua posizione, non secondo i pixel</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>Fai clic su una casella per registrare una scorciatoia o un gesto del mouse; Canc la cancella</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>Cursore</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>Manda al monitor successivo</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>Invia la finestra al monitor alla sua destra, tornando al primo a sinistra</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>Invia per direzione</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>Tieni premuto il pulsante assegnato e trascina in una direzione; la finestra sotto il cursore passa allo schermo da quel lato</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>sistema {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>{0} finestre fuori schermo recuperate</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>1 finestra fuori schermo recuperata</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Recupera le finestre fuori schermo quando un monitor si scollega</value></data>
+</root>

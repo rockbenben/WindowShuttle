@@ -1,0 +1,46 @@
+<Window x:Class="WindowShuttle.App.ConfirmDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:WindowShuttle.App.I18n"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        Title="{loc:Loc App_Name}" ResizeMode="NoResize" ShowInTaskbar="False"
+        SizeToContent="WidthAndHeight" MinWidth="360" MaxWidth="460" MinHeight="150" MaxHeight="420"
+        FontFamily="Segoe UI Variable Text, Segoe UI">
+    <!-- MessageBox.Show 换成的同色系确认框，焦点态、底色、前景全部走 AppTheme（见 code-behind 的
+         ApplyTheme）。这里一个颜色字面量都没有：上一版把 #16161F/#E9E9F2/#6FC3F7 和 ThemeMode="Dark"
+         直接写死在 XAML 里，主窗口换了配色之后这扇框就停在旧色上，系统切浅色它也不跟——一扇深色
+         对话框弹在浅色应用前面。Enter/Escape 仍然全靠 WPF 原生的 IsDefault/IsCancel。 -->
+    <Window.Resources>
+        <Style x:Key="AppFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <!-- Stroke 由 code-behind 按 AppTheme.Live 赋值，见 ApplyTheme。 -->
+                        <Rectangle x:Name="FocusRing" Margin="-2" StrokeThickness="1.6"
+                                   RadiusX="5" RadiusY="5" SnapsToDevicePixels="True"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <StackPanel Margin="26,24,26,20">
+        <TextBlock x:Name="MessageText" FontSize="13.5" TextWrapping="Wrap" LineHeight="21"/>
+        <!-- 确认在右、取消在左，跟 Windows 自己的对话框一致；两个按钮之间留 10，跟边距区分得开。 -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,24,0,0">
+            <Button x:Name="CancelButton" Content="{loc:Loc Dialog_Cancel}" IsCancel="True"
+                    Padding="18,7" MinWidth="96" Margin="0,0,10,0"
+                    FocusVisualStyle="{StaticResource AppFocusVisual}"/>
+            <!-- 默认键要看得出是默认键。上一版两个按钮长得一模一样，回车会触发哪一个只能靠猜——
+                 IsDefault 只改键盘路由，不改外观。ui:Button 的 Primary 外观给的是一块**实心填充**，
+                 跟旁边描边的取消键一眼分得开；它派生自 Button，ConfirmDialogTests 里那句 (Button)
+                 强转和 ButtonAutomationPeer 照常有效。
+                 这里原来写着"Primary 走系统强调色"——**实测不是**：采样渲染出来的按钮填充是中性灰
+                 #595959（暗色）／#333333（亮色），而应用的强调色是 #6FC3F7。WPF-UI 4.3 的 Primary
+                 就是中性实心，不是强调色。这样反而更对：强调色在这个应用里有专属含义（"这块屏是当前的"，
+                 见 AppTheme.Live），花到对话框按钮上会把那个含义稀释掉。 -->
+            <ui:Button x:Name="ConfirmButton" Content="{loc:Loc Dialog_Confirm}" IsDefault="True"
+                       Appearance="Primary" Padding="18,7" MinWidth="96" Click="OnConfirm"
+                       FocusVisualStyle="{StaticResource AppFocusVisual}"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

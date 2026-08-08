@@ -1,0 +1,15 @@
+<Window x:Class="WindowShuttle.App.OverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ShowInTaskbar="False" ShowActivated="False" Topmost="True" ResizeMode="NoResize"
+        WindowStartupLocation="Manual" SizeToContent="Manual">
+    <!-- 一整块虚拟桌面大小的窗口，每块屏一个徽章，代码里按量出来的缩放比摆放（§round3）
+
+         FlowDirection 钉死 LeftToRight，理由跟主窗口那块地图画布逐字相同：这不是文字，是显示器在
+         桌面上的实物摆位。RTL 语言下 App.OnStartup 会把 typeof(Window) 的 FlowDirection 元数据整体
+         翻成 RightToLeft，这块 Canvas 会跟着继承，而 Canvas.SetLeft 在 RTL 下从右边缘量起——三屏
+         「2 1 3」会画成「3 1 2」，屏号跟桌上的实体机器正好对反，而"屏幕编号"这条动作的全部意义
+         就是把两者对上。上一轮只补了主窗口的地图，漏了这块同样的画布。 -->
+    <Canvas x:Name="Root" FlowDirection="LeftToRight"/>
+</Window>

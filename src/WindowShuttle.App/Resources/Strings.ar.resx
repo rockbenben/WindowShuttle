@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>تبديل الشاشات</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>يبدّل كل النوافذ بين شاشتها والشاشة الرئيسية؛ وإن كانت عليها، فمع آخر شاشة بُدّلت</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>تبديل النافذتين الأماميتين</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>يبدّل فقط النافذة الأمامية في كل من هاتين الشاشتين</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>إرسال إلى الرئيسية</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>يرسل النافذة إلى الشاشة الرئيسية</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>جمع الكل</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>يجمع كل النوافذ في الشاشة الرئيسية، بما فيها العالقة خارج الشاشة</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>تراجع</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>يستعيد المواضع كما كانت قبل آخر نقل</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>رقم الشاشة</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>الرئيسية</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>فتح WindowShuttle</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>إعادة التشغيل كمسؤول</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>خروج</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>{0} من النوافذ تحتاج صلاحيات المسؤول. انقر لإعادة التشغيل كمسؤول</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>نافذة واحدة تحتاج صلاحيات المسؤول. انقر لإعادة التشغيل كمسؤول</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>لا تعمل أي إيماءة ماوس ما دام برنامج بصلاحيات المسؤول في المقدمة. انقر لإعادة التشغيل كمسؤول</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>لا يوجد ما يمكن التراجع عنه</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>تعذّر نقل {0} من النوافذ</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>تعذّر نقل نافذة واحدة</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>لا توجد سوى شاشة واحدة</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>لا توجد نوافذ لنقلها</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>لا توجد نافذة تحت المؤشر</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>لا يمكن نقل النافذة النشطة</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>النافذة على الشاشة الهدف بالفعل</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>لا توجد شاشة في هذا الاتجاه</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>تعذّر إتمام النقل؛ لم يتغيّر موضع أي نافذة</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>يجب تشغيل WindowShuttle كمسؤول لنقل نوافذ البرامج المرتفعة الصلاحيات. إعادة التشغيل الآن؟</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>إعادة التشغيل</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>إلغاء</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>اللغة</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>حسب النظام</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>التشغيل مع بدء Windows</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>كمسؤول</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>تشغيل مرتفع الصلاحية عبر مهمة مجدولة: مطالبة UAC واحدة عند التحديد، ثم يبدأ كل إقلاع بصمت كمسؤول. تصبح نوافذ البرامج المرتفعة قابلة للنقل، ولا تتعطل الإيماءات بعد الآن عندما تكون إحداها في المقدمة</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>تخطي تطبيقات ملء الشاشة</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>البقاء في صينية النظام عند الإغلاق</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>تتغيّر اللغة بعد إعادة التشغيل. إعادة التشغيل الآن؟</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>إيماءة الفأرة تستحوذ على هذه التركيبة من كل التطبيقات، وبخلاف اختصار لوحة المفاتيح لا يمكنها اكتشاف التعارض.</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>هذا الاختصار مستخدم من برنامج آخر</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>غير معيّن</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>الاتجاه يُرسم بالسحب فقط — الاختصار لا يحمل اتجاهًا</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>اضغط تركيبة مفاتيح…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>انقر لتسجيل إيماءة فأرة</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>اضغط Ctrl أو Alt أو Shift مع النقر…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>تخطيط الشاشات</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>الإجراءات</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>تحديث</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>اسحب نافذة إلى شاشة أخرى لنقلها</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>مرسوم حسب الحجم الظاهري لكل شاشة على مكتبك وموضعها، لا حسب عدد البكسلات</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>انقر خانة المفاتيح لتسجيل اختصار أو إيماءة فأرة، وDelete للمسح</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>المؤشر</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>إرسال إلى الشاشة التالية</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>يرسل النافذة إلى الشاشة التي على يمينها، ومن أقصى اليمين يعود إلى أقصى اليسار</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>إرسال حسب الاتجاه</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>اضغط الزر المعيَّن واسحب في اتجاه ما، فتنتقل النافذة التي تحت المؤشر إلى الشاشة في ذلك الاتجاه</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>النظام {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>تم إنقاذ {0} من النوافذ الخارجة عن الشاشة</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>تم إنقاذ نافذة واحدة خارجة عن الشاشة</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>إنقاذ النوافذ الخارجة عن الشاشة عند فصل شاشة</value></data>
+</root>

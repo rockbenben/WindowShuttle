@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>สลับทั้งจอ</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>สลับหน้าต่างทั้งหมดระหว่างจอของมันกับจอหลัก ถ้าอยู่จอหลักแล้ว จะสลับกับจอครั้งก่อน</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>สลับหน้าต่างหน้าสุด</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>สลับเฉพาะหน้าต่างบนสุดของแต่ละจอในสองจอนั้น</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>ส่งไปจอหลัก</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>ส่งหน้าต่างไปยังจอหลัก</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>รวบทั้งหมด</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>รวบหน้าต่างทั้งหมดมาที่จอหลัก รวมถึงที่ค้างอยู่นอกจอ</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>เลิกทำ</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>คืนตำแหน่งก่อนการย้ายครั้งล่าสุด</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>หมายเลขจอ</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>จอหลัก</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>เปิด WindowShuttle</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>เริ่มใหม่ในฐานะผู้ดูแลระบบ</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>ออก</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>หน้าต่าง {0} บานต้องใช้สิทธิ์ผู้ดูแลระบบ คลิกเพื่อเริ่มใหม่ในฐานะผู้ดูแลระบบ</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>หน้าต่าง 1 บานต้องใช้สิทธิ์ผู้ดูแลระบบ คลิกเพื่อเริ่มใหม่ในฐานะผู้ดูแลระบบ</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>ขณะที่โปรแกรมสิทธิ์ผู้ดูแลอยู่หน้าสุด ท่าทางเมาส์จะไม่ทำงานเลย คลิกเพื่อเริ่มใหม่ในฐานะผู้ดูแลระบบ</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>ไม่มีอะไรให้เลิกทำ</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>ย้ายหน้าต่างไม่สำเร็จ {0} บาน</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>ย้ายหน้าต่างไม่สำเร็จ 1 บาน</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>มีจอเดียว</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>ไม่มีหน้าต่างให้ย้าย</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>ไม่มีหน้าต่างใต้เคอร์เซอร์</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>ย้ายหน้าต่างที่ใช้งานอยู่ไม่ได้</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>อยู่บนจอเป้าหมายแล้ว</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>ไม่มีจอในทิศทางนั้น</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>ย้ายไม่สำเร็จ ตำแหน่งหน้าต่างไม่เปลี่ยน</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>ต้องรัน WindowShuttle ในฐานะผู้ดูแลระบบจึงจะย้ายหน้าต่างของโปรแกรมที่ใช้สิทธิ์ผู้ดูแลระบบได้ เริ่มใหม่เลยไหม</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>เริ่มใหม่</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>ยกเลิก</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>ภาษา</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>ตามระบบ</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>เริ่มพร้อม Windows</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>ในฐานะผู้ดูแลระบบ</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>เริ่มแบบยกระดับผ่าน Task Scheduler: ติ๊กแล้วมี UAC ครั้งเดียว จากนั้นทุกครั้งที่เปิดเครื่องจะเริ่มเป็นผู้ดูแลระบบเงียบ ๆ หน้าต่างของโปรแกรมสิทธิ์ผู้ดูแลจะย้ายได้ และท่าทางจะไม่ตายอีกเมื่อโปรแกรมพวกนั้นอยู่หน้าสุด</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>ข้ามแอปเต็มจอ</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>ปิดแล้วยังทำงานในเทรย์</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>ภาษาจะเปลี่ยนหลังเริ่มใหม่ เริ่มใหม่เลยไหม</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>ท่าทางเมาส์จะยึดชุดปุ่มนี้จากทุกโปรแกรม และต่างจากปุ่มลัดตรงที่ตรวจจับความขัดแย้งไม่ได้</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>ปุ่มลัดนี้ถูกโปรแกรมอื่นใช้อยู่</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>ยังไม่กำหนด</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>ทิศทางต้องปัดเท่านั้น คีย์ลัดพาทิศทางไปไม่ได้</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>กดชุดปุ่ม…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>คลิกเพื่อบันทึกท่าทางเมาส์</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>กด Ctrl, Alt หรือ Shift ค้างแล้วคลิก…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>ผังจอภาพ</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>การดำเนินการ</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>รีเฟรช</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>ลากหน้าต่างไปยังอีกจอเพื่อย้าย</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>วาดตามขนาดที่ตาเห็นจริงและตำแหน่งของแต่ละจอบนโต๊ะ ไม่ใช่ตามจำนวนพิกเซล</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>คลิกช่องปุ่มเพื่อบันทึกปุ่มลัดหรือท่าทางเมาส์ กด Delete เพื่อล้าง</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>เคอร์เซอร์</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>ส่งไปจอถัดไป</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>ส่งหน้าต่างไปยังจอทางขวา เมื่อสุดแล้ววนกลับไปจอซ้ายสุด</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>ส่งตามทิศทาง</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>กดค้างปุ่มที่กำหนดไว้แล้วปัดไปทิศใดทิศหนึ่ง หน้าต่างใต้เคอร์เซอร์จะย้ายไปจอทางนั้น</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>ระบบ {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>กู้หน้าต่างนอกจอแล้ว {0} บาน</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>กู้หน้าต่างนอกจอแล้ว 1 บาน</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>กู้หน้าต่างนอกจอเมื่อถอดจอ</value></data>
+</root>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>Hoán đổi màn hình</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>Hoán đổi mọi cửa sổ giữa màn hình của nó và màn hình chính; nếu đã ở đó, với màn hình lần trước</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>Hoán đổi cửa sổ trước nhất</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>Chỉ hoán đổi cửa sổ trên cùng của mỗi màn hình trong hai màn hình đó</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>Đưa về màn hình chính</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>Đưa cửa sổ về màn hình chính</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>Gom tất cả</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>Gom mọi cửa sổ về màn hình chính, kể cả cửa sổ kẹt ngoài màn hình</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>Hoàn tác</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>Khôi phục vị trí trước lần di chuyển gần nhất</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>Số màn hình</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>Chính</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>Mở WindowShuttle</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>Khởi động lại với quyền quản trị</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Thoát</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>{0} cửa sổ cần quyền quản trị. Bấm để khởi động lại với quyền quản trị</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>1 cửa sổ cần quyền quản trị. Bấm để khởi động lại với quyền quản trị</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>Không cử chỉ chuột nào hoạt động khi một chương trình quản trị đang ở tiền cảnh. Bấm để khởi động lại với quyền quản trị</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>Không có gì để hoàn tác</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>Không di chuyển được {0} cửa sổ</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>Không di chuyển được 1 cửa sổ</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>Chỉ có một màn hình</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>Không có cửa sổ nào để di chuyển</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>Không có cửa sổ dưới con trỏ</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>Không thể di chuyển cửa sổ đang hoạt động</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>Cửa sổ đã ở màn hình đích</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>Không có màn hình ở hướng đó</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>Không hoàn tất được; vị trí cửa sổ không thay đổi</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>WindowShuttle phải chạy với quyền quản trị mới di chuyển được cửa sổ của chương trình chạy quyền quản trị. Khởi động lại ngay?</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>Khởi động lại</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>Hủy</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>Ngôn ngữ</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>Theo hệ thống</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>Khởi động cùng Windows</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>Với quyền quản trị</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Tự khởi động với quyền quản trị qua tác vụ đã lập lịch: một lần UAC khi đánh dấu, sau đó mỗi lần khởi động máy sẽ chạy êm với quyền quản trị. Cửa sổ của chương trình quản trị sẽ di chuyển được, và cử chỉ không còn chết khi một trong số đó ở tiền cảnh</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Bỏ qua ứng dụng toàn màn hình</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>Vẫn chạy ở khay khi đóng</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>Ngôn ngữ sẽ đổi sau khi khởi động lại. Khởi động lại ngay?</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>Thao tác chuột sẽ chiếm tổ hợp đó khỏi mọi ứng dụng, và khác với phím tắt, nó không phát hiện được xung đột.</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>Phím tắt này đang bị chương trình khác dùng</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>Chưa gán</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Hướng chỉ có thể vuốt ra — phím tắt không mang được hướng</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Nhấn tổ hợp phím…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>Bấm để ghi thao tác chuột</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Giữ Ctrl, Alt hoặc Shift rồi bấm…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>Bố cục màn hình</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>Thao tác</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>Làm mới</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Kéo cửa sổ sang màn hình khác để di chuyển</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Vẽ theo kích thước cảm nhận thực tế và vị trí tương đối của từng màn hình trên bàn, không theo số điểm ảnh</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>Bấm vào ô phím để ghi phím tắt hoặc thao tác chuột; Delete để xóa</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>Con trỏ</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>Đưa sang màn hình kế tiếp</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>Gửi cửa sổ sang màn hình bên phải, hết thì quay lại ngoài cùng bên trái</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>Gửi theo hướng</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>Giữ nút đã gán rồi vuốt theo một hướng; cửa sổ dưới con trỏ sẽ sang màn hình phía đó</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>hệ thống {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>Đã cứu {0} cửa sổ ngoài màn hình</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>Đã cứu 1 cửa sổ ngoài màn hình</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Tự cứu cửa sổ ngoài màn hình khi rút màn hình</value></data>
+</root>

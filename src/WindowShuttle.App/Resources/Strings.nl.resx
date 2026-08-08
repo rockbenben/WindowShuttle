@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>Schermen wisselen</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>Wisselt alle vensters tussen zijn scherm en het hoofdscherm; staat het daar al, dan met het vorige</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>Voorste vensters wisselen</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>Wisselt alleen het voorste venster van elk van die twee schermen</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>Naar hoofdscherm sturen</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>Stuurt het venster naar de hoofdmonitor</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>Alles verzamelen</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>Verzamelt alle vensters op de hoofdmonitor, ook die buiten beeld vastzitten</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>Ongedaan maken</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>Herstelt de posities van vóór de laatste verplaatsing</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>Schermnummer</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>Hoofdscherm</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>WindowShuttle openen</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>Opnieuw starten als beheerder</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Afsluiten</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>{0} vensters vereisen beheerdersrechten. Klik om als beheerder opnieuw te starten</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>1 venster vereist beheerdersrechten. Klik om als beheerder opnieuw te starten</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>Geen enkele muisbeweging werkt zolang een programma met beheerdersrechten op de voorgrond staat. Klik om als beheerder te herstarten</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>Niets om ongedaan te maken</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>Kon {0} vensters niet verplaatsen</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>Kon 1 venster niet verplaatsen</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>Er is maar één monitor</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>Geen vensters om te verplaatsen</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>Geen venster onder de cursor</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>Het actieve venster kan niet worden verplaatst</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>Al op de doelmonitor</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>Geen scherm in die richting</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>Verplaatsen mislukt; er is niets verschoven</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>WindowShuttle moet als beheerder draaien om vensters van verhoogde programma's te verplaatsen. Nu opnieuw starten?</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>Opnieuw starten</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>Annuleren</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>Taal</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>Systeemtaal volgen</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>Starten met Windows</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>Als beheerder</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Verhoogd starten via een geplande taak: één UAC-prompt bij het aanvinken, daarna start elke boot stil als beheerder. Vensters van verhoogde programma's worden verplaatsbaar en gebaren vallen niet meer uit zolang er één op de voorgrond staat</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Apps op volledig scherm overslaan</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>In het systeemvak blijven draaien bij sluiten</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>De taal verandert na een herstart. Nu opnieuw starten?</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>Een muisgebaar pakt die combinatie van alle programma's af en kan, anders dan een sneltoets, geen conflict detecteren.</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>Deze sneltoets is in gebruik door een ander programma</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>Niet toegewezen</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Een richting kun je alleen vegen — een sneltoets draagt er geen</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Druk op een toetsencombinatie…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>Klik om een muisgebaar op te nemen</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Houd Ctrl, Alt of Shift ingedrukt en klik…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>Monitorindeling</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>Acties</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>Vernieuwen</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Sleep een venster naar een andere monitor om het te verplaatsen</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Getekend naar hoe groot elk scherm op je bureau oogt en waar het staat, niet naar pixels</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>Klik op een toetsvak om een sneltoets of muisgebaar op te nemen; Delete wist het</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>Cursor</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>Naar volgende monitor sturen</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>Stuurt het venster naar het scherm rechts ervan, en daarna terug naar het meest linkse</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>Per richting sturen</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>Houd de toegewezen knop ingedrukt en veeg een kant op; het venster onder de cursor gaat naar het scherm daar</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>systeem {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>{0} vensters buiten beeld gered</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>1 venster buiten beeld gered</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Vensters buiten beeld redden als een monitor loskoppelt</value></data>
+</root>

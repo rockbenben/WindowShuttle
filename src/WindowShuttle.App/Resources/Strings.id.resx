@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>Tukar layar</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>Tukar semua jendela antara layarnya dan layar utama; jika sudah di sana, dengan yang terakhir</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>Tukar jendela terdepan</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>Tukar hanya jendela terdepan dari masing-masing kedua layar itu</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>Kirim ke utama</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>Mengirim jendela ke monitor utama</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>Kumpulkan semua</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>Mengumpulkan semua jendela di monitor utama, termasuk yang terjebak di luar layar</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>Urungkan</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>Mengembalikan posisi seperti sebelum pemindahan terakhir</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>Nomor layar</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>Utama</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>Buka WindowShuttle</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>Mulai ulang sebagai administrator</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Keluar</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>{0} jendela memerlukan hak administrator. Klik untuk memulai ulang sebagai administrator</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>1 jendela memerlukan hak administrator. Klik untuk memulai ulang sebagai administrator</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>Tidak ada gerakan mouse yang bekerja selama program administrator berada di depan. Klik untuk memulai ulang sebagai administrator</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>Tidak ada yang bisa diurungkan</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>Tidak dapat memindahkan {0} jendela</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>Tidak dapat memindahkan 1 jendela</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>Hanya ada satu monitor</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>Tidak ada jendela untuk dipindahkan</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>Tidak ada jendela di bawah kursor</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>Jendela aktif tidak bisa dipindahkan</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>Sudah berada di monitor tujuan</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>Tidak ada layar ke arah itu</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>Pemindahan gagal; tidak ada posisi yang berubah</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>WindowShuttle harus dijalankan sebagai administrator untuk memindahkan jendela program yang berjalan dengan hak lebih tinggi. Mulai ulang sekarang?</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>Mulai ulang</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>Batal</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>Bahasa</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>Ikuti sistem</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>Jalankan saat Windows menyala</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>Sebagai administrator</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Mulai dengan hak administrator lewat tugas terjadwal: satu kali UAC saat dicentang, lalu setiap boot mulai diam-diam sebagai administrator. Jendela program administrator jadi bisa dipindah, dan gerakan tidak lagi mati saat salah satunya di depan</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Lewati aplikasi layar penuh</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>Tetap berjalan di baki saat ditutup</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>Bahasa berubah setelah mulai ulang. Mulai ulang sekarang?</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>Gestur mouse merebut kombinasi itu dari semua aplikasi, dan tidak seperti pintasan, tidak bisa mendeteksi konflik.</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>Pintasan ini dipakai program lain</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>Belum diatur</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Arah hanya bisa disapu — pintasan tidak bisa membawanya</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Tekan kombinasi tombol…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>Klik untuk merekam gestur mouse</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Tahan Ctrl, Alt atau Shift lalu klik…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>Tata letak monitor</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>Aksi</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>Segarkan</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Seret jendela ke monitor lain untuk memindahkannya</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Digambar sesuai ukuran tampak tiap layar di meja dan posisinya, bukan jumlah pikselnya</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>Klik kolom tombol untuk merekam pintasan atau gestur mouse; Delete menghapusnya</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>Kursor</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>Kirim ke monitor berikutnya</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>Kirim jendela ke monitor di sebelah kanannya, lalu kembali ke paling kiri</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>Kirim menurut arah</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>Tahan tombol yang ditetapkan lalu sapu ke suatu arah; jendela di bawah kursor pindah ke layar di arah itu</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>sistem {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>{0} jendela di luar layar diselamatkan</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>1 jendela di luar layar diselamatkan</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Selamatkan jendela di luar layar saat monitor terlepas</value></data>
+</root>

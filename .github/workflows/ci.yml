@@ -1,0 +1,172 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    timeout-minutes: 15          # fail fast if a swap/undo call ever deadlocks, instead of hanging to the 6h cap
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      # --minimum-expected-tests is Microsoft.Testing.Platform's own guard against a silent 0-test run
+      # (a mis-loaded adapter can make a test run exit 0 with nothing executed). It replaces the trx
+      # parsing this step used to do; see the test .csproj for the two properties that put xunit.v3
+      # on MTP. Verified both ways: `1` passes, `99999` exits 1.
+      - name: Test (Core)
+        run: dotnet test tests/WindowShuttle.Core.Tests -c Release --nologo -- --minimum-expected-tests 1
+      - name: Build (App)
+        run: dotnet build src/WindowShuttle.App -c Release --nologo
+      - name: Smoke (list)
+        shell: pwsh
+        run: |
+          # `list` is the one command that is always safe to run unattended: read-only, no window
+          # movement, no elevation, no IPC (App.xaml.cs answers it directly and always exits 0 by
+          # design, whatever it finds). What we do NOT assume: that windows-latest exposes a real
+          # monitor to EnumDisplayMonitors. GitHub's Windows runners are an interactive session (not
+          # Session-0/RDP-disconnected), so in practice they carry at least one virtualized display —
+          # but that's an environment detail of the runner image, not a contract Microsoft documents,
+          # so this step does not gate on monitor COUNT. It gates on what the source code actually
+          # promises: exit code 0, and a well-formed `{ monitors: [...], windows: [...] }` payload.
+          # That still exercises the full path (MonitorProbe + WindowProbe + WindowFilter + JSON
+          # serialization) and would catch a real crash or malformed-output regression either way.
+          $exe = Get-ChildItem src/WindowShuttle.App/bin/Release -Recurse -Filter WindowShuttle.exe | Select-Object -First 1
+          if (-not $exe) { Write-Error 'WindowShuttle.exe not found'; exit 1 }
+          $out = & $exe.FullName list 2>&1 | Out-String
+          $code = $LASTEXITCODE
+          Write-Host $out
+          if ($code -ne 0) { Write-Error "list exited $code, expected 0"; exit 1 }
+          try { $json = $out | ConvertFrom-Json } catch { Write-Error "list did not print valid JSON: $_"; exit 1 }
+          if ($null -eq $json.monitors -or $json.monitors -isnot [array]) { Write-Error 'no monitors array in list output'; exit 1 }
+          if ($null -eq $json.windows -or $json.windows -isnot [array]) { Write-Error 'no windows array in list output'; exit 1 }
+          Write-Host "monitors: $($json.monitors.Count), movable windows: $($json.windows.Count)"
+      # 退出码是对外契约的一部分（README 的 CLI 那节逐个写着），而且完全确定性——不依赖屏数、
+      # 不依赖桌面上有什么窗口。这几条此前只在 docs/manual-checks.md 里让人手敲，属于"机器本来
+      # 就能守、却交给人"的那类：人会漏，而漏了不会有任何信号。
+      # 只放**参数校验**这一档：它们在任何机器上答案都一样。像「已经在目标屏上退 1」那种要真的
+      # 有第二块屏才成立的，留在手工清单里。
+      - name: Exit codes (argument validation)
+        shell: pwsh
+        run: |
+          $found = Get-ChildItem src/WindowShuttle.App/bin/Release -Recurse -Filter WindowShuttle.exe | Select-Object -First 1
+          if (-not $found) { Write-Error 'WindowShuttle.exe not found'; exit 1 }
+          $exe = $found.FullName
+          $cases = @(
+            @{ args = @('bogus-command');        want = 3; why = 'unknown verb' },
+            @{ args = @('swap','--to','x');      want = 3; why = 'non-numeric --to' },
+            @{ args = @('swap','--to');          want = 3; why = '--to without a value' },
+            @{ args = @('to-next','--to','99');  want = 3; why = 'no monitor at that position' },
+            @{ args = @('gather','--to','2');    want = 3; why = '--to not valid for gather' },
+            @{ args = @('list');                 want = 0; why = 'read-only, always succeeds' }
+          )
+          $bad = 0
+          foreach ($c in $cases) {
+            $p = Start-Process $exe -ArgumentList $c.args -PassThru -Wait -NoNewWindow
+            $got = $p.ExitCode
+            $ok = $got -eq $c.want
+            "{0,-28} want {1} got {2}  {3}" -f ($c.args -join ' '), $c.want, $got, $(if($ok){'ok'}else{"FAIL - $($c.why)"})
+            if (-not $ok) { $bad++ }
+          }
+          if ($bad) { Write-Error "$bad exit code(s) wrong"; exit 1 }
+
+      # WPF loads XAML lazily: a window whose markup is broken throws nothing until someone opens
+      # that window, so it ships. `--smoke` constructs and lays out every window, then exits. Proven
+      # to fail by injecting a bad StaticResource into OverlayWindow.xaml — it compiled with zero
+      # errors and this step caught it with a line number. OverlayWindow in particular has no other
+      # coverage: no test constructs it.
+      #
+      # Success is judged by the marker file the app writes, NOT the exit code: a WPF app started
+      # through Start-Process can hand back a null ExitCode.
+      - name: Smoke (every window renders)
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem src/WindowShuttle.App/bin/Release -Recurse -Filter WindowShuttle.exe | Select-Object -First 1
+          # Resolve the marker with the same API the app uses, so both agree on what TEMP means.
+          $marker = Join-Path ([System.IO.Path]::GetTempPath()) 'windowshuttle-smoke.txt'
+          if (Test-Path $marker) { Remove-Item -LiteralPath $marker }
+          $p = Start-Process $exe.FullName -ArgumentList '--smoke' -PassThru -Wait
+          if (-not (Test-Path $marker)) { Write-Error '--smoke wrote no marker (it crashed before it could report)'; exit 1 }
+          $report = (Get-Content $marker -Raw).Trim()
+          if ($report -ne 'OK') { Write-Host $report; Write-Error '--smoke failed (see report above)'; exit 1 }
+          if ($p.ExitCode -and $p.ExitCode -ne 0) { Write-Error "--smoke exited $($p.ExitCode)"; exit 1 }
+          Write-Host 'every window constructed and laid out'
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: test
+    runs-on: windows-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      id-token: write        # attest 那步拿 OIDC 令牌去签来源证明
+      attestations: write    # 把证明写回仓库
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - name: Publish (self-contained + framework-dependent, win-x64)
+        shell: pwsh
+        run: |
+          $v = "${{ github.ref_name }}" -replace '^v', ''   # tag v1.0.0 -> assembly version 1.0.0
+          # 原生命令的非零退出不会中断 pwsh，runner 只看最后一行之后的 $LASTEXITCODE：不显式判一次，
+          # 「第一个 publish 失败 + 第二个成功」会以绿灯收场，Release 里少一个资产。
+          dotnet publish src/WindowShuttle.App -c Release -p:PublishProfile=win-x64 -p:Version=$v --nologo
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          dotnet publish src/WindowShuttle.App -c Release -p:PublishProfile=win-x64-needs-dotnet10 -p:Version=$v --nologo
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Package
+        shell: pwsh
+        run: |
+          # Two zips — the variant lives in the ZIP name, so unpacking either always leaves a clean
+          # WindowShuttle.exe instead of a name a portable install would keep forever.
+          Compress-Archive -Path src/WindowShuttle.App/bin/Release/publish/WindowShuttle.exe -DestinationPath "WindowShuttle-${{ github.ref_name }}-win-x64.zip"
+          Compress-Archive -Path src/WindowShuttle.App/bin/Release/publish-needs-dotnet10/WindowShuttle.exe -DestinationPath "WindowShuttle-${{ github.ref_name }}-win-x64-needs-dotnet10.zip"
+          # 每一个能被下载的东西都要有一行——两个 zip 加那个裸 exe，正好是 files: 里的三个资产。
+          # 只给其中一个出校验值，另一拨用户手里就是个没法验的文件。这份清单同时也是下一步
+          # attestation 的输入：加资产只改这一句，签名自动跟着覆盖到，不会「漏签一个还不报错」。
+          # 格式是 shasum 那套「摘要 + 空格 + 模式标志 + 文件名」，下面两个空格 = 分隔空格 + 文本模式。
+          # 编码写死 ascii：内容本来全是 ASCII，写死就不吃两代 PowerShell 默认编码（BOM）的差异。
+          Get-FileHash *.zip, src/WindowShuttle.App/bin/Release/publish-needs-dotnet10/WindowShuttle.exe -Algorithm SHA256 |
+            ForEach-Object { "{0}  {1}" -f $_.Hash.ToLower(), (Split-Path $_.Path -Leaf) } |
+            Set-Content SHA256SUMS.txt -Encoding ascii
+          Get-Content SHA256SUMS.txt
+      # 比 SHA256SUMS 强一档：sums 和它校验的文件挂在同一个 release 页上，能换资产的人也能换 sums。
+      # 来源证明存在 GitHub 那边，用户 `gh attestation verify <文件> -R rockbenben/WindowShuttle`
+      # 验的是「这个文件确实由本仓库这条 workflow 构建」。两者串起来用，不是二选一。
+      - uses: actions/attest-build-provenance@v4
+        with:
+          subject-checksums: SHA256SUMS.txt
+      - name: Release
+        # Major-version tag on purpose: `v3` moves with each patch, which is how fixes arrive without
+        # anyone bumping anything.
+        uses: softprops/action-gh-release@v3
+        with:
+          # The third asset is the framework-dependent build attached raw, straight from its publish
+          # directory so it lands under its plain name: one click to download and run, and it drops
+          # straight over an existing WindowShuttle.exe to update. Only the small build gets that — the
+          # bundled-runtime exe is the one browsers and SmartScreen fight hardest, and a plain,
+          # version-less name can only belong to one of the two. Names are spelled out rather than
+          # globbed so nothing looks missing and nothing can be uploaded twice.
+          files: |
+            WindowShuttle-${{ github.ref_name }}-win-x64.zip
+            WindowShuttle-${{ github.ref_name }}-win-x64-needs-dotnet10.zip
+            src/WindowShuttle.App/bin/Release/publish-needs-dotnet10/WindowShuttle.exe
+            SHA256SUMS.txt
+          # Picking a package happens on the download page, not in the README, so the note has to
+          # ride along with the release. GitHub appends the generated changelog after this body.
+          # No sizes in the copy — the download page prints each asset's real size next to it, and a
+          # number typed here goes stale the first time a dependency moves.
+          body: |
+            **Which package? / 下载哪个？**
+
+            - `WindowShuttle-${{ github.ref_name }}-win-x64.zip` — .NET runtime included; unzip and run on any Windows 10/11 x64. Take this if you're unsure. / 内含 .NET 运行时，解压即用；拿不准、内网机、离线机就选它。
+            - `WindowShuttle-${{ github.ref_name }}-win-x64-needs-dotnet10.zip` — same app without the bundled runtime; needs the [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) installed. / 同一个程序，只是不带运行时；需要电脑上已装 [.NET 10 桌面运行时](https://dotnet.microsoft.com/download/dotnet/10.0)。
+            - `WindowShuttle.exe` — the same build as the zip above, unzipped: click, run, or drop it over your existing WindowShuttle.exe to update. Windows will offer the runtime download if it is missing. / 就是上面那个不含运行时的版本，只是没打包：点开即用，也可直接覆盖现有的 WindowShuttle.exe 完成更新。缺运行时时 Windows 会自己提示下载。
+          generate_release_notes: true

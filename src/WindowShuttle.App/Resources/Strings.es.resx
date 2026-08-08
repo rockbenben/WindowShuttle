@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Name" xml:space="preserve"><value>WindowShuttle</value></data>
+
+  <data name="Action_Swap" xml:space="preserve"><value>Intercambiar pantallas</value></data>
+  <data name="Action_Swap_Desc" xml:space="preserve"><value>Intercambia las ventanas entre su pantalla y la principal; si ya está allí, con la última</value></data>
+  <data name="Action_SwapTop" xml:space="preserve"><value>Intercambiar ventanas frontales</value></data>
+  <data name="Action_SwapTop_Desc" xml:space="preserve"><value>Intercambia solo la ventana más al frente de cada una de esas dos pantallas</value></data>
+  <data name="Action_ToPrimary" xml:space="preserve"><value>Enviar al principal</value></data>
+  <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>Envía la ventana al monitor principal</value></data>
+  <data name="Action_Gather" xml:space="preserve"><value>Reunir todo</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>Reúne todas las ventanas en el monitor principal, incluidas las atrapadas fuera de pantalla</value></data>
+  <data name="Action_Undo" xml:space="preserve"><value>Deshacer</value></data>
+  <data name="Action_Undo_Desc" xml:space="preserve"><value>Restaura las posiciones previas al último movimiento</value></data>
+  <data name="Action_Identify" xml:space="preserve"><value>Número de pantalla</value></data>
+
+  <data name="Badge_Primary" xml:space="preserve"><value>Principal</value></data>
+
+  <data name="Tray_Open" xml:space="preserve"><value>Abrir WindowShuttle</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>Reiniciar como administrador</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Salir</value></data>
+
+  <data name="Toast_AccessDenied" xml:space="preserve"><value>{0} ventanas necesitan permisos de administrador. Haz clic para reiniciar como administrador</value></data>
+  <data name="Toast_AccessDenied_One" xml:space="preserve"><value>1 ventana necesita permisos de administrador. Haz clic para reiniciar como administrador</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>Ningún gesto del ratón funciona mientras un programa de administrador está en primer plano. Haz clic para reiniciar como administrador</value></data>
+  <data name="Toast_NoUndo" xml:space="preserve"><value>Nada que deshacer</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>No se pudieron mover {0} ventanas</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>No se pudo mover 1 ventana</value></data>
+
+  <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>Solo hay un monitor</value></data>
+  <data name="NoOp_NothingToDo" xml:space="preserve"><value>No hay ventanas que mover</value></data>
+  <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>No hay ninguna ventana bajo el cursor</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>La ventana activa no se puede mover</value></data>
+  <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>Ya está en el monitor de destino</value></data>
+  <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>No hay pantalla en esa dirección</value></data>
+  <data name="NoOp_Error" xml:space="preserve"><value>No se pudo completar el movimiento; nada cambió de posición</value></data>
+
+  <data name="Elevate_Confirm" xml:space="preserve"><value>WindowShuttle debe ejecutarse como administrador para mover ventanas de programas elevados. ¿Reiniciar ahora?</value></data>
+
+  <data name="Dialog_Confirm" xml:space="preserve"><value>Reiniciar</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>Cancelar</value></data>
+
+  <data name="Settings_Language" xml:space="preserve"><value>Idioma</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>Según el sistema</value></data>
+  <data name="Settings_Startup" xml:space="preserve"><value>Iniciar con Windows</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>Como administrador</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Inicio elevado mediante una tarea programada: un aviso de UAC al marcarla y, después, cada arranque inicia en silencio como administrador. Las ventanas de programas elevados pasan a poder moverse y los gestos dejan de morir cuando uno está en primer plano</value></data>
+  <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Omitir aplicaciones a pantalla completa</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>Seguir en la bandeja al cerrar</value></data>
+  <data name="Settings_RestartPrompt" xml:space="preserve"><value>El idioma se aplica tras reiniciar. ¿Reiniciar ahora?</value></data>
+
+  <data name="Settings_MouseChord_Caution" xml:space="preserve"><value>Un gesto de ratón quita esa combinación a todas las aplicaciones y, a diferencia de un atajo de teclado, no puede detectar conflictos.</value></data>
+
+  <data name="Hotkey_Conflict" xml:space="preserve"><value>Este atajo lo usa otro programa</value></data>
+  <data name="Hotkey_Unbound" xml:space="preserve"><value>Sin asignar</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Una dirección solo se puede trazar; un atajo no puede llevarla</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Pulsa una combinación de teclas…</value></data>
+  <data name="MouseChord_Tip" xml:space="preserve"><value>Clic para grabar un gesto de ratón</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Mantén Ctrl, Alt o Shift y haz clic…</value></data>
+
+  <data name="Main_Monitors" xml:space="preserve"><value>Disposición de monitores</value></data>
+  <data name="Main_Actions" xml:space="preserve"><value>Acciones</value></data>
+  <data name="Main_Refresh" xml:space="preserve"><value>Actualizar</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Arrastra una ventana a otro monitor para moverla</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Dibujado según el tamaño aparente de cada pantalla en tu mesa y su posición, no según sus píxeles</value></data>
+  <data name="Main_Actions_Hint" xml:space="preserve"><value>Haz clic en una casilla para grabar un atajo o un gesto de ratón; Supr la borra</value></data>
+
+  <data name="Badge_Cursor" xml:space="preserve"><value>Cursor</value></data>
+
+  <data name="Action_ToNext" xml:space="preserve"><value>Enviar al siguiente monitor</value></data>
+  <data name="Action_ToNext_Desc" xml:space="preserve"><value>Envía la ventana al monitor de su derecha, volviendo al primero por la izquierda</value></data>
+  <data name="Action_ToDirection" xml:space="preserve"><value>Enviar por dirección</value></data>
+  <data name="Action_ToDirection_Desc" xml:space="preserve"><value>Mantén pulsado el botón asignado y desliza en una dirección; la ventana bajo el cursor pasa a la pantalla de ese lado</value></data>
+  <data name="Map_SystemIndex" xml:space="preserve"><value>sistema {0}</value></data>
+  <data name="Toast_Rescued" xml:space="preserve"><value>{0} ventanas fuera de pantalla rescatadas</value></data>
+  <data name="Toast_Rescued_One" xml:space="preserve"><value>1 ventana fuera de pantalla rescatada</value></data>
+  <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Rescatar ventanas fuera de pantalla al desconectar un monitor</value></data>
+</root>
