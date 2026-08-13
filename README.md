@@ -1,6 +1,6 @@
 # WindowShuttle
 
-> Swap window contents between monitors with a hotkey
+> Move windows between monitors without dragging — one at a time, or a whole screen at once
 
 [⬇ Download for Windows](https://github.com/rockbenben/WindowShuttle/releases/latest) · [简体中文](README.zh.md)
 
@@ -8,13 +8,13 @@
 
 ![WindowShuttle's main window: a scaled map of the connected monitors with the windows on each, above a list of actions with shortcut and mouse-gesture slots](docs/images/main-en.png)
 
-**Press a hotkey, and every window on the screen you're working on swaps places with every window on the primary monitor** — sizes and positions rescale to fit, so a window coming from a 150%-DPI display lands at a sane size on a 100% one instead of just being teleported pixel-for-pixel. WindowShuttle lives in the tray; there's nothing to configure to get the core swap working.
+**Getting a window onto another monitor should not be a drag across the desk.** Hold `Ctrl` and the right button, flick toward the screen you want, and the window under your cursor is already there — no screen numbers to work out first. Need the whole screen instead? One hotkey trades every window between the screen you're on and the primary. Either way the geometry is recomputed for the destination, so a window coming off a 150%-DPI display lands at a sane size on a 100% one instead of being teleported pixel-for-pixel — and a window snapped to the left half arrives snapped to the left half. WindowShuttle lives in the tray and works out of the box.
 
-- A single portable exe — no installer, no account, nothing phoned home.
-- **Hold `Ctrl` + right button and flick toward a screen** — the window under the cursor moves there. No screen numbers to remember; you flick the way you're already pointing. Misflicked? `Ctrl` + middle-click takes it back.
-- Seven kinds of window-moving action, all reachable from the tray menu and the CLI.
-- The map at the top of the main window is drawn from where your monitors actually sit, and you can work in it directly: drag a window from the map onto another monitor's card to send it there.
-- Windows only (it moves real HWNDs with `SetWindowPos`/`DeferWindowPos`); mixed-DPI multi-monitor setups are the main use case, not an edge case.
+- **Flick, don't aim.** `Ctrl` + right button, throw the pointer at a screen, let go. You were already pointing at it, so there is no screen number to translate first. Misflicked? `Ctrl` + middle-click puts it back.
+- **One window or the whole screen, same tool.** Seven actions on one scale: send this one somewhere, trade two screens outright, or gather everything home after a monitor comes off. All of them from the keyboard, the mouse, the tray menu or the CLI.
+- **Geometry is recomputed, not copied.** Mixed DPI is the main case, not an edge case: sizes are rescaled for the destination, maximized stays maximized, minimized restores on the new screen, and a snapped window keeps its half or its quarter.
+- **The map is the control surface.** The panel at the top draws your monitors at the size and position they actually have on your desk — drag a window from one card to another and it moves.
+- **Nothing to commit to.** One portable exe, no installer, no account, nothing phoned home. Windows only (it moves real HWNDs with `SetWindowPos`/`DeferWindowPos`).
 
 ## Does it fit your setup
 

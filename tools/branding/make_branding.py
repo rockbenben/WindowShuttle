@@ -244,7 +244,7 @@ def render_social_card(w: int = 1280, h: int = 640, supersample: int = 2) -> Ima
     # scale so it spans the column exactly. The clamp is the guard — copy half this length would
     # otherwise produce absurd type, and a card generator that can render absurd type eventually
     # will. Bahnschrift is a variable-width face, so this has to be measured, not calculated.
-    HEADLINE = "Two screens trade places"
+    HEADLINE = "Stop dragging windows across monitors"
     probe = S(100)
     fitted = int(probe * S(MEASURE) / d.textlength(HEADLINE, font=font("bahnschrift.ttf", probe)))
     head = font("bahnschrift.ttf", max(S(64), min(fitted, S(108))))
@@ -264,11 +264,16 @@ def render_social_card(w: int = 1280, h: int = 640, supersample: int = 2) -> Ima
     # The Chinese line carries the mechanism the English headline leaves out, so a bilingual reader
     # gets claim + how, and a reader of either language alone still gets one complete thought.
     #
-    # Headline and picture have to be the same feature. An earlier pass paired "Flick a window to the
-    # next screen" with this strip, and they describe different things: the flick moves ONE window in
-    # a direction, while the marker between screens 1 and 3 says those two exchange everything they
-    # hold. The picture won — it is the namesake action, and it is what the README leads with.
-    d.text((S(LEFT + 2), S(292)), "按一下快捷键，两块屏上的窗口整体互换", font=zh, fill=p["dim"])
+    # Headline and picture have to agree. An earlier pass paired "Flick a window to the next screen"
+    # with this strip and they described different things — the flick moves ONE window in a direction,
+    # while the marker between screens 1 and 3 says those two exchange everything they hold.
+    #
+    # The headline is now the *problem* rather than one of the seven actions, which is what lets it sit
+    # over this picture honestly: an exchange between two screens is one way of not dragging, and so is
+    # every other action in the app. Naming the action was also just too narrow — the whole-screen swap
+    # is one seventh of what this does, and it had quietly taken over the one-liner, the positioning
+    # paragraph and the repo description as well.
+    d.text((S(LEFT + 2), S(292)), "划一下，或按个快捷键——窗口自己过去", font=zh, fill=p["dim"])
 
     # The strip is the app's own monitor map, drawn to the same rules: each screen sized to how large
     # it looks on the desk, the primary outlined in Beam, the cursor's screen in Live. Showing the

@@ -33,7 +33,7 @@
     <Company>rockbenben</Company>
     <Authors>rockbenben</Authors>
     <AssemblyTitle>WindowShuttle</AssemblyTitle>
-    <Description>Hotkey window swapper for multi-monitor Windows: swap the cursor's monitor with the primary in one keystroke.</Description>
+    <Description>Move windows between monitors without dragging: flick one across, or trade two screens whole.</Description>
     <Copyright>Copyright © 2026 rockbenben</Copyright>
     <RepositoryUrl>https://github.com/rockbenben/WindowShuttle</RepositoryUrl>
   </PropertyGroup>
