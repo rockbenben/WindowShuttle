@@ -19,6 +19,23 @@ namespace WindowShuttle.Core.Tests;
 /// NotificationOverlay.Frozen) only ever get first touched by one thread for the whole run — the
 /// separate-thread-per-test scheme this replaces was the actual reason those Freeze() calls were load-
 /// bearing (a non-frozen Freezable binds permanently to whichever thread first touches it).</summary>
+/// <summary>把一扇窗按**指定尺寸**显示出来，不受跑测试这台机器的屏幕大小影响。
+///
+/// 为什么需要它：MainWindow 在 <c>OnSourceInitialized</c> 里调 <c>ApplyStartupBounds</c>，直接用
+/// <c>SetWindowPos</c> 按**真实**屏幕的工作区把物理矩形钉死（首次启动的落位逻辑，见
+/// ComputeStartupBounds 的说明）。测试在构造时设的 Width/Height 因此只是"想要"——真实屏幕比它小时，
+/// Show() 期间就被那次 SetWindowPos 覆盖掉了。
+///
+/// 本机三块大屏上从来看不出来，换到 GitHub 的 windows runner（虚拟显示器约 1024×768）就当场垮掉：
+/// 第一次推上去红了 6 条，全是同一个根因——"窗口只有 976×672，要 1120×680"，以及被夹窄之后文案
+/// 多折一行、动作区放不下两张卡。这套测试此前从没在别的机器上跑过（仓库一直没有 remote），
+/// 所以这个对显示器的隐性依赖藏了很久。
+///
+/// 解法：Show() 之后再定尺寸——那时 ApplyStartupBounds 已经跑完，后设的值说了算。跟 --shots 里
+/// 「必须 Show 之后设，否则被真实显示器的值覆盖」是同一招（见 App.SelfCheck.cs）。顺序不能换。
+///
+/// 顺带把 MaxWidth/MaxHeight 解开：WPF 的默认值本来就是无穷，这两行是防御性的——哪天窗口自己开始
+/// 按工作区设上限（--shots 就是这么模拟矮屏的），这里不至于又被无声地夹回去。</summary>
 public sealed class WpfTestHost : IDisposable
 {
     private static readonly TimeSpan InvokeTimeout = TimeSpan.FromSeconds(20);

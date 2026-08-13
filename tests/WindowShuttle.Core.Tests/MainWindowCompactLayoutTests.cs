@@ -63,9 +63,8 @@ public class MainWindowCompactLayoutTests(WpfTestHost host)
             // 顺序是承重的：{loc:Loc} 在 XAML 加载那一刻取值，换语言换在建窗口之后就完全没有效果，
             // 测试会拿着一扇中文窗口报告"德语没问题"。
             Strings.ApplyCulture(lang);
-            var w = new MainWindow { Width = width, Height = height, Opacity = 0, ShowInTaskbar = false };
-            w.Show();
-            w.UpdateLayout();
+            var w = new MainWindow { Opacity = 0, ShowInTaskbar = false };
+            w.ShowAtExactly(width, height);
             try
             {
                 _band = w.LayoutCanvas.ActualHeight;
@@ -112,15 +111,14 @@ public class MainWindowCompactLayoutTests(WpfTestHost host)
             var restore = CultureInfo.CurrentUICulture;
             global::WindowShuttle.App.App.Cfg = new Settings();
             Strings.ApplyCulture("ru");
-            var w = new MainWindow { Width = target + 60, Height = 900, Opacity = 0, ShowInTaskbar = false };
-            w.Show();
-            w.UpdateLayout();
+            var w = new MainWindow { Opacity = 0, ShowInTaskbar = false };
+            w.ShowAtExactly(target + 60, 900);
             try
             {
                 // 窗口宽和动作区宽之间那点差额（边距 + 滚动条）**实测**，不写死。第一版写死 48，
                 // 结果窗口开得太窄、动作区掉到门槛以下，测试实际跑的是单列——单列每张卡几百像素宽，
                 // 当然不截断，于是把门槛改回旧值它照样绿。
-                w.Width = target + (w.Width - w.ActionList.ActualWidth);
+                w.Width = target + (w.ActualWidth - w.ActionList.ActualWidth);
                 w.UpdateLayout();
 
                 // 前提断言：没真的处在 N 列状态就当场报错，而不是安安静静地验一个别的东西。

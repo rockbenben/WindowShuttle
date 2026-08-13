@@ -250,9 +250,8 @@ public class MainWindowBoundsTests(WpfTestHost host)
                     [mon], global::WindowShuttle.App.App.Cfg, DefaultWidthDip, DefaultHeightDip, MinWidthDip, MinHeightDip);
                 double dipW = physW2 / dpi, dipH = physH2 / dpi;
 
-                var window = new MainWindow { Width = dipW, Height = dipH, Opacity = 0, ShowInTaskbar = false };
-                window.Show();
-                window.UpdateLayout();
+                var window = new MainWindow { Opacity = 0, ShowInTaskbar = false };
+                window.ShowAtExactly(dipW, dipH);
 
                 Assert.True(Math.Abs(window.ActualWidth - dipW) < 1.0 && Math.Abs(window.ActualHeight - dipH) < 1.0,
                     $"{label}: window ended up {window.ActualWidth:0}x{window.ActualHeight:0} DIP, wanted {dipW:0}x{dipH:0}");
