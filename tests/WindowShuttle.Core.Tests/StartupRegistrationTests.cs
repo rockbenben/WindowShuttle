@@ -21,7 +21,9 @@ public class StartupRegistrationTests
 
     private static void Write(string? v)
     {
-        using var k = Registry.CurrentUser.OpenSubKey(RunKey, writable: true)!;
+        // CreateSubKey：全新的用户配置里这个键可能不存在（CI 的 runner 就是），OpenSubKey 会返回
+        // null，而 ! 压不住 NullReferenceException。产品侧同一个洞见 SettingsStore.Set。
+        using var k = Registry.CurrentUser.CreateSubKey(RunKey);
         if (v is null) k.DeleteValue(ValueName, throwOnMissingValue: false);
         else k.SetValue(ValueName, v);
     }

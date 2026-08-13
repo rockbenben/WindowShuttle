@@ -324,9 +324,19 @@ public static class StartupRegistration
     /// 参数、会正常显示窗口（见 App.OnStartup 里 startHidden 的注释）。</summary>
     private static string RunCommand => $"\"{Environment.ProcessPath}\" --tray";
 
+    /// <summary>写/清开机自启那一行。
+    ///
+    /// <c>CreateSubKey</c> 而不是 <c>OpenSubKey(..., writable: true)</c>：全新的用户配置里
+    /// <c>HKCU\...\CurrentVersion\Run</c> 可能**根本不存在**（GitHub 的 windows runner 就是这样，
+    /// 这条是在那儿炸出来的）。OpenSubKey 那时返回 null，而原来那个 <c>!</c> 只压得住编译器警告、
+    /// 压不住 NullReferenceException——用户勾一下「开机自启」就是一个未处理异常。
+    /// CreateSubKey 在键已存在时等价于以可写方式打开，不存在时建出来，正是这里要的语义。
+    ///
+    /// 同一个文件里 <see cref="Get"/> 用 <c>key?.</c>、<see cref="RepairRunValue"/> 显式判了 null，
+    /// 只有这一处漏了。</summary>
     public static void Set(bool on)
     {
-        using var key = Registry.CurrentUser.OpenSubKey(RunKey, writable: true)!;
+        using var key = Registry.CurrentUser.CreateSubKey(RunKey);
         if (on) key.SetValue(RunValueName, RunCommand);
         else key.DeleteValue(RunValueName, throwOnMissingValue: false);
     }
