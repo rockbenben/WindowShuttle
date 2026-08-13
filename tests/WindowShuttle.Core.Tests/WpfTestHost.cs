@@ -38,7 +38,11 @@ namespace WindowShuttle.Core.Tests;
 /// 按工作区设上限（--shots 就是这么模拟矮屏的），这里不至于又被无声地夹回去。</summary>
 internal static class WpfWindowSizing
 {
-    public static void ShowAtExactly(this System.Windows.Window w, double width, double height)
+    /// <returns>真的拿到了那个尺寸没有。拿不到就是这台机器的屏幕装不下——GitHub 的 windows runner
+    /// 虚拟显示器只有约 1044 DIP 宽，比几档要验的窗口还窄，而一扇真实的顶级窗口越不过屏幕宽度。
+    /// 调用方据此**跳过**，不要红、也不要假装验过（Assert.Skip 必须在 host.Invoke 外面调，
+    /// 里面抛的异常会被 Dispatcher 包成 AggregateException，skip 会被当成失败）。</returns>
+    public static bool ShowAtExactly(this System.Windows.Window w, double width, double height)
     {
         w.Show();
         w.MaxWidth = double.PositiveInfinity;
@@ -46,6 +50,7 @@ internal static class WpfWindowSizing
         w.Width = width;
         w.Height = height;
         w.UpdateLayout();
+        return Math.Abs(w.ActualWidth - width) < 1.0 && Math.Abs(w.ActualHeight - height) < 1.0;
     }
 }
 

@@ -55,7 +55,13 @@ public class MainWindowCompactLayoutTests(WpfTestHost host)
         return d;
     }
 
-    private void At(string? lang, double width, double height, Action<double, double> check) =>
+    private void At(string? lang, double width, double height, Action<double, double> check)
+    {
+        if (!AtCore(lang, width, height, check))
+            Assert.Skip($"这台机器的屏幕装不下 {width:0}×{height:0} 的窗口，这条断言在这种情况下说明不了问题");
+    }
+
+    private bool AtCore(string? lang, double width, double height, Action<double, double> check) =>
         host.Invoke(() =>
         {
             var restore = CultureInfo.CurrentUICulture;
@@ -64,12 +70,14 @@ public class MainWindowCompactLayoutTests(WpfTestHost host)
             // 测试会拿着一扇中文窗口报告"德语没问题"。
             Strings.ApplyCulture(lang);
             var w = new MainWindow { Opacity = 0, ShowInTaskbar = false };
-            w.ShowAtExactly(width, height);
+            bool exact = w.ShowAtExactly(width, height);
             try
             {
+                if (!exact) return false;
                 _band = w.LayoutCanvas.ActualHeight;
                 var (viewport, card) = Measure(w);
                 check(viewport, card);
+                return true;
             }
             finally
             {
@@ -103,6 +111,12 @@ public class MainWindowCompactLayoutTests(WpfTestHost host)
     [InlineData(2)]
     [InlineData(3)]
     public void Action_names_are_never_trimmed_to_an_ellipsis(int columns)
+    {
+        if (!TrimCore(columns))
+            Assert.Skip($"这台机器的屏幕撑不到 {columns} 列刚成立的宽度，这条断言在这种情况下说明不了问题");
+    }
+
+    private bool TrimCore(int columns)
         => host.Invoke(() =>
         {
             // 每一档**刚成立**的那一点，也就是该档最窄、最容易截断的地方。
@@ -121,10 +135,10 @@ public class MainWindowCompactLayoutTests(WpfTestHost host)
                 w.Width = target + (w.ActualWidth - w.ActionList.ActualWidth);
                 w.UpdateLayout();
 
-                // 前提断言：没真的处在 N 列状态就当场报错，而不是安安静静地验一个别的东西。
-                Assert.True(w.ActionColumns == columns,
-                    $"前提没成立：想验 {columns} 列，实际是 {w.ActionColumns} 列" +
-                    $"（动作区 {w.ActionList.ActualWidth:0}，门槛 {target - 1:0}）");
+                // 前提不成立就跳过，不验一个别的东西：屏幕装不下这么宽的窗口时（GitHub runner 只有
+                // 约 1044 DIP），窗口被夹窄，实际跑的是更少的列数——那时"没有截断"是因为卡片更宽，
+                // 跟门槛对不对毫无关系。返回 false，由外面 Assert.Skip。
+                if (w.ActionColumns != columns) return false;
                 var trimmed = new List<string>();
                 foreach (Border row in w.ActionList.Items)
                 {
@@ -139,6 +153,7 @@ public class MainWindowCompactLayoutTests(WpfTestHost host)
                 Assert.True(trimmed.Count == 0,
                     $"{columns} 列刚成立时（动作区 {w.ActionList.ActualWidth:0} 宽）有 {trimmed.Count} 条动作名被裁成省略号——" +
                     $"回 MainWindow.Hotkeys.cs 重解分列门槛：\n  " + string.Join("\n  ", trimmed));
+                return true;
             }
             finally
             {
