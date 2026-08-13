@@ -36,6 +36,19 @@ namespace WindowShuttle.Core.Tests;
 ///
 /// 顺带把 MaxWidth/MaxHeight 解开：WPF 的默认值本来就是无穷，这两行是防御性的——哪天窗口自己开始
 /// 按工作区设上限（--shots 就是这么模拟矮屏的），这里不至于又被无声地夹回去。</summary>
+internal static class WpfWindowSizing
+{
+    public static void ShowAtExactly(this System.Windows.Window w, double width, double height)
+    {
+        w.Show();
+        w.MaxWidth = double.PositiveInfinity;
+        w.MaxHeight = double.PositiveInfinity;
+        w.Width = width;
+        w.Height = height;
+        w.UpdateLayout();
+    }
+}
+
 public sealed class WpfTestHost : IDisposable
 {
     private static readonly TimeSpan InvokeTimeout = TimeSpan.FromSeconds(20);
