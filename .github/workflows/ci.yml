@@ -21,6 +21,18 @@ jobs:
       # on MTP. Verified both ways: `1` passes, `99999` exits 1.
       - name: Test (Core)
         run: dotnet test tests/WindowShuttle.Core.Tests -c Release --nologo -- --minimum-expected-tests 1
+      # 测试红了要能看见是哪一条。MTP 把断言文本写进 TestResults 下那个 .log，控制台只报一个总数——
+      # 没有这一步，CI 上的失败在本地又复现不出来时就完全没有抓手（实测：第一次推上来 6 个失败，
+      # 而日志里连测试名都没有）。
+      - name: Dump test log on failure
+        if: failure()
+        shell: pwsh
+        run: |
+          Get-ChildItem tests -Recurse -Filter '*_x64.log' | ForEach-Object {
+            Write-Host "===== $($_.FullName) ====="
+            Get-Content $_.FullName -Encoding utf8 | Select-Object -Last 300
+          }
+
       - name: Build (App)
         run: dotnet build src/WindowShuttle.App -c Release --nologo
       - name: Smoke (list)
