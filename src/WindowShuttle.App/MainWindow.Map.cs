@@ -48,7 +48,7 @@ public partial class MainWindow
 
     private void OnIdentify(object s, RoutedEventArgs e) => OverlayWindow.ShowAll(shutdownAfter: false);
 
-    /// <summary>项目仓库地址。ToolTip 直接绑它，省得图标底下还要再写一份同样的字符串。</summary>
+    /// <summary>项目仓库地址。ToolTip 的第二行和 OnOpenRepo 都从这里取——URL 字符串只有一个出处。</summary>
     public const string RepoUrl = "https://github.com/rockbenben/WindowShuttle";
 
     /// <summary>用系统默认浏览器打开仓库。UseShellExecute=true 是必须的：.NET 的 Process.Start
@@ -259,6 +259,21 @@ public partial class MainWindow
             LayoutCanvas.Children.Add(card);
             _cards[m.Index] = card;
         }
+        // 零窗口时的空态交代（batch1 B7）：几张干净的空卡读起来像「这工具不认我的窗口」，
+        // 而真相多半是「跳过全屏」把它们滤掉了——这话得此刻在这块画布上说，而不是等用户按下
+        // 快捷键换回一句「没有可搬运的窗口」。只在零条目时现身；关掉命中测试，不抢卡片的拖放落点。
+        if (windows.Count == 0)
+        {
+            var emptyNote = new TextBlock
+            {
+                Text = NoMovableNoteText(App.Cfg.SkipFullscreen),
+                FontSize = 11.5, Foreground = AppTheme.Faint, IsHitTestVisible = false,
+            };
+            emptyNote.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            Canvas.SetLeft(emptyNote, (cw - emptyNote.DesiredSize.Width) / 2);
+            Canvas.SetTop(emptyNote, h - emptyNote.DesiredSize.Height - 4);
+            LayoutCanvas.Children.Add(emptyNote);
+        }
         HighlightCursorMonitor();
         ShowActionPreview(_previewAction);                     // 重画会清空画布，预览态得自己接回来
     }
@@ -384,7 +399,16 @@ public partial class MainWindow
         };
     }
 
-    private Border BuildChip(WindowFacts w)
+    /// <summary>Enter 键在窗口条目上的动作（batch3 F6）：把那扇窗带到前台。测试缝——
+    /// 真按 SetForegroundWindow 会在测试里抢走跑测试的人的前台。生产路径能成，恰因为
+    /// 按下那一刻前台是我们自己的窗口：前台锁只罚后台进程。Core 的 Win32 是 internal，
+    /// 这里自带一份 P/Invoke（本类已有 DWM/user32 的先例）。</summary>
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern bool SetForegroundWindow(nint hwnd);
+
+    internal static Func<nint, bool> RaiseWindow = SetForegroundWindow;
+
+    internal Border BuildChip(WindowFacts w)
     {
         var dot = new Ellipse
         {
@@ -403,9 +427,32 @@ public partial class MainWindow
             BorderThickness = new Thickness(1), CornerRadius = new CornerRadius(4), MaxWidth = 220,
             Padding = new Thickness(7, 3, 7, 3), Margin = new Thickness(0, 0, 4, 4), Cursor = Cursors.Hand,
             Opacity = w.ShowState == ShowState.Minimized ? 0.5 : 1.0, Tag = w.Hwnd,
+            Focusable = true, ToolTip = Strings.Get("Chip_EnterTip"),
             Child = new StackPanel { Orientation = Orientation.Horizontal, Children = { dot, text } },
         };
+        // 读屏念得出是谁的窗口，而不只是"一个可拖的东西"。
+        AutomationProperties.SetName(chip, w.Title);
         chip.MouseMove += OnWindowItemDrag;
+        // 焦点光圈复用键位区录制态的词汇（Live 实描边 + 柔光）：Border 没有 Control 自带的
+        // FocusVisualStyle，不自绘的话键盘焦点就完全不可见（实测）。用键盘焦点而不是逻辑焦点——
+        // 鼠标点出来的焦点不该亮键盘的环。
+        void Chrome(bool on)
+        {
+            chip.BorderBrush = on ? AppTheme.Live : AppTheme.ChipBorder;
+            chip.Effect = on ? new System.Windows.Media.Effects.DropShadowEffect
+            {
+                Color = AppTheme.LiveColor, BlurRadius = 18, ShadowDepth = 0, Opacity = 0.55,
+            } : null;
+        }
+        chip.GotKeyboardFocus += (_, _) => Chrome(true);
+        chip.LostKeyboardFocus += (_, _) => Chrome(false);
+        // Enter = 带到前台；搬不搬、往哪搬仍归热键/手势管——这里不发明第二套搬运词汇。
+        chip.KeyDown += (_, e) =>
+        {
+            if (e.Key != Key.Enter) return;
+            e.Handled = true;
+            RaiseWindow((nint)chip.Tag!);
+        };
         return chip;
     }
 
@@ -425,6 +472,11 @@ public partial class MainWindow
             new System.Windows.Interop.WindowInteropHelper(this).Handle);
         Refresh();
     }
+
+    /// <summary>零窗口时地图上的那句空态交代（batch1 B7）。「全屏被跳过」这半句只在开关真的
+    /// 开着时才接上——把不存在的原因讲出来也是谎。</summary>
+    internal static string NoMovableNoteText(bool skipFullscreen)
+        => Strings.Get("Main_NoMovableChips") + (skipFullscreen ? Strings.Get("Main_NoMovableChips_Skip") : "");
 
     private void HighlightCursorMonitor()
     {

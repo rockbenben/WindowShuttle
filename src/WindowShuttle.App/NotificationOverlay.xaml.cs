@@ -3,6 +3,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using WindowShuttle.Core;
 using WindowShuttle.Core.Native;
 using WindowShuttle.App.I18n;
@@ -35,6 +36,17 @@ public partial class NotificationOverlay : Window
     internal const byte CardAlpha = 0xF0;
 
     private static NotificationOverlay? _current;
+
+    /// <summary>停留段的倒计时（batch2 U1）。机制从「Storyboard 钟 + Pause()」换成 DispatcherTimer
+    /// 是有原因的：Storyboard 的暂停请求要等下一个渲染 tick 才落到时钟上，测试宿主里泵不出渲染
+    /// 就永远观测不到暂停——机制再小，测不到就不配叫机制。倒计时归计时器、外观归动画，
+    /// 悬停暂停就是同步的 Stop/Start，生产和测试读同一个状态。</summary>
+    private DispatcherTimer? _hold;
+    private DateTime _holdStartedAt;
+    private TimeSpan _holdLeft;
+
+    /// <summary>测试缝：倒计时此刻是否在跑。（不是"暂停标志位"——计时器停没停就是答案。）</summary>
+    internal bool HoldRunning => _hold?.IsEnabled == true;
 
     private readonly bool _actionable;
     private readonly Action? _onClick;
@@ -73,6 +85,11 @@ public partial class NotificationOverlay : Window
             Cursor = Cursors.Hand;
             Chevron.Visibility = Visibility.Visible;   // §a11y 不掉色也认得出"这张卡能点"（见 XAML 注释）
             Card.MouseLeftButtonUp += (_, _) => { _onClick?.Invoke(); Dismiss(); };
+            // batch2 U1：指针停在卡上就不许继续倒计时。6s 是给"瞥见"的，不是给"伸手"的——
+            // 淡出末尾在指针底下消失，等于把全应用唯一要求用户做决定的浮层做成抽奖。
+            // 只给可操作卡：纯告知卡点击穿透，悬停这个事件根本不存在。
+            Card.MouseEnter += (_, _) => PauseHold();
+            Card.MouseLeave += (_, _) => ResumeHold();
         }
 
         SourceInitialized += OnSourceInitialized;
@@ -123,16 +140,41 @@ public partial class NotificationOverlay : Window
     {
         Opacity = 0;
         int hold = _actionable ? 6000 : 2400;          // 可操作的那条要留够时间被看见、被点
-        var fade = new DoubleAnimationUsingKeyFrames();
-        fade.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(FadeMs))));
-        fade.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(FadeMs + hold))));
-        fade.KeyFrames.Add(new LinearDoubleKeyFrame(0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(FadeMs + hold + FadeMs))));
-        var sb = new Storyboard();
-        Storyboard.SetTarget(fade, this);
-        Storyboard.SetTargetProperty(fade, new PropertyPath(OpacityProperty));
-        sb.Children.Add(fade);
-        sb.Completed += (_, _) => Dismiss();
-        sb.Begin();
+        // 淡入纯外观；计时器与它同时启动，时长 = 淡入 + 停留，到点才淡出。
+        // 若把计时器的启动挂在淡入动画的 Completed 上，就又把同步可测性换回了渲染 tick 依赖。
+        BeginAnimation(OpacityProperty, new DoubleAnimation(1, TimeSpan.FromMilliseconds(FadeMs)));
+        _holdLeft = TimeSpan.FromMilliseconds(FadeMs + hold);
+        _hold = new DispatcherTimer { Interval = _holdLeft };
+        _hold.Tick += (_, _) => FadeOutAndDismiss();
+        _holdStartedAt = DateTime.UtcNow;
+        _hold.Start();
+    }
+
+    private void FadeOutAndDismiss()
+    {
+        _hold?.Stop();
+        var fadeOut = new DoubleAnimation(0, TimeSpan.FromMilliseconds(FadeMs));
+        fadeOut.Completed += (_, _) => Dismiss();
+        BeginAnimation(OpacityProperty, fadeOut);
+    }
+
+    /// <summary>悬停暂停：收走的是**剩余时间**，不是倍速——离开后从中断点继续走。</summary>
+    private void PauseHold()
+    {
+        if (_hold is not { IsEnabled: true } t) return;
+        t.Stop();
+        _holdLeft -= DateTime.UtcNow - _holdStartedAt;
+        if (_holdLeft < TimeSpan.Zero) _holdLeft = TimeSpan.Zero;
+    }
+
+    private void ResumeHold()
+    {
+        if (_hold is { } t && !_dismissed && !t.IsEnabled)
+        {
+            t.Interval = _holdLeft;
+            _holdStartedAt = DateTime.UtcNow;
+            t.Start();
+        }
     }
 
     // 幂等：自然淡出完成、点击关闭、被下一条通知顶替，三条路径都可能到这——第二次进来直接没事发生。

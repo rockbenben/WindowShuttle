@@ -6,7 +6,7 @@ public static class CliParser
 {
     // §12：CLI 输出恒英文
     public const string Usage = """
-        WindowShuttle — hotkey window swapper for multi-monitor Windows.
+        WindowShuttle — move windows between screens without dragging, on multi-monitor Windows.
 
         Every command acts on the CURRENT FOREGROUND WINDOW, not on wherever the mouse is
         parked -- run to-primary from a terminal and the terminal itself is what moves.
@@ -24,9 +24,15 @@ public static class CliParser
           undo                restore positions from before the last move
           identify            flash each screen's number on that screen
           list                print monitors and movable windows as JSON
+          --help / -h         print this help and exit 0
 
         exit codes: 0 done, 1 nothing to do, 2 some windows failed, 3 error
         """;
+
+    /// <summary>「问问题」和「打错命令」必须是两种结局（batch4 R3）：--help/-h 单独出现时
+    /// 打 Usage 到 stdout、退出码 0。纯函数放这里是为了能测；分流在 App.OnStartup。</summary>
+    public static bool IsHelp(string[] args)
+        => args.Length == 1 && args[0] is "--help" or "-h";
 
     public static CliCommand? Parse(string[] args)
     {

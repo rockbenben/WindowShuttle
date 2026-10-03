@@ -55,11 +55,13 @@
                          所以自己造一条同高的带子、在里面居中——写的是"跟它们同一条带子"这个意图，
                          而不是一个来路不明的偏移量。 -->
                     <Grid Height="32" VerticalAlignment="Top">
+                        <!-- 24×24 是**命中区**（WCAG 2.5.8 非内联目标下限），里面的字形仍是 16——
+                             图标大小归内容管，按钮大小归手指管。ToolTip 改在构造函数里设：
+                             人话一行 + URL 一行，XAML 属性给不出第二行。 -->
                         <Button x:Name="RepoButton" Click="OnOpenRepo"
-                                Width="18" Height="18" MinWidth="0" MinHeight="0" Padding="0"
-                                Margin="0,0,10,0" Background="Transparent" BorderThickness="0"
+                                Width="24" Height="24" MinWidth="0" MinHeight="0" Padding="4"
+                                Margin="0,0,7,0" Background="Transparent" BorderThickness="0"
                                 Cursor="Hand" VerticalAlignment="Center" Focusable="True"
-                                ToolTip="{x:Static app:MainWindow.RepoUrl}"
                                 AutomationProperties.Name="GitHub"/>
                     </Grid>
                 </ui:TitleBar.TrailingContent>

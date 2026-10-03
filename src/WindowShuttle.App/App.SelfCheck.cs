@@ -128,9 +128,25 @@ public partial class App
                 {
                     // 主窗口按真实分辨率表定宽定高；其余窗口（确认框、通知卡）自撑尺寸，宽度由内容决定，
                     // 只受"最多能多高"约束——所以它们的 Width 是 null，不是某个哨兵数值。
+                    //
+                    // identify 单独喂一组假双屏（100% 缩放、2×1920×1080 并排）并只拍一张：真实三屏
+                    // 混合 DPI 的虚拟桌面上万像素宽，拍它既慢又没人看得清；两屏 100% 足够回答
+                    // 「两枚徽章摆没摆对、主屏文字出没出来」。三档工作区对一个铺满虚拟桌面的
+                    // SizeToContent=Manual 窗没有维度意义（batch4 R5）。
+                    bool overlayShot = name == "identify";
+                    if (overlayShot)
+                        MonitorProbe.Override =
+                        [
+                            Mon(1, 0, 0, 1920, 1080, primary: true, dpi: 1.0),
+                            Mon(2, 1920, 0, 1920, 1080, dpi: 1.0),
+                        ];
+                    try
+                    {
                     var variants = name == "main"
                         ? [.. mainSizes.Select(s => (s.Label, (double?)s.W, s.H))]
-                        : workAreas.Select(h => ($"wa{h:0}", (double?)null, h));
+                        : overlayShot
+                            ? [("virtual", (double?)null, 0d)]
+                            : workAreas.Select(h => ($"wa{h:0}", (double?)null, h)).ToList();
 
                     foreach (var (label, width, height) in variants)
                     {
@@ -147,12 +163,15 @@ public partial class App
                         // 的运行时高度上限盖掉。于是"某扇 SizeToContent 的窗口压根没给自己封顶"这一类缺陷
                         // 在每一张截图里都完好无损，却会在真实的小屏上把确定按钮顶出屏幕。这类问题只能靠
                         // 别的东西守——ConfirmDialog 那个上限由 ConfirmDialogHeightCapTests 盯着。
-                        w.MaxHeight = height;
+                        // （identify 不封顶：它按 R5 显式铺满假虚拟桌面，封顶会把它压回一角。）
+                        if (!overlayShot) w.MaxHeight = height;
                         if (width is double fixedWidth) { w.Width = fixedWidth; w.Height = height; }
                         w.UpdateLayout();
                         Save(w, Path.Combine(dir, $"{name}-{tag}-{label}.png"));
                         w.Close();
                     }
+                    }
+                    finally { if (overlayShot) MonitorProbe.Override = null; }
                 }
             }
             // ── 屏数这一维：地图是按显示器数量和摆位画出来的，而上面每一张图都只有开发者这台机器
@@ -281,7 +300,22 @@ public partial class App
         yield return ("main", () => new MainWindow());
         yield return ("dialog", () => new ConfirmDialog(Strings.Get("Elevate_Confirm")));
         // 「屏幕序号」浮层：喂真实屏幕列表，它的构造函数要靠这份列表算虚拟桌面矩形。
-        yield return ("identify", () => new OverlayWindow(MonitorProbe.GetMonitors()));
+        // batch4 R5：生产路径由 OverlayChrome.Place 铺满虚拟桌面，自查跳过那一步——默认尺寸的
+        // 画布装不下按真实屏中心摆位的徽章，此前每张 identify 实拍都是只有一枚孤徽章的假图。
+        // 这里按窗口自己的实际渲染缩放显式铺满（SourceInitialized 时句柄已有，GetDpi 才量得到）。
+        yield return ("identify", () =>
+        {
+            var mons = MonitorProbe.GetMonitors();
+            var ov = new OverlayWindow(mons);
+            double vw = mons.Max(m => m.MonitorRect.Right) - mons.Min(m => m.MonitorRect.Left);
+            double vh = mons.Max(m => m.MonitorRect.Bottom) - mons.Min(m => m.MonitorRect.Top);
+            ov.SourceInitialized += (_, _) =>
+            {
+                double dpi = System.Windows.Media.VisualTreeHelper.GetDpi(ov).DpiScaleX;
+                ov.Width = vw / dpi; ov.Height = vh / dpi;
+            };
+            return ov;
+        });
         // 通知卡的三挡严重程度各来一张——描边、箭头、底色都按挡位取自 AppTheme，一挡一张才看得出
         // 哪一挡没跟着主题翻。三挡的参数组合照抄 TrayService.DecideNotification 的三条出口，不另编：
         // 截图要能代表用户真会看到的那三张卡。

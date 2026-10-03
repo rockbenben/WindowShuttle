@@ -75,7 +75,8 @@ jobs:
             @{ args = @('swap','--to');          want = 3; why = '--to without a value' },
             @{ args = @('to-next','--to','99');  want = 3; why = 'no monitor at that position' },
             @{ args = @('gather','--to','2');    want = 3; why = '--to not valid for gather' },
-            @{ args = @('list');                 want = 0; why = 'read-only, always succeeds' }
+            @{ args = @('list');                 want = 0; why = 'read-only, always succeeds' },
+            @{ args = @('--help');               want = 0; why = 'help asks a question; a typo still exits 3' }
           )
           $bad = 0
           foreach ($c in $cases) {
@@ -85,6 +86,11 @@ jobs:
             "{0,-28} want {1} got {2}  {3}" -f ($c.args -join ' '), $c.want, $got, $(if($ok){'ok'}else{"FAIL - $($c.why)"})
             if (-not $ok) { $bad++ }
           }
+          # --help 的另一半契约：Usage 走 stdout（脚本 $(exe --help) 拿得到），不是 stderr。
+          $hi = [IO.Path]::GetTempFileName()
+          $p = Start-Process $exe -ArgumentList '--help' -PassThru -Wait -NoNewWindow -RedirectStandardOutput $hi
+          if ((Get-Item $hi).Length -eq 0) { Write-Error '--help printed nothing to stdout'; $bad++ }
+          Remove-Item $hi -ErrorAction SilentlyContinue
           if ($bad) { Write-Error "$bad exit code(s) wrong"; exit 1 }
 
       # WPF loads XAML lazily: a window whose markup is broken throws nothing until someone opens

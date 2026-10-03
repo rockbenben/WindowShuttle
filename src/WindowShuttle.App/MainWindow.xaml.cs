@@ -107,6 +107,9 @@ public partial class MainWindow : FluentWindow
         BuildActionRows();
         LoadToggles();
         ApplyTheme();
+        // batch1 B2：ToolTip 第一行是人话（Repo_Tip），第二行是去掉协议头的 URL 备查——
+        // 裸链接单独当提示是给机器看的，不是给悬停的人看的。
+        RepoButton.ToolTip = $"{Strings.Get("Repo_Tip")}\n{RepoUrl[(RepoUrl.IndexOf("//") + 2)..]}";
         AppTheme.Changed += ApplyTheme;
         Closed += (_, _) => AppTheme.Changed -= ApplyTheme;   // 不摘掉的话，静态事件会一直攥着这扇已经关掉的窗口
         _cursorTimer.Tick += (_, _) => HighlightCursorMonitor();
@@ -379,6 +382,7 @@ public partial class MainWindow : FluentWindow
         foreach (var (native, _) in Languages.All) LangBox.Items.Add(native);
         LangBox.SelectedIndex = App.Cfg.Language is null ? 0
             : Array.FindIndex(Languages.All, x => x.Code == Languages.Normalize(App.Cfg.Language)) + 1;
+        _lastLangIndex = LangBox.SelectedIndex;   // 反悔时回退到这里（见 ApplyLangChoice）
     }
 
     private void OnToggle(object sender, RoutedEventArgs e)
@@ -481,14 +485,38 @@ public partial class MainWindow : FluentWindow
         _ = ApplyStartupMode();     // _loaded 还没置位时 OnToggle 会早退，这一句保证动作照样发生
     }
 
+    /// <summary>确认框与重启的注入缝：测试替身用（同 <see cref="ApplyStartupMode"/> 把 UAC 结果
+    /// 当输入处理的路子）。生产路径就是这两行默认值。</summary>
+    internal Func<Window, string, bool> ConfirmBox = (owner, message) => ConfirmDialog.Confirm(owner, message);
+    internal Action RestartApp = () => App.RestartSelf();
+
+    private int _lastLangIndex;
+    private bool _applyingLang;   // 挡住程序化回退时再进一遍 SelectionChanged
+
+    /// <summary>语言下拉的取舍（batch1 B3）：**先问，确认了才落盘**。原来反过来——先写
+    /// settings.json 再弹「现在重启？」，于是点「取消」的人两头都被骗：下拉框停在新语言上而界面
+    /// 还是旧的（看着像没生效），配置却已经改了（下次开机真的换）。跟 UAC 被拒要把复选框拨回
+    /// 真实状态是同一条规矩：界面说的必须是系统里真的。</summary>
+    internal void ApplyLangChoice(int selectedIndex)
+    {
+        string? lang = selectedIndex <= 0 ? null : Languages.All[selectedIndex - 1].Code;
+        if (lang == App.Cfg.Language) { _lastLangIndex = selectedIndex; return; }
+        if (ConfirmBox(this, Strings.Get("Settings_RestartPrompt")))
+        {
+            App.Cfg.Language = lang;
+            SettingsStore.Save(SettingsStore.DefaultPath, App.Cfg);
+            _lastLangIndex = selectedIndex;
+            RestartApp();
+            return;
+        }
+        _applyingLang = true;
+        try { LangBox.SelectedIndex = _lastLangIndex; }   // 反悔 = 什么都没发生过
+        finally { _applyingLang = false; }
+    }
+
     private void OnLangChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (!_loaded) return;
-        string? lang = LangBox.SelectedIndex <= 0 ? null : Languages.All[LangBox.SelectedIndex - 1].Code;
-        if (lang == App.Cfg.Language) return;
-        App.Cfg.Language = lang;
-        SettingsStore.Save(SettingsStore.DefaultPath, App.Cfg);
-        if (ConfirmDialog.Confirm(this, Strings.Get("Settings_RestartPrompt")))
-            App.RestartSelf();                                 // §12 语言切换经重启生效
+        if (!_loaded || _applyingLang) return;
+        ApplyLangChoice(LangBox.SelectedIndex);
     }
 }

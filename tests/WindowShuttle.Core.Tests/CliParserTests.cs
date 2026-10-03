@@ -80,4 +80,15 @@ public class CliParserTests
             Assert.Contains("  " + cmd, CliParser.Usage);
         }
     }
+
+    /// <summary>batch4 R3：「问问题」和「打错命令」必须是两种结局。IsHelp 只认孤身一人的
+    /// --help/-h——`swap --help` 不是求助，是参数写错了，照旧走乱参数分支。</summary>
+    [Theory]
+    [InlineData(new[] { "--help" }, true)]
+    [InlineData(new[] { "-h" }, true)]
+    [InlineData(new string[0], false)]
+    [InlineData(new[] { "swap", "--help" }, false)]
+    [InlineData(new[] { "--HELP" }, false)]     // 命令面全小写是既有口径，help 不例外
+    public void IsHelp_only_accepts_a_lone_help_flag(string[] args, bool expected)
+        => Assert.Equal(expected, CliParser.IsHelp(args));
 }

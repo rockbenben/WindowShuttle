@@ -40,7 +40,10 @@ public partial class App
             // 救回来：一次动作失败不该让托盘图标凭空消失。通知走应用自己那张卡，不弹系统消息框——
             // 系统消息框会抢焦点，而这个进程平时是不抢焦点的。
             e.Handled = true;
-            try { NotificationOverlay.Show(I18n.Strings.Get("NoOp_Error"), isError: true); }
+            // batch4 R1：这里过去复用 NoOp_Error（「没能完成搬运，窗口位置没有改动」）——
+            // 可崩溃未必发生在搬运，位置改没改也没人担保得了。专句只说三件说得准的事：
+            // 出过错、进程还活着、详情落在哪。
+            try { NotificationOverlay.Show(I18n.Strings.Get("Crash_Recovered"), isError: true); }
             catch { /* 连通知都建不起来时不要再抛，日志已经写下了 */ }
         };
 

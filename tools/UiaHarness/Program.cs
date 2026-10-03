@@ -214,17 +214,19 @@ internal static class Program
             Pump();
         }
 
-        // Real wall-clock timing of the fade cycle (300ms in / 700ms hold / 300ms out per source).
+        // Real wall-clock timing of the fade cycle (nominal lives in OverlayWindow's own constants).
         Strings.ApplyCulture("zh-CN");
         var sw = Stopwatch.StartNew();
         bool closed = false;
         var timed = new OverlayWindow(monitors);
         timed.Closed += (_, _) => closed = true;
         timed.Run(null);
-        var deadline = DateTime.UtcNow.AddSeconds(3);
+        var deadline = DateTime.UtcNow.AddSeconds(4);
         while (!closed && DateTime.UtcNow < deadline) { Pump(); Thread.Sleep(10); }
         sw.Stop();
-        Console.WriteLine($"\n[timing] identify overlay: real elapsed from Show()+Run() to Closed = {sw.ElapsedMilliseconds}ms (source's own keyframes: 300 fade-in + 700 hold + 300 fade-out = 1300ms nominal)");
+        Console.WriteLine($"\n[timing] identify overlay: real elapsed from Show()+Run() to Closed = {sw.ElapsedMilliseconds}ms " +
+            $"(OverlayWindow constants: {OverlayWindow.FadeInMs} fade-in + {OverlayWindow.HoldMs} hold + " +
+            $"{OverlayWindow.FadeOutMs} fade-out = {OverlayWindow.FadeInMs + OverlayWindow.HoldMs + OverlayWindow.FadeOutMs}ms nominal)");
     }
 
     private static double winScaleCache = 1.0;

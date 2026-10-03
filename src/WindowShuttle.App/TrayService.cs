@@ -77,7 +77,9 @@ public sealed class TrayService : IDisposable
         {
             IconSource = new System.Windows.Media.Imaging.BitmapImage(
                 new Uri("pack://application:,,,/Assets/windowshuttle.ico")),
-            ToolTipText = Strings.Get("App_Name"),
+            ToolTipText = Strings.Lf("Tray_Tip", Strings.Get("App_Name")),
+            // 上面那句是 batch1 B6：光有产品名，新用户不知道这个图标左键是打开、右键是菜单。
+            // shell 提示有 127 字符上限（Win10+），新语言的译文超了会被悄悄截尾——加语言时量一眼。
             ContextMenu = menu,
         };
         _icon.TrayLeftMouseUp += (_, _) => openMain();

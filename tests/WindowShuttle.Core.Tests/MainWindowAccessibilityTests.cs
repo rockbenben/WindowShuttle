@@ -88,4 +88,46 @@ public class MainWindowAccessibilityTests(WpfTestHost host)
             .Select(row => (Grid)row.Child)
             .SelectMany(grid => grid.Children.OfType<Border>())
             .First(b => (string?)b.Tag == actionKey);
+
+    /// <summary>batch3 F6：地图上的窗口条目是全应用最后一处只有鼠标能走的路。钉三件事——
+    /// 可聚焦（Tab 走得到）、读屏 Name 就是窗口标题（不是"一个可拖的东西"）、Enter 走
+    /// RaiseWindow 注入缝（记下 hwnd，绝不在测试里真抢跑测试的人的前台）。对照组：别的键
+    /// 不许触发置前。缝是静态字段，finally 必恢复——脏了会毒到同集合的别的测试。</summary>
+    [Fact]
+    public void Window_chip_is_focusable_named_and_raises_its_window_on_enter()
+    {
+        host.Invoke(() =>
+        {
+            global::WindowShuttle.App.App.Cfg = new Settings();
+            var w = new MainWindow();
+            var facts = new WindowShuttle.Core.WindowFacts((nint)4242, "报告.docx", "Notepad",
+                true, false, false, false, false, false, true,
+                WindowShuttle.Core.ShowState.Normal,
+                new WindowShuttle.Core.RectPx(0, 0, 800, 600),
+                new WindowShuttle.Core.RectPx(0, 0, 800, 600), 0);
+            var chip = w.BuildChip(facts);
+
+            Assert.True(chip.Focusable, "条目不可聚焦——Tab 走不到它");
+            Assert.Equal("报告.docx", System.Windows.Automation.AutomationProperties.GetName(chip));
+            Assert.NotNull(chip.ToolTip);
+
+            var raised = new List<nint>();
+            var orig = MainWindow.RaiseWindow;
+            try
+            {
+                MainWindow.RaiseWindow = h => { raised.Add(h); return true; };
+                chip.RaiseEvent(new KeyEventArgs(Keyboard.PrimaryDevice,
+                    new HwndSource(0, 0, 0, 0, 0, "t", 0), 0, Key.Enter)
+                { RoutedEvent = Keyboard.KeyDownEvent });
+                Assert.Equal(new[] { (nint)4242 }, raised);
+
+                raised.Clear();
+                chip.RaiseEvent(new KeyEventArgs(Keyboard.PrimaryDevice,
+                    new HwndSource(0, 0, 0, 0, 0, "t", 0), 0, Key.A)
+                { RoutedEvent = Keyboard.KeyDownEvent });
+                Assert.Empty(raised);
+            }
+            finally { MainWindow.RaiseWindow = orig; }
+        });
+    }
 }

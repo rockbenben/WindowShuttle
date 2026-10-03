@@ -90,6 +90,16 @@ public partial class App : Application
         var args = e.Args.Where(a => a != "--tray").ToArray();
         if (args.Length > 0) AttachConsole(-1);        // WinExe 默认没控制台（§2.3）
 
+        // batch4 R3：--help 是提问，不是打错命令——Usage 走 stdout、退出码 0，
+        // 排在 AttachConsole 之后（不然输出去了一个没人看得见的管道里），
+        // 排在乱参数分支之前（不然它拿的是和真错误同一个 3）。
+        if (CliParser.IsHelp(args))
+        {
+            Console.WriteLine(CliParser.Usage);
+            Shutdown(0);
+            return;
+        }
+
         // 自查开关必须排在单实例互斥体之前：托盘里正在用的实例照常工作，检查进程自己开自己关。
         // 排在之后的话，第二个实例会走 IPC 分流把命令投递给驻留实例，自查就永远跑不起来。
         if (args.Contains("--smoke")) { RunSmoke(); return; }
@@ -152,7 +162,7 @@ public partial class App : Application
             {
                 if (cmd.Action == WindowShuttleAction.Identify)
                 {
-                    OverlayWindow.ShowAll();            // Task 13；1.4s 后自行 Shutdown(0)
+                    OverlayWindow.ShowAll();            // Task 13；浮层走完（≈2.4s，见 OverlayWindow 的时序常量）后自行 Shutdown(0)
                     return;
                 }
                 var r = Router.Execute(cmd.Action, cmd.ToMonitor);
@@ -204,18 +214,16 @@ public partial class App : Application
         _resident = true;                              // 到这里才算真的驻留起来了，见字段注释
         if (!startHidden) ShowMain();                  // 手动启动就把窗口摆出来；开机自启走 --tray 不打扰
 
-        // ── 首次运行：开机自启出厂就是勾上的，而且直接尝试提权那一档 ─────────────────────────
-        // 这是明确的产品决定：这个工具是常驻型的（不自启等于每次开机都少一半功能），而在这类桌面上
-        // （密码管理器/待办/播放器提权跑是常态）**不提权的实例本来就是残的**——提权程序占前台时手势
-        // 整体失灵、它们的窗口也搬不动，用户看到的是"时好时坏"。所以首启就把话挑明：请求一次 UAC 建
-        // 免打扰的提权自启任务；用户在 UAC 上点「否」，就退回普通自启（HKCU\Run），一样能用，只是
-        // 保留上面那两条限制。只在首启问这一次，之后的改动都在设置条里，绝不反复纠缠。
-        //
-        // 放在 ShowMain 之后：主窗口先出来，UAC 对话框才有上下文——黑屏里凭空弹一个提权请求，
-        // 任何谨慎的人都该点否。--tray 启动到不了这儿的首启分支（自启项存在说明早已不是首启）。
-        // 注册这件事本身交给主窗口那个复选框去做（见 EnableStartupOnFirstRun）：那里是互斥与 UAC
-        // 回滚的唯一实现，界面也才不会跟系统状态脱节。首启**只开普通自启、不请求提权**——理由写在
-        // 那个方法上。窗口没起来（手工跑 --tray 的全新安装）就整个跳过，连"来过了"的戳都不盖。
+        // ── 首次运行：只开普通自启，不碰提权那一档 ─────────────────────────────────────────
+        // （batch4 R4：这一块的旧开头还写着"首启直接尝试提权档"——那是已被否决的上一版，
+        // 而下文早已按新实现说话，自相矛盾。现在整块与实现对齐。）
+        // 常驻型工具不自启等于每次开机都少一半功能，所以首启把「开机自启」勾上。
+        // 不在首启请求提权：提权买到的只是"管理员程序的窗口搬得动 / 它们占前台时手势不死"两件事，
+        // 撞不到这两条的人不必先付一次 UAC——一个未签名的 exe 先被 SmartScreen 拦、紧接着又被
+        // UAC 拦，是对陌生小工具最重的劝退组合。真撞上时应用会自己说：搬不动与手势失灵那两张
+        // 提示卡都可点，托盘菜单里也常驻「以管理员身份重启」；想让它长期生效，再来勾设置条那一格。
+        // 注册这件事本身交给 EnableStartupOnFirstRun：那里是互斥与 UAC 回滚的唯一实现，
+        // 界面才不会跟系统状态脱节。窗口没起来（手工跑 --tray 的全新安装）就整个跳过，连"来过了"的戳都不盖。
         if (firstRun && _main is not null)
         {
             _main.EnableStartupOnFirstRun();
@@ -363,17 +371,20 @@ public partial class App : Application
     }
 
 
-    /// <summary>CLI 结果行，恒英文（§12）。</summary>
-    private static string Describe(ExecResult r)
+    /// <summary>CLI 结果行，恒英文（§12）。internal 是为了能测单复数两态（batch4 R2）。
+    /// «(s)» 这种写法在 UI 侧被 <see cref="I18n.Strings.Plural"/> 的注释明令禁止过——
+    /// 真实产品里读起来就是没做完；CLI 是同一张脸，动词也跟着数走。</summary>
+    internal static string Describe(ExecResult r)
     {
-        if (r.Plan.NoOp is NoOpReason n) return $"nothing to do: {n}";
+        if (r.Plan.NoOp is NoOpReason n) return $"nothing to do: {n}";   // 枚举名是给脚本 grep 的稳定契约，不成人化
+        string Count(int c, string noun) => $"{c} {noun}{(c == 1 ? "" : "s")}";
         var c = r.Commit!;
-        var s = $"moved {c.Moved} window(s)";
-        if (c.AccessDenied > 0) s += $", {c.AccessDenied} need administrator rights";
-        if (c.OtherFailed > 0) s += $", {c.OtherFailed} failed";
+        var s = $"moved {Count(c.Moved, "window")}";
+        if (c.AccessDenied > 0) s += $", {c.AccessDenied} {(c.AccessDenied == 1 ? "needs" : "need")} administrator rights";
+        if (c.OtherFailed > 0) s += $", {Count(c.OtherFailed, "window")} failed";
         if (c.Corrected > 0) s += $", {c.Corrected} corrected for DPI overflow";
-        if (r.Plan.SkippedFullscreen > 0) s += $", skipped {r.Plan.SkippedFullscreen} fullscreen";
-        if (r.Plan.SkippedHung > 0) s += $", skipped {r.Plan.SkippedHung} not responding";
+        if (r.Plan.SkippedFullscreen > 0) s += $", skipped {Count(r.Plan.SkippedFullscreen, "fullscreen window")}";
+        if (r.Plan.SkippedHung > 0) s += $", skipped {Count(r.Plan.SkippedHung, "not-responding window")}";
         return s;
     }
 

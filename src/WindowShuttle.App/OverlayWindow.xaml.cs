@@ -151,16 +151,20 @@ public partial class OverlayWindow : Window
         }
     }
 
-    /// <summary>300ms 淡入 → 700ms 停留 → 300ms 淡出（§10）。</summary>
+    /// <summary>淡入 / 停留 / 淡出，毫秒（§10，batch1 B4 从 1.3s 放宽：这条动作的全部意义是扭头看
+    /// 实体机器再转回来对号，原来 700ms 停留不够转一次脖子）。提成常量是因为 UiaHarness 要报
+    /// 同一组数——逐字抄一份 nominal 进打印语句，改了这边那边就撒谎。</summary>
+    internal const int FadeInMs = 400, HoldMs = 1600, FadeOutMs = 400;
+
     public void Run(Action? onDone)
     {
         Opacity = 0;
         Show();
         var sb = new Storyboard();
         var fade = new DoubleAnimationUsingKeyFrames();
-        fade.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(300))));
-        fade.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(1000))));
-        fade.KeyFrames.Add(new LinearDoubleKeyFrame(0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(1300))));
+        fade.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(FadeInMs))));
+        fade.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(FadeInMs + HoldMs))));
+        fade.KeyFrames.Add(new LinearDoubleKeyFrame(0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(FadeInMs + HoldMs + FadeOutMs))));
         Storyboard.SetTarget(fade, this);
         Storyboard.SetTargetProperty(fade, new PropertyPath(OpacityProperty));
         sb.Children.Add(fade);
