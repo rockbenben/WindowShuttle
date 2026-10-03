@@ -15,6 +15,9 @@ TestResults/
 Thumbs.db
 desktop.ini
 .claude/
+# Qoder CLI 的本地痕迹（credits 报告等），与 .claude/ 同性质，不入库
+.qoder/
+.qoder-credits/
 
 # SDD 执行期的账本 / 简报 / 审查包（纯本地草稿，随计划完成即删）
 .superpowers/
