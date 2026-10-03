@@ -85,10 +85,13 @@ internal sealed class ForegroundWatch : IDisposable
         };
         // 自己已经是高完整性（用户点过"以管理员身份重启"）就不用挂：比我们更高的只剩 SYSTEM，
         // 那种情形再提权也没有出路，说了等于给一条走不通的路。
-        if (IntegrityOf(GetCurrentProcessId()) is >= IntegrityHigh) return;
+        if (IsElevated()) return;
         _hook = SetWinEventHook(EventSystemForeground, EventSystemForeground, 0, _proc, 0, 0,
             OutOfContext | SkipOwnProcess);
     }
+
+    /// <summary>当前进程是否具有高完整性级别（0x3000 高 / 0x4000 系统）。与 UAC 提权后的真实状态一致。</summary>
+    internal static bool IsElevated() => (IntegrityOf(GetCurrentProcessId()) ?? 0) >= IntegrityHigh;
 
     /// <summary>只给测试/诊断看：钩子有没有真的挂上（自己已提权时不挂，见构造函数）。</summary>
     public bool Watching => _hook != 0;

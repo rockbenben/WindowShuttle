@@ -240,12 +240,7 @@ public sealed class TrayService : IDisposable
             actionable: true, isError: false, onClick: OfferElevation);
     }
 
-    private static bool IsElevated()
-    {
-        using var id = System.Security.Principal.WindowsIdentity.GetCurrent();
-        return new System.Security.Principal.WindowsPrincipal(id)
-            .IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator);
-    }
+    private static bool IsElevated() => ForegroundWatch.IsElevated();
 
     private void OfferElevation()
     {

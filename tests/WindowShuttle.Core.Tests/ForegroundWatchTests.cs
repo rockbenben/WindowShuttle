@@ -30,9 +30,7 @@ public class ForegroundWatchTests
     [Fact] public void Watch_is_installed_when_we_are_not_elevated()
     {
         using var w = new ForegroundWatch();
-        bool elevated = new System.Security.Principal.WindowsPrincipal(
-            System.Security.Principal.WindowsIdentity.GetCurrent())
-            .IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator);
+        bool elevated = ForegroundWatch.IsElevated();
         Assert.Equal(!elevated, w.Watching);
     }
 
