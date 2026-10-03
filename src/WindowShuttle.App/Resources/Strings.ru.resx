@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>Эта комбинация занята другой программой</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>Не назначено</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Направление можно только провести — сочетание клавиш его не несёт</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>Нажмите сочетание клавиш…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Нажмите сочетание клавиш — Esc отменяет</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>Нажмите, чтобы записать жест мыши</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>Удерживая Ctrl, Alt или Shift, щёлкните…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Удерживая Ctrl, Alt или Shift, щёлкните — Esc отменяет</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>Расположение мониторов</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>Действия</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Обновить</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>Перетащите окно на другой монитор, чтобы перенести его</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Перетащите карточку окна на карте на другой монитор, чтобы перенести её</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>Нарисовано по видимому размеру и взаимному расположению экранов на столе, а не по пикселям</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Щёлкните по ячейке, чтобы записать сочетание клавиш или жест мыши; Delete очищает</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>Спасено окон за пределами экрана: {0}</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>Спасено 1 окно за пределами экрана</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Спасать окна за пределами экрана при отключении монитора</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>Открыть проект на GitHub</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — ЛКМ открывает, ПКМ — меню</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>Сейчас нет окон, которые можно переместить</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (полноэкранные приложения пропускаются по настройке)</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>Нажмите Enter, чтобы вывести это окно на передний план</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>При последнем шаге произошла ошибка. Приложение продолжает работать; подробности записаны в crash.log</value></data>
 </root>

@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>Questa scorciatoia è usata da un altro programma</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>Non assegnata</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Una direzione si può solo tracciare — una scorciatoia non ne porta nessuna</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>Premi una combinazione di tasti…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Premi una combinazione di tasti — Esc annulla</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>Clic per registrare un gesto del mouse</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>Tieni premuto Ctrl, Alt o Maiusc e fai clic…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Tieni premuto Ctrl, Alt o Maiusc e fai clic — Esc annulla</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>Disposizione dei monitor</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>Azioni</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Aggiorna</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>Trascina una finestra su un altro monitor per spostarla</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Trascina una voce di finestra nella mappa su un altro monitor per spostarla</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>Disegnato secondo la grandezza apparente di ogni schermo sulla scrivania e la sua posizione, non secondo i pixel</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Fai clic su una casella per registrare una scorciatoia o un gesto del mouse; Canc la cancella</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>{0} finestre fuori schermo recuperate</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>1 finestra fuori schermo recuperata</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Recupera le finestre fuori schermo quando un monitor si scollega</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>Apri il progetto su GitHub</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — clic sinistro apre, clic destro apre il menu</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>Nessuna finestra spostabile al momento</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (le app a schermo intero sono escluse dall'impostazione)</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>Premi Invio per portare questa finestra in primo piano</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>Si è verificato un errore nell'ultimo passaggio. L'app è ancora in esecuzione; i dettagli sono stati scritti in crash.log</value></data>
 </root>

@@ -22,12 +22,12 @@
   <data name="Badge_Primary" xml:space="preserve"><value>मुख्य</value></data>
 
   <data name="Tray_Open" xml:space="preserve"><value>WindowShuttle खोलें</value></data>
-  <data name="Tray_RestartElevated" xml:space="preserve"><value>प्रशासक के रूप में पुनः आरंभ करें</value></data>
+  <data name="Tray_RestartElevated" xml:space="preserve"><value>व्यवस्थापक के रूप में पुनः आरंभ करें</value></data>
   <data name="Tray_Exit" xml:space="preserve"><value>बाहर निकलें</value></data>
 
   <data name="Toast_AccessDenied" xml:space="preserve"><value>{0} विंडो के लिए व्यवस्थापक अधिकार चाहिए। व्यवस्थापक के रूप में फिर से शुरू करने के लिए क्लिक करें</value></data>
   <data name="Toast_AccessDenied_One" xml:space="preserve"><value>1 विंडो के लिए व्यवस्थापक अधिकार चाहिए। व्यवस्थापक के रूप में फिर से शुरू करने के लिए क्लिक करें</value></data>
-  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>जब कोई एडमिनिस्ट्रेटर प्रोग्राम सामने हो, तब कोई भी माउस जेस्चर काम नहीं करता। एडमिनिस्ट्रेटर के रूप में पुनरारंभ करने के लिए क्लिक करें</value></data>
+  <data name="Toast_GesturesBlocked" xml:space="preserve"><value>जब कोई व्यवस्थापक प्रोग्राम सामने हो, तब कोई भी माउस जेस्चर काम नहीं करता। व्यवस्थापक के रूप में पुनरारंभ करने के लिए क्लिक करें</value></data>
   <data name="Toast_NoUndo" xml:space="preserve"><value>पूर्ववत करने के लिए कुछ नहीं</value></data>
   <data name="Toast_OtherFailed" xml:space="preserve"><value>{0} विंडो स्थानांतरित नहीं हो सकीं</value></data>
   <data name="Toast_OtherFailed_One" xml:space="preserve"><value>1 विंडो स्थानांतरित नहीं हो सकी</value></data>
@@ -48,8 +48,8 @@
   <data name="Settings_Language" xml:space="preserve"><value>भाषा</value></data>
   <data name="Settings_Language_System" xml:space="preserve"><value>सिस्टम के अनुसार</value></data>
   <data name="Settings_Startup" xml:space="preserve"><value>Windows के साथ शुरू करें</value></data>
-  <data name="Settings_StartupElevated" xml:space="preserve"><value>एडमिनिस्ट्रेटर के रूप में</value></data>
-  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>शेड्यूल्ड टास्क से एडमिन ऑटो-स्टार्ट: टिक करते समय एक बार UAC आता है, फिर हर बूट चुपचाप एडमिनिस्ट्रेटर के रूप में शुरू होता है। एडमिन प्रोग्रामों की विंडो हिलाई जा सकेंगी और उनके सामने रहते जेस्चर बंद नहीं होंगे</value></data>
+  <data name="Settings_StartupElevated" xml:space="preserve"><value>व्यवस्थापक के रूप में</value></data>
+  <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>शेड्यूल्ड टास्क से व्यवस्थापक ऑटो-स्टार्ट: टिक करते समय एक बार UAC आता है, फिर हर बूट चुपचाप व्यवस्थापक के रूप में शुरू होता है। व्यवस्थापक प्रोग्रामों की विंडो हिलाई जा सकेंगी और उनके सामने रहते जेस्चर बंद नहीं होंगे</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>पूर्ण स्क्रीन ऐप छोड़ें</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>बंद करने पर ट्रे में चलता रहे</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>भाषा फिर से शुरू करने पर लागू होगी। अभी फिर से शुरू करें?</value></data>
@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>यह शॉर्टकट किसी और प्रोग्राम के पास है</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>असाइन नहीं</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>दिशा केवल खींचकर दी जा सकती है — शॉर्टकट दिशा नहीं ले जाता</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>कुंजी संयोजन दबाएँ…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>कुंजी संयोजन दबाएँ — Esc से रद्द करें</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>माउस जेस्चर रिकॉर्ड करने के लिए क्लिक करें</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>Ctrl / Alt / Shift दबाए रखकर क्लिक करें…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Ctrl / Alt / Shift दबाए रखकर क्लिक करें — Esc से रद्द करें</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>मॉनिटर लेआउट</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>क्रियाएँ</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>ताज़ा करें</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>विंडो को दूसरे मॉनिटर पर खींचकर ले जाएँ</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>मानचित्र में विंडो आइटम को दूसरे मॉनिटर पर खींचकर ले जाएँ</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>हर स्क्रीन के वास्तविक दिखने वाले आकार और आपसी स्थिति के अनुसार बनाया गया है, पिक्सेल के अनुसार नहीं</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>शॉर्टकट या माउस जेस्चर रिकॉर्ड करने के लिए कुंजी खाने पर क्लिक करें; Delete से हटाएँ</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>स्क्रीन से बाहर की {0} विंडो बचाई गईं</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>स्क्रीन से बाहर की 1 विंडो बचाई गई</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>मॉनिटर हटने पर स्क्रीन से बाहर की विंडो बचाएँ</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>GitHub पर प्रोजेक्ट खोलें</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — बाएं-क्लिक से खोलें, दाएं-क्लिक से मेनू</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>अभी कोई गतिशील विंडो नहीं है</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (सेटिंग के अनुसार फुल-स्क्रीन ऐप छोड़े जाते हैं)</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>इस विंडो को सामने लाने के लिए Enter दबाएँ</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>पिछले चरण में कुछ गड़बड़ हुई। ऐप अभी भी चल रहा है; विवरण crash.log में लिखा गया है</value></data>
 </root>

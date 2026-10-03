@@ -58,15 +58,15 @@
 
   <data name="Hotkey_Conflict" xml:space="preserve"><value>このショートカットは他のプログラムに使われています</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>未割り当て</value></data>
-  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>方向は払ってしか伝えられません。ショートカットでは方向を運べません</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>キーの組み合わせを押してください…</value></data>
+  <data name="Hotkey_GestureOnly" xml:space="preserve"><value>方向はマウスで描いて伝えるしかありません。ショートカットでは方向を伝えられません</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>キーの組み合わせを押してください（Esc でキャンセル）</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>クリックしてマウスジェスチャーを記録</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>Ctrl / Alt / Shift を押しながらクリック…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Ctrl / Alt / Shift を押しながらクリック（Esc でキャンセル）</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>モニター配置</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>操作</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>更新</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>ウィンドウを別のモニターへドラッグすると移動できます</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>地図内のウィンドウ項目を別のモニターへドラッグすると移動できます</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>各画面の机の上での見た目の大きさと位置関係で描いています。ピクセル数ではありません</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>キー欄をクリックしてショートカットやマウスジェスチャーを記録。Delete で解除</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>画面外のウィンドウ {0} 個を救出しました</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>画面外のウィンドウ {0} 個を救出しました</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>モニター切断時に画面外のウィンドウを救出</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>GitHub でプロジェクトを開く</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — 左クリックで開く、右クリックでメニュー</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>現在、動かせるウィンドウはありません</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value>（設定によりフルスクリーンアプリは対象外）</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>Enter でこのウィンドウを手前に出します</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>直前の操作でエラーが発生しました。アプリは動作を続けています。詳細は crash.log に記録しました</value></data>
 </root>

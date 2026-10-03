@@ -29,8 +29,8 @@
   <data name="Toast_AccessDenied_One" xml:space="preserve"><value>1 venster vereist beheerdersrechten. Klik om als beheerder opnieuw te starten</value></data>
   <data name="Toast_GesturesBlocked" xml:space="preserve"><value>Geen enkele muisbeweging werkt zolang een programma met beheerdersrechten op de voorgrond staat. Klik om als beheerder te herstarten</value></data>
   <data name="Toast_NoUndo" xml:space="preserve"><value>Niets om ongedaan te maken</value></data>
-  <data name="Toast_OtherFailed" xml:space="preserve"><value>Kon {0} vensters niet verplaatsen</value></data>
-  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>Kon 1 venster niet verplaatsen</value></data>
+  <data name="Toast_OtherFailed" xml:space="preserve"><value>Kan {0} vensters niet verplaatsen</value></data>
+  <data name="Toast_OtherFailed_One" xml:space="preserve"><value>Kan 1 venster niet verplaatsen</value></data>
 
   <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>Er is maar één monitor</value></data>
   <data name="NoOp_NothingToDo" xml:space="preserve"><value>Geen vensters om te verplaatsen</value></data>
@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>Deze sneltoets is in gebruik door een ander programma</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>Niet toegewezen</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Een richting kun je alleen vegen — een sneltoets draagt er geen</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>Druk op een toetsencombinatie…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Druk op een toetsencombinatie — Esc annuleert</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>Klik om een muisgebaar op te nemen</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>Houd Ctrl, Alt of Shift ingedrukt en klik…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Houd Ctrl, Alt of Shift ingedrukt en klik — Esc annuleert</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>Monitorindeling</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>Acties</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Vernieuwen</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>Sleep een venster naar een andere monitor om het te verplaatsen</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Sleep een vensteritem uit de kaart naar een andere monitor om het te verplaatsen</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>Getekend naar hoe groot elk scherm op je bureau oogt en waar het staat, niet naar pixels</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Klik op een toetsvak om een sneltoets of muisgebaar op te nemen; Delete wist het</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>{0} vensters buiten beeld gered</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>1 venster buiten beeld gered</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Vensters buiten beeld redden als een monitor loskoppelt</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>Project op GitHub openen</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — linksklik opent venster, rechtsklik opent menu</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>Momenteel geen verplaatsbare vensters</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (volledigscherm-apps worden overgeslagen volgens de instelling)</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>Druk op Enter om dit venster naar voren te halen</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>Er is iets misgegaan bij de laatste stap. De app draait nog; details zijn weggeschreven naar crash.log</value></data>
 </root>

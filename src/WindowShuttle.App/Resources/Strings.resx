@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>快捷键被其他程序占用</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>未绑定</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>方向只有划得出来，快捷键带不了方向</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>按下组合键…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>按下组合键，Esc 取消</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>点击录制鼠标手势</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>按住 Ctrl / Alt / Shift 点击鼠标…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>按住 Ctrl / Alt / Shift 点击，Esc 取消</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>显示器布局</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>动作</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>刷新</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>把窗口拖到另一块屏即可搬运</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>把地图里的窗口条目拖到另一块屏，即可搬运</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>按各屏在桌面上的实际观感大小和相对位置绘制，不是按像素数</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>点击键位区录制快捷键或鼠标手势，Delete 清除</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>已救回 {0} 个屏外窗口</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>已救回 {0} 个屏外窗口</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>拔屏后自动救回屏外窗口</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>在 GitHub 上打开项目仓库</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — 左键打开，右键菜单</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>当前没有可搬的窗口</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value>（全屏应用按设置跳过）</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>按 Enter 把该窗口带到前台</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>刚才有一步操作出了错。程序还在照常运行；详情已写进 crash.log</value></data>
 </root>

@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>快速鍵被其他程式佔用</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>未綁定</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>方向只有劃得出來，快捷鍵帶不了方向</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>按下組合鍵…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>按下組合鍵，Esc 取消</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>點按錄製滑鼠手勢</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>按住 Ctrl / Alt / Shift 點擊滑鼠…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>按住 Ctrl / Alt / Shift 點擊，Esc 取消</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>螢幕配置</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>動作</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>重新整理</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>把視窗拖到另一個螢幕即可搬移</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>把地圖中的視窗項目拖到另一個螢幕，即可搬移</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>依各螢幕在桌面上的實際觀感大小和相對位置繪製，不是依像素數</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>點按鍵位區錄製快速鍵或滑鼠手勢，Delete 清除</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>已救回 {0} 個螢幕外視窗</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>已救回 {0} 個螢幕外視窗</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>拔除螢幕後自動救回螢幕外視窗</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>在 GitHub 上開啟專案倉庫</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — 左鍵開啟，右鍵選單</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>目前沒有可搬的視窗</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value>（依設定跳過全螢幕應用）</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>按 Enter 將該視窗帶到前景</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>剛剛有一步操作出錯。程式仍在照常執行；詳情已寫入 crash.log</value></data>
 </root>

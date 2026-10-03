@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>Phím tắt này đang bị chương trình khác dùng</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>Chưa gán</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Hướng chỉ có thể vuốt ra — phím tắt không mang được hướng</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>Nhấn tổ hợp phím…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Nhấn tổ hợp phím — Esc để hủy</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>Bấm để ghi thao tác chuột</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>Giữ Ctrl, Alt hoặc Shift rồi bấm…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Giữ Ctrl, Alt hoặc Shift rồi nhấp — Esc để hủy</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>Bố cục màn hình</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>Thao tác</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Làm mới</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>Kéo cửa sổ sang màn hình khác để di chuyển</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Kéo mục cửa sổ trong bản đồ sang màn hình khác để di chuyển</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>Vẽ theo kích thước cảm nhận thực tế và vị trí tương đối của từng màn hình trên bàn, không theo số điểm ảnh</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Bấm vào ô phím để ghi phím tắt hoặc thao tác chuột; Delete để xóa</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>Đã cứu {0} cửa sổ ngoài màn hình</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>Đã cứu 1 cửa sổ ngoài màn hình</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Tự cứu cửa sổ ngoài màn hình khi rút màn hình</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>Mở dự án trên GitHub</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — chuột trái mở, chuột phải mở menu</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>Hiện không có cửa sổ nào di chuyển được</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (ứng dụng toàn màn hình được bỏ qua theo cài đặt)</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>Nhấn Enter để đưa cửa sổ này lên trước</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>Đã xảy ra lỗi ở bước vừa rồi. Ứng dụng vẫn đang chạy; chi tiết đã được ghi vào crash.log</value></data>
 </root>

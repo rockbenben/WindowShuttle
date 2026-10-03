@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>이 단축키는 다른 프로그램이 사용 중입니다</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>미지정</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>방향은 그어야만 전달됩니다. 단축키는 방향을 담을 수 없습니다</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>키 조합을 누르세요…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>키 조합을 누르세요 — Esc로 취소</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>클릭하여 마우스 제스처 기록</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>Ctrl / Alt / Shift 를 누른 채 클릭…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Ctrl / Alt / Shift를 누른 채 클릭 — Esc로 취소</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>모니터 배치</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>동작</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>새로 고침</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>창을 다른 모니터로 끌면 옮겨집니다</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>지도의 창 항목을 다른 모니터로 끌면 옮겨집니다</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>각 화면이 책상 위에서 보이는 실제 크기와 상대 위치대로 그린 것으로, 픽셀 수 기준이 아닙니다</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>키 칸을 클릭해 단축키나 마우스 제스처를 기록하세요. Delete 키로 지웁니다</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>화면 밖 창 {0}개를 구조했습니다</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>화면 밖 창 {0}개를 구조했습니다</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>모니터 분리 시 화면 밖 창 구조</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>GitHub에서 프로젝트 열기</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — 좌클릭 열기, 우클릭 메뉴</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>현재 이동할 수 있는 창이 없습니다</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value>(설정에 따라 전체 화면 앱은 건너뜀)</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>Enter를 눌러 이 창을 앞으로 가져오기</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>방금 단계에서 오류가 발생했습니다. 앱은 계속 실행 중이며 세부 정보는 crash.log에 기록되었습니다</value></data>
 </root>

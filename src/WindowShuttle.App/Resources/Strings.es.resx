@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>Este atajo lo usa otro programa</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>Sin asignar</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Una dirección solo se puede trazar; un atajo no puede llevarla</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>Pulsa una combinación de teclas…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Pulsa una combinación de teclas — Esc cancela</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>Clic para grabar un gesto de ratón</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>Mantén Ctrl, Alt o Shift y haz clic…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Mantén Ctrl, Alt o Shift y haz clic — Esc cancela</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>Disposición de monitores</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>Acciones</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Actualizar</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>Arrastra una ventana a otro monitor para moverla</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Arrastra un elemento de ventana del mapa a otro monitor para moverla</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>Dibujado según el tamaño aparente de cada pantalla en tu mesa y su posición, no según sus píxeles</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Haz clic en una casilla para grabar un atajo o un gesto de ratón; Supr la borra</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>{0} ventanas fuera de pantalla rescatadas</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>1 ventana fuera de pantalla rescatada</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Rescatar ventanas fuera de pantalla al desconectar un monitor</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>Abrir el proyecto en GitHub</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — clic izquierdo abre, clic derecho abre el menú</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>No hay ventanas que se puedan mover ahora</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (las apps a pantalla completa se omiten según el ajuste)</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>Pulsa Enter para traer esta ventana al frente</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>Se produjo un error en el último paso. La aplicación sigue en marcha; los detalles se escribieron en crash.log</value></data>
 </root>

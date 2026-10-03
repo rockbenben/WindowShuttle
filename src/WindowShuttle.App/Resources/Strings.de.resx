@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>Dieses Tastenkürzel wird von einem anderen Programm verwendet</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>Nicht belegt</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Eine Richtung lässt sich nur wischen — ein Tastenkürzel kann keine tragen</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>Tastenkombination drücken…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Tastenkombination drücken – Esc bricht ab</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>Klicken, um eine Mausgeste aufzunehmen</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>Strg, Alt oder Umschalt halten und klicken…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Strg, Alt oder Umschalt halten und klicken – Esc bricht ab</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>Bildschirmanordnung</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>Aktionen</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Aktualisieren</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>Fenster auf einen anderen Bildschirm ziehen, um es zu verschieben</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Fenster-Eintrag der Karte auf einen anderen Bildschirm ziehen, um ihn zu verschieben</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>Gezeichnet nach der gefühlten Größe und Lage jedes Bildschirms auf dem Schreibtisch, nicht nach Pixeln</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Auf ein Tastenfeld klicken, um ein Kürzel oder eine Mausgeste aufzunehmen; Entf löscht es</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>{0} Fenster außerhalb des Bildschirms gerettet</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>1 Fenster außerhalb des Bildschirms gerettet</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Fenster retten, wenn ein Bildschirm getrennt wird</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>Projekt auf GitHub öffnen</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — Linksklick öffnet, Rechtsklick für Menü</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>Zurzeit keine verschiebbaren Fenster</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (Vollbild-Apps werden laut Einstellung übersprungen)</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>Enter drücken, um dieses Fenster nach vorn zu holen</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>Beim letzten Schritt ist ein Fehler aufgetreten. Die App läuft weiter; Details wurden in crash.log geschrieben</value></data>
 </root>

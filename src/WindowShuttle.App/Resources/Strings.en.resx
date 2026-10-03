@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>This shortcut is taken by another program</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>Not bound</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>A direction can only be drawn — a shortcut can't carry one</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>Press a key combination…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Press a key combination — Esc cancels</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>Click to record a mouse gesture</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>Hold Ctrl, Alt or Shift and click…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Hold Ctrl, Alt or Shift and click — Esc cancels</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>Screen layout</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>Actions</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Refresh</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>Drag a window onto another screen to move it</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Drag a window chip onto another screen to move it</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>Drawn to how large each screen looks on your desk and where it sits, not to its pixel count</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Click a key slot to record a shortcut or mouse gesture; Delete clears it</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>Rescued {0} off-screen windows</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>Rescued 1 off-screen window</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Rescue off-screen windows when a screen disconnects</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>Open the project on GitHub</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — left-click opens, right-click for menu</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>No movable windows right now</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (fullscreen apps are skipped in Settings)</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>Press Enter to bring this window forward</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>Something went wrong in the last step. The app is still running; details were written to crash.log</value></data>
 </root>

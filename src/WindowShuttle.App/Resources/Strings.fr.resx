@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>Ce raccourci est pris par un autre programme</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>Non assigné</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Une direction ne peut que se tracer — un raccourci n'en porte aucune</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>Appuyez sur une combinaison de touches…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Appuyez sur une combinaison de touches — Échap annule</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>Cliquez pour enregistrer un geste de souris</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>Maintenez Ctrl, Alt ou Maj et cliquez…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Maintenez Ctrl, Alt ou Maj et cliquez — Échap annule</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>Disposition des écrans</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>Actions</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Actualiser</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>Faites glisser une fenêtre vers un autre écran pour la déplacer</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Faites glisser une entrée de fenêtre de la carte vers un autre écran pour la déplacer</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>Dessiné selon la taille apparente de chaque écran sur votre bureau et sa position, pas selon ses pixels</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Cliquez sur une case pour enregistrer un raccourci ou un geste de souris ; Suppr l'efface</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>{0} fenêtres hors écran récupérées</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>1 fenêtre hors écran récupérée</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Récupérer les fenêtres hors écran quand un écran se déconnecte</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>Ouvrir le projet sur GitHub</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — clic gauche pour ouvrir, clic droit pour le menu</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>Aucune fenêtre déplaçable pour le moment</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (les applis plein écran sont ignorées selon le réglage)</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>Appuyez sur Entrée pour passer cette fenêtre au premier plan</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>Une erreur s'est produite lors de la dernière étape. L'application continue de fonctionner ; les détails ont été écrits dans crash.log</value></data>
 </root>

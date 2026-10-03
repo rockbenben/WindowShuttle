@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>Pintasan ini dipakai program lain</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>Belum diatur</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Arah hanya bisa disapu — pintasan tidak bisa membawanya</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>Tekan kombinasi tombol…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Tekan kombinasi tombol — Esc membatalkan</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>Klik untuk merekam gestur mouse</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>Tahan Ctrl, Alt atau Shift lalu klik…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Tahan Ctrl, Alt atau Shift lalu klik — Esc membatalkan</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>Tata letak monitor</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>Aksi</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Segarkan</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>Seret jendela ke monitor lain untuk memindahkannya</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Seret entri jendela di peta ke monitor lain untuk memindahkannya</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>Digambar sesuai ukuran tampak tiap layar di meja dan posisinya, bukan jumlah pikselnya</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Klik kolom tombol untuk merekam pintasan atau gestur mouse; Delete menghapusnya</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>{0} jendela di luar layar diselamatkan</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>1 jendela di luar layar diselamatkan</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Selamatkan jendela di luar layar saat monitor terlepas</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>Buka proyek di GitHub</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — klik kiri membuka, klik kanan untuk menu</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>Tidak ada jendela yang bisa dipindahkan saat ini</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (aplikasi layar penuh dilewati sesuai pengaturan)</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>Tekan Enter untuk membawa jendela ini ke depan</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>Terjadi kesalahan pada langkah terakhir. Aplikasi tetap berjalan; detailnya ditulis ke crash.log</value></data>
 </root>

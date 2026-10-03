@@ -46,7 +46,7 @@
   <data name="Dialog_Cancel" xml:space="preserve"><value>İptal</value></data>
 
   <data name="Settings_Language" xml:space="preserve"><value>Dil</value></data>
-  <data name="Settings_Language_System" xml:space="preserve"><value>Sistemi izle</value></data>
+  <data name="Settings_Language_System" xml:space="preserve"><value>Sistem dilini kullan</value></data>
   <data name="Settings_Startup" xml:space="preserve"><value>Windows ile başlat</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Yönetici olarak</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Zamanlanmış görevle yükseltilmiş başlatma: işaretlerken bir kez UAC sorar, sonra her açılış sessizce yönetici olarak başlar. Yönetici programların pencereleri taşınabilir olur ve biri ön plandayken hareketler artık ölmez</value></data>
@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>Bu kısayolu başka bir program kullanıyor</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>Atanmadı</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>Yön yalnızca kaydırarak verilir — kısayol yön taşıyamaz</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>Bir tuş kombinasyonuna basın…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>Bir tuş kombinasyonuna basın — Esc iptal eder</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>Fare hareketi kaydetmek için tıklayın</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>Ctrl, Alt veya Shift basılı tutup tıklayın…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>Ctrl, Alt veya Shift basılı tutup tıklayın — Esc iptal eder</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>Monitör düzeni</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>Eylemler</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Yenile</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>Taşımak için pencereyi başka bir monitöre sürükleyin</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>Taşımak için haritadaki pencere öğesini başka bir monitöre sürükleyin</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>Her ekranın masadaki görünen boyutuna ve konumuna göre çizilir, piksel sayısına göre değil</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Kısayol veya fare hareketi kaydetmek için tuş alanına tıklayın; Delete siler</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>{0} ekran dışı pencere kurtarıldı</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>1 ekran dışı pencere kurtarıldı</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>Monitör ayrılınca ekran dışı pencereleri kurtar</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>Projeyi GitHub'da aç</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — sol tık açar, sağ tık menüyü gösterir</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>Şu anda taşınabilir pencere yok</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (ayar gereği tam ekran uygulamalar atlanır)</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>Bu pencereyi öne getirmek için Enter'a basın</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>Son adımda bir hata oluştu. Uygulama hâlâ çalışıyor; ayrıntılar crash.log dosyasına yazıldı</value></data>
 </root>

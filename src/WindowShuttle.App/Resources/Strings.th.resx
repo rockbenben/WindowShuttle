@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>ปุ่มลัดนี้ถูกโปรแกรมอื่นใช้อยู่</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>ยังไม่กำหนด</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>ทิศทางต้องปัดเท่านั้น คีย์ลัดพาทิศทางไปไม่ได้</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>กดชุดปุ่ม…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>กดชุดปุ่ม — กด Esc เพื่อยกเลิก</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>คลิกเพื่อบันทึกท่าทางเมาส์</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>กด Ctrl, Alt หรือ Shift ค้างแล้วคลิก…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>กด Ctrl, Alt หรือ Shift ค้างแล้วคลิก — กด Esc เพื่อยกเลิก</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>ผังจอภาพ</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>การดำเนินการ</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>รีเฟรช</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>ลากหน้าต่างไปยังอีกจอเพื่อย้าย</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>ลากรายการหน้าต่างในผังจอไปยังอีกจอเพื่อย้าย</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>วาดตามขนาดที่ตาเห็นจริงและตำแหน่งของแต่ละจอบนโต๊ะ ไม่ใช่ตามจำนวนพิกเซล</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>คลิกช่องปุ่มเพื่อบันทึกปุ่มลัดหรือท่าทางเมาส์ กด Delete เพื่อล้าง</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>กู้หน้าต่างนอกจอแล้ว {0} บาน</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>กู้หน้าต่างนอกจอแล้ว 1 บาน</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>กู้หน้าต่างนอกจอเมื่อถอดจอ</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>เปิดโปรเจกต์บน GitHub</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — คลิกซ้ายเปิด คลิกขวาเมนู</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>ไม่มีหน้าต่างที่ย้ายได้ในขณะนี้</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (ข้ามแอปเต็มจอตามการตั้งค่า)</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>กด Enter เพื่อย้ายหน้าต่างนี้ขึ้นมาข้างหน้า</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>เกิดข้อผิดพลาดในขั้นตอนล่าสุด แอปยังทำงานต่อ รายละเอียดถูกบันทึกไว้ใน crash.log</value></data>
 </root>

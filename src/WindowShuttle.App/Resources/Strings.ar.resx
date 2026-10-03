@@ -59,14 +59,14 @@
   <data name="Hotkey_Conflict" xml:space="preserve"><value>هذا الاختصار مستخدم من برنامج آخر</value></data>
   <data name="Hotkey_Unbound" xml:space="preserve"><value>غير معيّن</value></data>
   <data name="Hotkey_GestureOnly" xml:space="preserve"><value>الاتجاه يُرسم بالسحب فقط — الاختصار لا يحمل اتجاهًا</value></data>
-  <data name="Hotkey_Recording" xml:space="preserve"><value>اضغط تركيبة مفاتيح…</value></data>
+  <data name="Hotkey_Recording" xml:space="preserve"><value>اضغط تركيبة مفاتيح — Esc للإلغاء</value></data>
   <data name="MouseChord_Tip" xml:space="preserve"><value>انقر لتسجيل إيماءة فأرة</value></data>
-  <data name="MouseChord_Recording" xml:space="preserve"><value>اضغط Ctrl أو Alt أو Shift مع النقر…</value></data>
+  <data name="MouseChord_Recording" xml:space="preserve"><value>اضغط Ctrl أو Alt أو Shift مع النقر — Esc للإلغاء</value></data>
 
   <data name="Main_Monitors" xml:space="preserve"><value>تخطيط الشاشات</value></data>
   <data name="Main_Actions" xml:space="preserve"><value>الإجراءات</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>تحديث</value></data>
-  <data name="Main_DropHint" xml:space="preserve"><value>اسحب نافذة إلى شاشة أخرى لنقلها</value></data>
+  <data name="Main_DropHint" xml:space="preserve"><value>اسحب عنصر النافذة في الخريطة إلى شاشة أخرى لنقلها</value></data>
   <data name="Main_Monitors_Hint" xml:space="preserve"><value>مرسوم حسب الحجم الظاهري لكل شاشة على مكتبك وموضعها، لا حسب عدد البكسلات</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>انقر خانة المفاتيح لتسجيل اختصار أو إيماءة فأرة، وDelete للمسح</value></data>
 
@@ -80,4 +80,11 @@
   <data name="Toast_Rescued" xml:space="preserve"><value>تم إنقاذ {0} من النوافذ الخارجة عن الشاشة</value></data>
   <data name="Toast_Rescued_One" xml:space="preserve"><value>تم إنقاذ نافذة واحدة خارجة عن الشاشة</value></data>
   <data name="Settings_RescueOnDisplayChange" xml:space="preserve"><value>إنقاذ النوافذ الخارجة عن الشاشة عند فصل شاشة</value></data>
+
+  <data name="Repo_Tip" xml:space="preserve"><value>فتح المشروع على GitHub</value></data>
+  <data name="Tray_Tip" xml:space="preserve"><value>{0} — النقر الأيسر للفتح، الأيمن للقائمة</value></data>
+  <data name="Main_NoMovableChips" xml:space="preserve"><value>لا توجد نوافذ قابلة للنقل الآن</value></data>
+  <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (يتم تخطي تطبيقات ملء الشاشة حسب الإعداد)</value></data>
+  <data name="Chip_EnterTip" xml:space="preserve"><value>اضغط Enter لجلب هذه النافذة إلى المقدمة</value></data>
+  <data name="Crash_Recovered" xml:space="preserve"><value>حدث خطأ في الخطوة الأخيرة. ما زال التطبيق يعمل؛ كُتبت التفاصيل في crash.log</value></data>
 </root>
