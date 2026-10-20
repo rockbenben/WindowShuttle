@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Mit Windows starten</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Als Administrator</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Start mit erhöhten Rechten über eine geplante Aufgabe: einmal UAC beim Ankreuzen, danach startet jeder Systemstart still als Administrator. Fenster erhöhter Programme lassen sich dann verschieben, und Gesten fallen nicht mehr aus, solange eines im Vordergrund ist</value></data>
+  <data name="Settings_CheckUpdates"><value>Nach Updates suchen</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>Wenn aktiv, fragt das Programm beim Start einmal GitHub ab, ob es eine neuere Version gibt — das ist die einzige Verbindung dieses Programms; alles andere passiert auf deinem Rechner.</value></data>
+  <data name="Settings_CheckNow"><value>Jetzt prüfen</value></data>
+  <data name="Update_Checking"><value>Suche nach Updates…</value></data>
+  <data name="Update_Latest"><value>Du hast bereits die neueste Version.</value></data>
+  <data name="Update_Ready"><value>Version {0} wurde heruntergeladen. Das neue Programm liegt unter {1}. Beende das laufende Programm und kopiere das neue darüber, um zu aktualisieren.</value></data>
+  <data name="Update_Failed"><value>Updates konnten nicht gesucht werden. Bitte später erneut versuchen.</value></data>
+  <data name="Update_VerifyFailed"><value>Die heruntergeladene Datei stimmt nicht mit der veröffentlichten Prüfsumme überein und wurde verworfen. Bitte später erneut versuchen.</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Vollbild-Apps überspringen</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>Beim Schließen im Infobereich weiterlaufen</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>Die Sprache gilt nach einem Neustart. Jetzt neu starten?</value></data>

@@ -214,6 +214,12 @@ public partial class App : Application
         _resident = true;                              // 到这里才算真的驻留起来了，见字段注释
         if (!startHidden) ShowMain();                  // 手动启动就把窗口摆出来；开机自启走 --tray 不打扰
 
+        // 开机检查更新：**默认关**，也是本程序唯一会联网的行为。开启后每次启动问一次 GitHub
+        // 有没有新版本；有就把自包含的那份 zip 下载下来、核对发布页附的 SHA-256，再解压到
+        // %LOCALAPPDATA%\WindowShuttle\Updates\<版本>\，然后说一声新程序在哪。
+        // 一次性的 CLI 执行到不了这里（那段路在前面就 return 了），那些活儿活不过一次检查。
+        if (Cfg.CheckUpdates) _ = CheckForUpdatesOnStartup();
+
         // ── 首次运行：只开普通自启，不碰提权那一档 ─────────────────────────────────────────
         // （batch4 R4：这一块的旧开头还写着"首启直接尝试提权档"——那是已被否决的上一版，
         // 而下文早已按新实现说话，自相矛盾。现在整块与实现对齐。）
@@ -232,6 +238,16 @@ public partial class App : Application
     }
 
     private System.Windows.Threading.DispatcherTimer? _rescueDebounce;
+
+    /// <summary>开机自检更新。**只在真的有新版可下载时才出声**：已是最新、或者没查成，都安静。
+    /// <para>提示牌里说清新程序的位置。正在跑的这个**不换**：Windows 锁着运行中的 exe，覆写
+    /// 会撞共享冲突，还会留下半个装坏的程序——换不换是用户的事，得先把旧的关掉。</para></summary>
+    private async Task CheckForUpdatesOnStartup()
+    {
+        var outcome = await UpdateService.RunAsync(WindowShuttle.App.MainWindow.AppVersion());
+        if (outcome.Status != UpdateStatus.Ready) return;
+        NotificationOverlay.Show(Strings.Lf("Update_Ready", outcome.Version ?? "", outcome.ExePath ?? ""));
+    }
 
     /// <summary>拔屏救援：显示器增减/换分辨率时驱动会连发好几次 DisplaySettingsChanged（逐屏重配），
     /// 2 秒无后续才真的跑一次 Rescue。SystemEvents 不保证在 UI 线程回调，先 BeginInvoke 回来再摸

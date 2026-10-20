@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>開機自動啟動</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>以系統管理員身分</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>透過工作排程器提權自啟：勾選時過一次 UAC，之後每次開機都靜默以系統管理員身分啟動。系統管理員程式的視窗從此搬得動，手勢也不再因為它們佔前景而失靈</value></data>
+  <data name="Settings_CheckUpdates"><value>檢查更新</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>開啟後每次啟動連線存取 GitHub 一次，看看有沒有新版本——這是本程式唯一的連線行為，其餘功能全在本機完成。</value></data>
+  <data name="Settings_CheckNow"><value>立即檢查</value></data>
+  <data name="Update_Checking"><value>正在檢查更新……</value></data>
+  <data name="Update_Latest"><value>已是最新版本。</value></data>
+  <data name="Update_Ready"><value>新版本 {0} 已下載，新程式在 {1}。請先結束正在執行的程式，再將新程式複製過去完成更新。</value></data>
+  <data name="Update_Failed"><value>檢查更新失敗，請稍後再試。</value></data>
+  <data name="Update_VerifyFailed"><value>下載的檔案與發布的校驗值不一致，已捨棄。請稍後再試。</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>略過全螢幕應用程式</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>關閉後留在系統匣執行</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>語言將在重新啟動後生效。現在重新啟動？</value></data>

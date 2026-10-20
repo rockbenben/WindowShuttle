@@ -63,6 +63,21 @@
                                 Margin="0,0,7,0" Background="Transparent" BorderThickness="0"
                                 Cursor="Hand" VerticalAlignment="Center" Focusable="True"
                                 AutomationProperties.Name="GitHub"/>
+                        <!-- 检查更新：**默认关**，而且是本程序唯一会联网的行为。
+                             它待在标题栏而不是设置条里，理由是量出来的，不是偏好：设置条已经满了——
+                             五个复选框在德语/俄语下要占两到三行，中文下也排满一整行（实测占用 855/927），
+                             再加一格就必然多出一行，而那一行是从**动作区**里挖的：矮窗口下动作区
+                             只放得下两张卡，多一行设置就少一张（MainWindowCompactLayoutTests 盯着
+                             这件事，见那边的注释）。标题栏这一行右侧空着，宽裕得很；把开关放在
+                             GitHub 链接旁边也是对的——两者问的是同一件事：这个程序自己的仓库。 -->
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                            <CheckBox x:Name="UpdateChk" Content="{loc:Loc Settings_CheckUpdates}"
+                                      ToolTip="{loc:Loc Settings_CheckUpdatesTip}" VerticalAlignment="Center"
+                                      Margin="0,0,10,0" Checked="OnToggle" Unchecked="OnToggle"/>
+                            <ui:Button x:Name="CheckUpdateBtn" Content="{loc:Loc Settings_CheckNow}"
+                                       Appearance="Transparent" FontSize="12" Padding="8,2"
+                                       VerticalAlignment="Center" Click="OnCheckUpdateNow"/>
+                        </StackPanel>
                     </Grid>
                 </ui:TitleBar.TrailingContent>
             </ui:TitleBar>

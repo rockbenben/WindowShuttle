@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Jalankan saat Windows menyala</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Sebagai administrator</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Mulai dengan hak administrator lewat tugas terjadwal: satu kali UAC saat dicentang, lalu setiap boot mulai diam-diam sebagai administrator. Jendela program administrator jadi bisa dipindah, dan gerakan tidak lagi mati saat salah satunya di depan</value></data>
+  <data name="Settings_CheckUpdates"><value>Periksa pembaruan</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>Jika diaktifkan, program ini menghubungi GitHub sekali saat mulai untuk melihat apakah ada versi yang lebih baru — itulah satu-satunya koneksi ke internet; semua hal lain berjalan di komputer Anda.</value></data>
+  <data name="Settings_CheckNow"><value>Periksa sekarang</value></data>
+  <data name="Update_Checking"><value>Mencari pembaruan…</value></data>
+  <data name="Update_Latest"><value>Anda sudah memakai versi terbaru.</value></data>
+  <data name="Update_Ready"><value>Versi {0} telah diunduh. Program baru ada di {1}. Tutup program yang sedang berjalan lalu salin yang baru di atasnya untuk memperbarui.</value></data>
+  <data name="Update_Failed"><value>Tidak bisa mencari pembaruan. Silakan coba lagi nanti.</value></data>
+  <data name="Update_VerifyFailed"><value>Berkas yang diunduh tidak cocok dengan checksums yang dipublikasikan, jadi dibuang. Silakan coba lagi nanti.</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Lewati aplikasi layar penuh</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>Tetap berjalan di baki saat ditutup</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>Bahasa berubah setelah mulai ulang. Mulai ulang sekarang?</value></data>

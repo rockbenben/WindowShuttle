@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Khởi động cùng Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Với quyền quản trị</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Tự khởi động với quyền quản trị qua tác vụ đã lập lịch: một lần UAC khi đánh dấu, sau đó mỗi lần khởi động máy sẽ chạy êm với quyền quản trị. Cửa sổ của chương trình quản trị sẽ di chuyển được, và cử chỉ không còn chết khi một trong số đó ở tiền cảnh</value></data>
+  <data name="Settings_CheckUpdates"><value>Kiểm tra cập nhật</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>Khi được bật, chương trình sẽ kết nối GitHub một lần lúc khởi động để xem có bản mới hơn không — đó là lần duy nhất chương trình kết nối ra ngoài; mọi thứ khác đều diễn ra ngay trên máy của bạn.</value></data>
+  <data name="Settings_CheckNow"><value>Kiểm tra ngay</value></data>
+  <data name="Update_Checking"><value>Đang kiểm tra cập nhật…</value></data>
+  <data name="Update_Latest"><value>Bạn đang dùng bản mới nhất.</value></data>
+  <data name="Update_Ready"><value>Đã tải phiên bản {0}. Chương trình mới nằm ở {1}. Hãy thoát chương trình đang chạy rồi chép đè chương trình mới lên để cập nhật.</value></data>
+  <data name="Update_Failed"><value>Không kiểm tra được cập nhật. Vui lòng thử lại sau.</value></data>
+  <data name="Update_VerifyFailed"><value>Tệp đã tải xuống không khớp với tổng kiểm tra đã công bố nên đã bị loại bỏ. Vui lòng thử lại sau.</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Bỏ qua ứng dụng toàn màn hình</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>Vẫn chạy ở khay khi đóng</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>Ngôn ngữ sẽ đổi sau khi khởi động lại. Khởi động lại ngay?</value></data>

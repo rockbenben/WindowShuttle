@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Запускать вместе с Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>От имени администратора</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Запуск с правами администратора через планировщик: один запрос UAC при включении, дальше каждая загрузка стартует тихо от имени администратора. Окна программ с правами администратора становятся перемещаемыми, а жесты перестают отключаться, пока такое окно на переднем плане</value></data>
+  <data name="Settings_CheckUpdates"><value>Проверять обновления</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>Если включено, программа один раз при запуске обращается к GitHub, чтобы узнать, не вышла ли новая версия, — это единственное сетевое действие программы; всё остальное происходит на вашем компьютере.</value></data>
+  <data name="Settings_CheckNow"><value>Проверить сейчас</value></data>
+  <data name="Update_Checking"><value>Проверка обновлений…</value></data>
+  <data name="Update_Latest"><value>У вас уже последняя версия.</value></data>
+  <data name="Update_Ready"><value>Версия {0} загружена. Новая программа находится в {1}. Закройте запущенную программу и скопируйте новую поверх неё, чтобы обновиться.</value></data>
+  <data name="Update_Failed"><value>Не удалось проверить обновления. Повторите попытку позже.</value></data>
+  <data name="Update_VerifyFailed"><value>Загруженный файл не совпал с опубликованной контрольной суммой, поэтому он был отброшен. Повторите попытку позже.</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Пропускать полноэкранные приложения</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>При закрытии оставаться в трее</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>Язык изменится после перезапуска. Перезапустить сейчас?</value></data>

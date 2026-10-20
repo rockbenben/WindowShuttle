@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Avvia con Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Come amministratore</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Avvio elevato tramite attività pianificata: una richiesta UAC quando la spunti, poi ogni avvio parte in silenzio come amministratore. Le finestre dei programmi elevati diventano spostabili e i gesti smettono di morire quando uno di essi è in primo piano</value></data>
+  <data name="Settings_CheckUpdates"><value>Controlla gli aggiornamenti</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>Se attivo, il programma si collega una volta all'avvio a GitHub per verificare se esiste una versione più recente: è l'unica connessione di questo programma; tutto il resto avviene sul tuo computer.</value></data>
+  <data name="Settings_CheckNow"><value>Controlla adesso</value></data>
+  <data name="Update_Checking"><value>Ricerca aggiornamenti…</value></data>
+  <data name="Update_Latest"><value>Stai già usando l'ultima versione.</value></data>
+  <data name="Update_Ready"><value>La versione {0} è stata scaricata. Il nuovo programma si trova in {1}. Chiudi il programma in esecuzione e copia il nuovo sopra per aggiornare.</value></data>
+  <data name="Update_Failed"><value>Impossibile controllare gli aggiornamenti. Riprova più tardi.</value></data>
+  <data name="Update_VerifyFailed"><value>Il file scaricato non corrisponde al checksum pubblicato ed è stato scartato. Riprova più tardi.</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Ignora le app a schermo intero</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>Resta nella barra di sistema alla chiusura</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>La lingua cambia dopo un riavvio. Riavviare ora?</value></data>

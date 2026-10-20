@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Windows ile başlat</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Yönetici olarak</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Zamanlanmış görevle yükseltilmiş başlatma: işaretlerken bir kez UAC sorar, sonra her açılış sessizce yönetici olarak başlar. Yönetici programların pencereleri taşınabilir olur ve biri ön plandayken hareketler artık ölmez</value></data>
+  <data name="Settings_CheckUpdates"><value>Güncellemeleri denetle</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>Açıkken, program her başlatıldığında daha yeni bir sürüm olup olmadığını görmek için GitHub'a bir kez bağlanır — bu, programın internete bağlandığı tek andır; geri kalan her şey sizin makinenizde kalır.</value></data>
+  <data name="Settings_CheckNow"><value>Şimdi denetle</value></data>
+  <data name="Update_Checking"><value>Güncellemeler denetleniyor…</value></data>
+  <data name="Update_Latest"><value>Zaten en son sürümü kullanıyorsunuz.</value></data>
+  <data name="Update_Ready"><value>{0} sürümü indirildi. Yeni program {1} konumunda. Güncellemek için çalışan programı kapatın ve yeni programı üzerine kopyalayın.</value></data>
+  <data name="Update_Failed"><value>Güncellemeler denetlenemedi. Lütfen daha sonra yeniden deneyin.</value></data>
+  <data name="Update_VerifyFailed"><value>İndirilen dosya yayımlanan sağlama toplamıyla eşleşmediği için silindi. Lütfen daha sonra yeniden deneyin.</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Tam ekran uygulamaları atla</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>Kapatınca tepside çalışmaya devam et</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>Dil, yeniden başlatmadan sonra geçerli olur. Şimdi yeniden başlatılsın mı?</value></data>

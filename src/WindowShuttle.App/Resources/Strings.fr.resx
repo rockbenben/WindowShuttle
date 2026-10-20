@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Lancer avec Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>En administrateur</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Démarrage élevé via une tâche planifiée : une invite UAC au moment de cocher, puis chaque démarrage se fait silencieusement en administrateur. Les fenêtres des programmes élevés deviennent déplaçables et les gestes ne meurent plus quand l'un d'eux est au premier plan</value></data>
+  <data name="Settings_CheckUpdates"><value>Rechercher les mises à jour</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>Activé, le programme se connecte une fois au démarrage à GitHub pour voir s'il existe une version plus récente : c'est la seule connexion de ce programme ; tout le reste se passe sur votre machine.</value></data>
+  <data name="Settings_CheckNow"><value>Vérifier maintenant</value></data>
+  <data name="Update_Checking"><value>Recherche de mises à jour…</value></data>
+  <data name="Update_Latest"><value>Vous utilisez déjà la dernière version.</value></data>
+  <data name="Update_Ready"><value>La version {0} a été téléchargée. Le nouveau programme se trouve dans {1}. Quittez le programme en cours d'exécution puis copiez le nouveau par-dessus pour mettre à jour.</value></data>
+  <data name="Update_Failed"><value>Impossible de rechercher les mises à jour. Réessayez plus tard.</value></data>
+  <data name="Update_VerifyFailed"><value>Le fichier téléchargé ne correspond pas à la somme de contrôle publiée, il a donc été écarté. Réessayez plus tard.</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Ignorer les applications en plein écran</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>Rester dans la zone de notification à la fermeture</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>La langue changera après un redémarrage. Redémarrer maintenant ?</value></data>
