@@ -1,3 +1,4 @@
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -185,6 +186,10 @@ public partial class MainWindow : FluentWindow
         LangLabel.Foreground = AppTheme.Dim;
         FooterBorder.BorderBrush = AppTheme.Rule;
         MouseChordCaution.Foreground = AppTheme.Faint;
+        // 标题栏那一行的底色偏暗，而它的字色（应用名）是淡的——复选框和按钮若跟着走，
+        // 在这行里几乎读不出来。单独给一个正常的字色。
+        UpdateChk.Foreground = AppTheme.Dim;
+        CheckUpdateBtn.Foreground = AppTheme.Dim;
         MouseCautionGlyph.Content = MakeMouseGlyph(AppTheme.Faint, 12);
         DropHint.Foreground = AppTheme.Faint;
         RepoButton.Content = MakeGitHubGlyph(AppTheme.Faint); // 自绘图形，翻主题得重画；
@@ -377,6 +382,7 @@ public partial class MainWindow : FluentWindow
         SkipFsBox.IsChecked = App.Cfg.SkipFullscreen;
         RescueBox.IsChecked = App.Cfg.RescueOnDisplayChange;
         TrayBox.IsChecked = App.Cfg.CloseToTray;
+        UpdateChk.IsChecked = App.Cfg.CheckUpdates;
 
         LangBox.Items.Add(Strings.Get("Settings_Language_System"));
         foreach (var (native, _) in Languages.All) LangBox.Items.Add(native);
@@ -394,7 +400,74 @@ public partial class MainWindow : FluentWindow
         App.Cfg.SkipFullscreen = SkipFsBox.IsChecked == true;
         App.Cfg.RescueOnDisplayChange = RescueBox.IsChecked == true;
         App.Cfg.CloseToTray = TrayBox.IsChecked == true;
+        App.Cfg.CheckUpdates = UpdateChk.IsChecked == true;
         SettingsStore.Save(SettingsStore.DefaultPath, App.Cfg);
+    }
+
+    /// <summary>手动检查更新：拉 GitHub 的最新 Release，比版本，有新版就下载、核对校验值、
+    /// 解压，然后**把新程序在哪说清楚**。
+    /// <para>结果走提示牌（程序里所有对外消息都走它）。新版本那张卡是可点的：点了直接打开
+    /// 那个文件夹——路径不必抄，卡会自己消失。</para>
+    /// <para>正在跑的程序**不换**：Windows 锁着运行中的 exe，覆写会撞共享冲突，还会留下半个
+    /// 装坏的程序。新版本解压到自己的文件夹里，换不换是用户的事——先把旧的关掉。</para></summary>
+    private async void OnCheckUpdateNow(object sender, RoutedEventArgs e)
+    {
+        CheckUpdateBtn.IsEnabled = false;
+        var busy = CheckUpdateBtn.Content;
+        CheckUpdateBtn.Content = Strings.Get("Update_Checking");
+        try
+        {
+            var outcome = await UpdateService.RunAsync(AppVersion());
+            switch (outcome.Status)
+            {
+                case UpdateStatus.Ready:
+                    NotificationOverlay.Show(
+                        Strings.Lf("Update_Ready", outcome.Version ?? "", outcome.ExePath ?? ""),
+                        actionable: true, isError: false, onClick: () => OpenFolder(outcome.ExePath));
+                    break;
+                case UpdateStatus.VerifyFailed:
+                    // 下载的东西跟发布页给的校验值对不上，已经丢弃了。这件事得说出来：
+                    // 静悄悄地什么都不做，读起来就是「没有新版本」。
+                    NotificationOverlay.Show(Strings.Get("Update_VerifyFailed"), actionable: false, isError: true);
+                    break;
+                case UpdateStatus.UpToDate:
+                    NotificationOverlay.Show(Strings.Get("Update_Latest"), actionable: false, isError: false);
+                    break;
+                default:
+                    NotificationOverlay.Show(Strings.Get("Update_Failed"), actionable: false, isError: true);
+                    break;
+            }
+        }
+        catch
+        {
+            // 检查失败不是灾难，也绝不该把程序带崩——如实说一句「稍后重试」就收工。
+            NotificationOverlay.Show(Strings.Get("Update_Failed"), actionable: false, isError: true);
+        }
+        finally
+        {
+            CheckUpdateBtn.Content = busy;
+            CheckUpdateBtn.IsEnabled = true;
+        }
+    }
+
+    /// <summary>打开解压出来的新程序所在的文件夹。</summary>
+    private static void OpenFolder(string? exePath)
+    {
+        if (string.IsNullOrWhiteSpace(exePath)) return;
+        try
+        {
+            var dir = Path.GetDirectoryName(exePath);
+            if (string.IsNullOrEmpty(dir)) return;
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(dir) { UseShellExecute = true });
+        }
+        catch { }
+    }
+
+    /// <summary>本程序自己的版本号，跟「关于」里显示的一致。</summary>
+    internal static string AppVersion()
+    {
+        var v = typeof(MainWindow).Assembly.GetName().Version;
+        return v == null ? "0.0.0" : $"{v.Major}.{v.Minor}.{v.Build}";
     }
 
     /// <summary>把两个自启复选框读成三态（关 / 普通 / 提权）落到系统里。提权那档要过 UAC，

@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>التشغيل مع بدء Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>كمسؤول</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>تشغيل مرتفع الصلاحية عبر مهمة مجدولة: مطالبة UAC واحدة عند التحديد، ثم يبدأ كل إقلاع بصمت كمسؤول. تصبح نوافذ البرامج المرتفعة قابلة للنقل، ولا تتعطل الإيماءات بعد الآن عندما تكون إحداها في المقدمة</value></data>
+  <data name="Settings_CheckUpdates"><value>البحث عن تحديثات</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>عند التفعيل يتصل البرنامج مرة واحدة عند بدء التشغيل بـ GitHub للتحقق من وجود إصدار أحدث — وهو اتصاله الوحيد بالإنترنت؛ وكل ما عداه يجري على جهازك.</value></data>
+  <data name="Settings_CheckNow"><value>تحقّق الآن</value></data>
+  <data name="Update_Checking"><value>جارٍ البحث عن تحديثات…</value></data>
+  <data name="Update_Latest"><value>أنت تستخدم أحدث إصدار بالفعل.</value></data>
+  <data name="Update_Ready"><value>تم تنزيل الإصدار {0}. البرنامج الجديد موجود في {1}. أغلق البرنامج الجاري تشغيله وانسخ الجديد فوقه لإتمام التحديث.</value></data>
+  <data name="Update_Failed"><value>تعذّر البحث عن تحديثات. حاول مرة أخرى لاحقًا.</value></data>
+  <data name="Update_VerifyFailed"><value>الملف المنزَّل لم يطابق المجموع الاختباري المنشور، لذلك تم التخلص منه. حاول مرة أخرى لاحقًا.</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>تخطي تطبيقات ملء الشاشة</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>البقاء في صينية النظام عند الإغلاق</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>تتغيّر اللغة بعد إعادة التشغيل. إعادة التشغيل الآن؟</value></data>

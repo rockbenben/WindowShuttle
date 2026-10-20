@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Windows 起動時に実行</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>管理者として</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>タスクスケジューラ経由の管理者自動起動：チェック時に一度だけ UAC が出て、以後は毎回起動時に静かに管理者として立ち上がります。管理者プログラムのウィンドウが移動できるようになり、それらが前面にある間ジェスチャが死ぬこともなくなります</value></data>
+  <data name="Settings_CheckUpdates"><value>更新を確認</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>オンにすると起動時に 1 回だけ GitHub に接続して新しいバージョンを確認します。他の機能はすべてこの端末内で完結します。</value></data>
+  <data name="Settings_CheckNow"><value>今すぐ確認</value></data>
+  <data name="Update_Checking"><value>更新を確認しています……</value></data>
+  <data name="Update_Latest"><value>すでに最新バージョンです。</value></data>
+  <data name="Update_Ready"><value>バージョン {0} をダウンロードしました。新しいプログラムは {1} にあります。更新するには実行中のプログラムを終了してから、新しいプログラムをコピーして置き換えてください。</value></data>
+  <data name="Update_Failed"><value>更新を確認できませんでした。しばらくしてからもう一度お試しください。</value></data>
+  <data name="Update_VerifyFailed"><value>ダウンロードしたファイルが公開されているチェックサムと一致しないため破棄しました。しばらくしてからもう一度お試しください。</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>全画面アプリをスキップ</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>閉じてもトレイに常駐する</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>言語は再起動後に反映されます。今すぐ再起動しますか？</value></data>

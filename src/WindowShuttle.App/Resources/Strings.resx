@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>开机自启</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>以管理员身份</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>通过计划任务提权自启：勾选时过一次 UAC，之后每次开机都静默以管理员身份启动。管理员程序的窗口从此搬得动，手势也不再因为它们占前台而失灵</value></data>
+  <data name="Settings_CheckUpdates"><value>检查更新</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>开启后每次启动联网访问 GitHub 一次，看看有没有新版本——这是本程序唯一的联网行为，其余功能全在本机完成。</value></data>
+  <data name="Settings_CheckNow"><value>立即检查</value></data>
+  <data name="Update_Checking"><value>正在检查更新……</value></data>
+  <data name="Update_Latest"><value>已是最新版本。</value></data>
+  <data name="Update_Ready"><value>新版本 {0} 已下载，新程序在 {1}。请先退出正在运行的程序，再把新程序复制过去完成更新。</value></data>
+  <data name="Update_Failed"><value>检查更新失败，请稍后重试。</value></data>
+  <data name="Update_VerifyFailed"><value>下载的文件与发布的校验值不一致，已丢弃。请稍后重试。</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>跳过全屏应用</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>关闭后留在托盘运行</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>语言将在重启后生效。现在重启？</value></data>

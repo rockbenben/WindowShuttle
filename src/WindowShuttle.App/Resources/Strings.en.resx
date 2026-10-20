@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Start with Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>As administrator</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Starts elevated via a scheduled task: one UAC prompt when you tick this, then every boot starts silently as administrator. Windows of elevated programs become movable, and gestures stop going dead while one is in the foreground</value></data>
+  <data name="Settings_CheckUpdates"><value>Check for updates</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>When on, contacts GitHub once at startup to see whether a newer version exists — the only time this program goes online; everything else stays on your machine.</value></data>
+  <data name="Settings_CheckNow"><value>Check now</value></data>
+  <data name="Update_Checking"><value>Checking for updates…</value></data>
+  <data name="Update_Latest"><value>You're on the latest version.</value></data>
+  <data name="Update_Ready"><value>New version {0} was downloaded. The new program is at {1}. Quit the running program and copy it over to update.</value></data>
+  <data name="Update_Failed"><value>Couldn't check for updates. Try again later.</value></data>
+  <data name="Update_VerifyFailed"><value>The downloaded file did not match the published checksum, so it was discarded. Please try again later.</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Skip fullscreen apps</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>Keep running in the tray when closed</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>The language changes after a restart. Restart now?</value></data>

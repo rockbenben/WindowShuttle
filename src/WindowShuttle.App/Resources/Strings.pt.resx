@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Iniciar com o Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Como administrador</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Início elevado por tarefa agendada: um aviso de UAC ao marcar e, depois, cada arranque inicia em silêncio como administrador. As janelas de programas elevados passam a poder ser movidas e os gestos deixam de morrer quando um deles está em primeiro plano</value></data>
+  <data name="Settings_CheckUpdates"><value>Procurar atualizações</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>Se estiver ativado, o programa liga-se uma vez ao arrancar ao GitHub para ver se existe uma versão mais recente — é a única ligação à internet deste programa; tudo o resto acontece no seu computador.</value></data>
+  <data name="Settings_CheckNow"><value>Verificar agora</value></data>
+  <data name="Update_Checking"><value>A procurar atualizações…</value></data>
+  <data name="Update_Latest"><value>Já tem a versão mais recente.</value></data>
+  <data name="Update_Ready"><value>A versão {0} foi transferida. O novo programa está em {1}. Feche o programa em execução e copie o novo por cima para atualizar.</value></data>
+  <data name="Update_Failed"><value>Não foi possível procurar atualizações. Tente novamente mais tarde.</value></data>
+  <data name="Update_VerifyFailed"><value>O ficheiro transferido não corresponde à soma de verificação publicada, por isso foi descartado. Tente novamente mais tarde.</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Ignorar aplicativos em tela cheia</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>Continuar na bandeja ao fechar</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>O idioma muda após reiniciar. Reiniciar agora?</value></data>

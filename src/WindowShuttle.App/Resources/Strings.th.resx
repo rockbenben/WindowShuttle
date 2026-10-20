@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>เริ่มพร้อม Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>ในฐานะผู้ดูแลระบบ</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>เริ่มแบบยกระดับผ่าน Task Scheduler: ติ๊กแล้วมี UAC ครั้งเดียว จากนั้นทุกครั้งที่เปิดเครื่องจะเริ่มเป็นผู้ดูแลระบบเงียบ ๆ หน้าต่างของโปรแกรมสิทธิ์ผู้ดูแลจะย้ายได้ และท่าทางจะไม่ตายอีกเมื่อโปรแกรมพวกนั้นอยู่หน้าสุด</value></data>
+  <data name="Settings_CheckUpdates"><value>ตรวจหาการอัปเดต</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>เมื่อเปิด โปรแกรมจะเชื่อมต่อ GitHub หนึ่งครั้งตอนเริ่มทำงานเพื่อดูว่ามีเวอร์ชันใหม่หรือไม่ — นั่นคือการเชื่อมต่ออินเทอร์เน็ตเพียงครั้งเดียวของโปรแกรม ส่วนอื่นทำงานบนเครื่องของคุณทั้งหมด</value></data>
+  <data name="Settings_CheckNow"><value>ตรวจตอนนี้</value></data>
+  <data name="Update_Checking"><value>กำลังตรวจหาการอัปเดต…</value></data>
+  <data name="Update_Latest"><value>คุณใช้เวอร์ชันล่าสุดอยู่แล้ว</value></data>
+  <data name="Update_Ready"><value>ดาวน์โหลดเวอร์ชัน {0} แล้ว โปรแกรมใหม่อยู่ที่ {1} กรุณาออกจากโปรแกรมที่กำลังใช้งาน แล้วคัดลอกโปรแกรมใหม่ไปทับเพื่ออัปเดต</value></data>
+  <data name="Update_Failed"><value>ตรวจหาการอัปเดตไม่สำเร็จ กรุณาลองใหม่อีกครั้งในภายหลัง</value></data>
+  <data name="Update_VerifyFailed"><value>ไฟล์ที่ดาวน์โหลดไม่ตรงกับค่าตรวจสอบที่ประกาศไว้ จึงถูกยกเลิก กรุณาลองใหม่อีกครั้งในภายหลัง</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>ข้ามแอปเต็มจอ</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>ปิดแล้วยังทำงานในเทรย์</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>ภาษาจะเปลี่ยนหลังเริ่มใหม่ เริ่มใหม่เลยไหม</value></data>

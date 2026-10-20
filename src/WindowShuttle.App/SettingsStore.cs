@@ -37,6 +37,14 @@ public sealed class Settings
     public int? WindowTop { get; set; }
     public int? WindowWidth { get; set; }
     public int? WindowHeight { get; set; }
+
+    // 开机检查更新：**默认关**，而且是本程序**唯一**会联网的行为——其余一切都在本机完成。
+    //
+    // 开启后每次启动问一次 GitHub 有没有新版本；有就把自包含的那份 zip 下载下来、核对发布页
+    // 附的 SHA-256，再解压到 %LOCALAPPDATA%\WindowShuttle\Updates\<版本>\，然后告诉用户新程序
+    // 在哪。**不覆盖正在运行的自己**：Windows 锁着运行中的 exe，覆写会撞共享冲突，还会留下
+    // 半个装坏的程序。换不换是用户的事，得先把旧的那个关掉。
+    public bool CheckUpdates { get; set; } = false;
 }
 
 public static class SettingsStore

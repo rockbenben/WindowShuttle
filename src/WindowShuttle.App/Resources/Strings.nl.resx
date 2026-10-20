@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Starten met Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Als beheerder</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Verhoogd starten via een geplande taak: één UAC-prompt bij het aanvinken, daarna start elke boot stil als beheerder. Vensters van verhoogde programma's worden verplaatsbaar en gebaren vallen niet meer uit zolang er één op de voorgrond staat</value></data>
+  <data name="Settings_CheckUpdates"><value>Controleren op updates</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>Als dit aan staat, neemt het programma bij het starten één keer contact op met GitHub om te zien of er een nieuwere versie is — dat is het enige moment waarop dit programma online gaat; al het andere blijft op je computer.</value></data>
+  <data name="Settings_CheckNow"><value>Nu controleren</value></data>
+  <data name="Update_Checking"><value>Updates controleren…</value></data>
+  <data name="Update_Latest"><value>Je hebt al de nieuwste versie.</value></data>
+  <data name="Update_Ready"><value>Versie {0} is gedownload. Het nieuwe programma staat in {1}. Sluit het actieve program af en kopieer het nieuwe erover om bij te werken.</value></data>
+  <data name="Update_Failed"><value>Kon niet op updates controleren. Probeer het later opnieuw.</value></data>
+  <data name="Update_VerifyFailed"><value>Het gedownloade bestand komt niet overeen met de gepubliceerde controlesom en is dus weggegooid. Probeer het later opnieuw.</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>Apps op volledig scherm overslaan</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>In het systeemvak blijven draaien bij sluiten</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>De taal verandert na een herstart. Nu opnieuw starten?</value></data>

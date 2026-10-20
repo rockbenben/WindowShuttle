@@ -50,6 +50,14 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Windows के साथ शुरू करें</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>व्यवस्थापक के रूप में</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>शेड्यूल्ड टास्क से व्यवस्थापक ऑटो-स्टार्ट: टिक करते समय एक बार UAC आता है, फिर हर बूट चुपचाप व्यवस्थापक के रूप में शुरू होता है। व्यवस्थापक प्रोग्रामों की विंडो हिलाई जा सकेंगी और उनके सामने रहते जेस्चर बंद नहीं होंगे</value></data>
+  <data name="Settings_CheckUpdates"><value>अपडेट देखें</value></data>
+  <data name="Settings_CheckUpdatesTip"><value>चालू होने पर यह प्रोग्राम हर बार शुरू होते समय GitHub से एक बार जुड़कर देखता है कि नया संस्करण है या नहीं — यह कार्यक्रम का इंटरनेट से जुड़ना एकमात्र बार है; बाकी सब आपके कंप्यूटर पर ही होता है।</value></data>
+  <data name="Settings_CheckNow"><value>अभी देखें</value></data>
+  <data name="Update_Checking"><value>अपडेट देख रहे हैं…</value></data>
+  <data name="Update_Latest"><value>आप पहले से ही नवीनतम संस्करण पर हैं।</value></data>
+  <data name="Update_Ready"><value>संस्करण {0} डाउनलोड हो गया। नया प्रोग्राम {1} पर है। अपडेट करने के लिए चल रहा प्रोग्राम बंद करें और नए प्रोग्राम को उसके ऊपर कॉपी करें।</value></data>
+  <data name="Update_Failed"><value>अपडेट नहीं देखे जा सके। कृपया बाद में फिर कोशिश करें।</value></data>
+  <data name="Update_VerifyFailed"><value>डाउनलोड की गई फ़ाइल प्रकाशित चेकसम से मेल नहीं खाती, इसलिए उसे हटा दिया गया। कृपया बाद में फिर कोशिश करें।</value></data>
   <data name="Settings_SkipFullscreen" xml:space="preserve"><value>पूर्ण स्क्रीन ऐप छोड़ें</value></data>
   <data name="Settings_CloseToTray" xml:space="preserve"><value>बंद करने पर ट्रे में चलता रहे</value></data>
   <data name="Settings_RestartPrompt" xml:space="preserve"><value>भाषा फिर से शुरू करने पर लागू होगी। अभी फिर से शुरू करें?</value></data>
