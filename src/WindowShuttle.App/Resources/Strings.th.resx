@@ -14,7 +14,7 @@
   <data name="Action_ToPrimary" xml:space="preserve"><value>ส่งไปจอหลัก</value></data>
   <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>ส่งหน้าต่างไปยังจอหลัก</value></data>
   <data name="Action_Gather" xml:space="preserve"><value>รวบทั้งหมด</value></data>
-  <data name="Action_Gather_Desc" xml:space="preserve"><value>รวบหน้าต่างทั้งหมดมาที่จอหลัก รวมถึงที่ค้างอยู่นอกจอ</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>รวบหน้าต่างทั้งหมดจากจอรองมาที่จอหลัก</value></data>
   <data name="Action_Undo" xml:space="preserve"><value>เลิกทำ</value></data>
   <data name="Action_Undo_Desc" xml:space="preserve"><value>คืนตำแหน่งก่อนการย้ายครั้งล่าสุด</value></data>
   <data name="Action_Identify" xml:space="preserve"><value>หมายเลขจอ</value></data>
@@ -35,7 +35,7 @@
   <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>มีจอเดียว</value></data>
   <data name="NoOp_NothingToDo" xml:space="preserve"><value>ไม่มีหน้าต่างให้ย้าย</value></data>
   <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>ไม่มีหน้าต่างใต้เคอร์เซอร์</value></data>
-  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>ย้ายหน้าต่างที่ใช้งานอยู่ไม่ได้</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>ย้ายหน้าต่างนี้ไม่ได้ — เลือกหน้าต่างอื่น</value></data>
   <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>อยู่บนจอเป้าหมายแล้ว</value></data>
   <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>ไม่มีจอในทิศทางนั้น</value></data>
   <data name="NoOp_Error" xml:space="preserve"><value>ย้ายไม่สำเร็จ ตำแหน่งหน้าต่างไม่เปลี่ยน</value></data>

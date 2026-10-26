@@ -9,9 +9,10 @@ namespace WindowShuttle.App;
 /// SettingsStore），全部默认空。RegisterHotKey 绑不了鼠标按钮，只能上全局低级钩子 WH_MOUSE_LL——跟
 /// HotkeyService 同构（IDisposable + Apply(Settings) + 事件），但没有它的三态返回：钩子没有
 /// "注册期冲突"这个概念，SetWindowsHookEx 要么成功要么失败，不存在"这个组合被占了"的信号
-/// （见 mouse-hook-spike.md §"The unavoidable part"）。
+/// （见 docs/design-notes.md 里"Mouse gestures have no conflict signal"与"The hook thread and
+/// its 300 ms budget"两节）。
 ///
-/// 安全边界都在 HookProc 里，逐条对应 spike 的结论：
+/// 安全边界都在 HookProc 里，逐条对应那次实测的结论：
 /// - 回调必须便宜到可以忽略——先比一次消息类型（是不是 R/M/X 三种按钮按下之一），不是就直接落到
 ///   CallNextHookEx，连 GetAsyncKeyState 都不碰。这一条挡掉了绝大多数流量（WM_MOUSEMOVE
 ///   是压倒性大头），不分配、不加锁、不写日志、不做 I/O。XBUTTONDOWN 才需要多读一次 lParam 里的
@@ -29,7 +30,7 @@ namespace WindowShuttle.App;
 ///   「必须来服务这个回调的那条线程」的队列——回调确实没在里面跑，300ms 的预算却照样被它花光。
 ///   这台机器上光枚举窗口就要 10~30ms（983 扇窗），再加跨进程的 SetWindowPos/SetWindowPlacement
 ///   （同步等目标进程回应）、覆盖层窗口、配置落盘，一次动作轻易越过 300ms。超时的后果不是"慢
-///   一点"：全系统的鼠标输入都卡在那儿等这个钩子，然后被静默跳过（spike：驱逐应用侧探测不到）。
+///   一点"：全系统的鼠标输入都卡在那儿等这个钩子，然后被静默跳过（驱逐之后应用侧探测不到）。
 ///   所以钩子现在跑在自己的专用线程上（<see cref="HookThread"/>），那条线程除了泵消息什么都不干，
 ///   UI 线程再忙也压不到它。改这个类时唯一要守住的就是这条：别再往钩子线程上放任何会阻塞的活儿。
 /// </summary>
@@ -104,7 +105,9 @@ public sealed class MouseChordService : IDisposable
             ChordDebug.Log($"replay btn={b} at {x},{y} downOnly={downOnly} sent={sent} err={Marshal.GetLastWin32Error()}");
     }
 
-    // 必须跟 HotkeyService.Actions / MainWindow.ActionKeys / SettingsStore 的两张默认表逐字一致。
+    // 必须跟 HotkeyService.Actions / MainWindow.ActionKeys / SettingsStore 的两张默认表**覆盖同一批
+    // 动作**（集合相等即可，顺序不必一致：MainWindow.ActionKeys 按用得多少排，本文件的 Actions 按
+    // 注册优先级排——Resolve 取第一个命中的，所以这里的顺序是有意义的，见下面 Installed 的注释）。
     // 加动作时这里被漏掉过一次，后果不是"新动作不能用"这么轻：给新动作录一个已被占用的手势，
     // AssignMouseChord 会先从原主人那儿收走，而这张表里没有新动作、Apply 也就不会装上它——
     // 那个组合从此谁都不响应，界面上两格却都显示已绑定（鼠标侧没有冲突态可标）。
@@ -295,10 +298,6 @@ public sealed class MouseChordService : IDisposable
         });
     }
 
-    /// <summary>
-    /// 装/卸钩子跟"有没有绑任何一个 chord"对齐：一个都没绑就彻底不装钩子，进程里不存在这个钩子，
-    /// 不是"装了但不触发"——没绑过任何 chord 的用户不该承担任何鼠标钩子相关的风险（§own-decision）。
-    /// </summary>
     /// <summary>这条 chord 能不能真的装到钩子上。裸按钮只有「按方向送」放行，规则和理由都在
     /// <see cref="SettingsStore.AllowsBareButton"/>。
     ///
@@ -334,6 +333,8 @@ public sealed class MouseChordService : IDisposable
         return chords;
     }
 
+    /// <summary>装/卸钩子跟"有没有绑任何一个 chord"对齐：一个都没绑就彻底不装钩子，进程里不存在这个钩子，
+    /// 不是"装了但不触发"——没绑过任何 chord 的用户不该承担任何鼠标钩子相关的风险（§own-decision）。</summary>
     public void Apply(Settings s)
     {
         _chords = Installed(s);

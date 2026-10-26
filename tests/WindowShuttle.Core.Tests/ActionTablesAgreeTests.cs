@@ -38,7 +38,8 @@ public class ActionTablesAgreeTests
     public void Every_action_table_covers_exactly_the_bindable_actions(string name, string[] table)
     {
         Assert.Equal(Bindable.ToHashSet(), table.ToHashSet());
-        Assert.Equal(Bindable.Length, table.Length);       // 没有重复项
+        // 表名进失败信息：出问题时它是唯一认得出的线索（xUnit1026：Theory 的参数必须用上）
+        Assert.True(table.Length == Bindable.Length, $"{name}: 表里多出或少了动作");
     }
 
     /// <summary>每个名字都要真能解析回枚举——表里写错一个字母，Apply 里的 Enum.Parse 会在

@@ -14,7 +14,7 @@
   <data name="Action_ToPrimary" xml:space="preserve"><value>送去主螢幕</value></data>
   <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>把視窗送到主螢幕</value></data>
   <data name="Action_Gather" xml:space="preserve"><value>全部收攏</value></data>
-  <data name="Action_Gather_Desc" xml:space="preserve"><value>把所有視窗收攏回主螢幕，包括拔掉顯示器後卡在螢幕外的</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>把還留在副螢幕上的視窗全部收攏回主螢幕</value></data>
   <data name="Action_Undo" xml:space="preserve"><value>復原</value></data>
   <data name="Action_Undo_Desc" xml:space="preserve"><value>恢復上一次搬移前的位置</value></data>
   <data name="Action_Identify" xml:space="preserve"><value>螢幕序號</value></data>
@@ -35,7 +35,7 @@
   <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>只有一個螢幕</value></data>
   <data name="NoOp_NothingToDo" xml:space="preserve"><value>沒有可搬移的視窗</value></data>
   <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>滑鼠下沒有視窗</value></data>
-  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>目前視窗搬不動</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>這扇視窗搬不動——請點擊另一個視窗</value></data>
   <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>視窗已在目標螢幕上</value></data>
   <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>那個方向沒有螢幕</value></data>
   <data name="NoOp_Error" xml:space="preserve"><value>無法完成搬移，視窗位置沒有變動</value></data>

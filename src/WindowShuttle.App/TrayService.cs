@@ -21,11 +21,11 @@ public sealed class TrayService : IDisposable
     /// 独立的 static readonly 表（而不是散在构造函数里的 AddAction 调用序列）纯粹是为了能测：
     /// "前两个是不是 Swap/Undo""动作有没有一个不漏"都能直接断言表本身，不用真的拉一个
     /// TaskbarIcon（那个东西连着 pack://，脱离一个跑起来的 Application 未必立得住）。</summary>
-    /// <summary>跟主窗口的动作卡同一个顺序（<see cref="MainWindow.ActionKeys"/>，按用得多少排），
+    /// <remarks>跟主窗口的动作卡同一个顺序（<see cref="MainWindow.ActionKeys"/>，按用得多少排），
     /// 少了按方向送屏、多了屏幕序号：
     ///   · **按方向送屏进不来**——菜单点一下带不出方向，它只有手势这一个入口；
     ///   · **屏幕序号只在这里和地图栏有**——它不是搬窗动作，不占键位，所以排在最后。
-    /// 两处顺序必须一致：同一份清单在两个界面上排得不一样，用户会以为是两套功能。</summary>
+    /// 两处顺序必须一致：同一份清单在两个界面上排得不一样，用户会以为是两套功能。</remarks>
     public static readonly (string ResxKey, WindowShuttleAction Action)[] ActionMenuSpec =
     [
         ("Action_Undo", WindowShuttleAction.Undo),
@@ -40,10 +40,9 @@ public sealed class TrayService : IDisposable
     public TrayService(CommandRouter router, Action openMain, Action exit)
     {
         _router = router;
-        // 托盘菜单拿不到 App.OnStartup 那次 RTL 元数据覆盖：那次覆盖的是 typeof(Window)，而这个
-        // ContextMenu 是 new 出来的、从不进任何 Window 的可视树，继承链上根本没有 Window。
-        // 不显式设的话，阿拉伯语下整个应用都镜像了，唯独这一处还是从左向右——而它恰恰是主窗口
-        // 关掉之后唯一还够得着的界面。
+        // 托盘菜单不在任何窗口的可视树里，拿不到窗口那一级的 FlowDirection——它是自己 new 出来的
+        // ContextMenu，继承链上根本没有 Window。不显式设的话，阿拉伯语下整个应用都镜像了，唯独这一处
+        // 还是从左向右——而它恰恰是主窗口关掉之后唯一还够得着的界面。
         var menu = new ContextMenu
         {
             FlowDirection = Strings.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight,
@@ -64,7 +63,7 @@ public sealed class TrayService : IDisposable
         // 看门狗），而就算靠快捷键绕过手势，SetWindowPos 照样会被拒（§9）。所以给这类用户加一个
         // 快捷键并不能解决问题，唯一真正管用的是整个进程提权。
         //
-        // 原来这条路只能从"搬运失败"那张气泡点进去——非得先撞一次墙才找得到出口。放进托盘菜单，
+        // 原来这条路只能从"搬运失败"那张提示卡点进去——非得先撞一次墙才找得到出口。放进托盘菜单，
         // 它就成了一个随时可选的选项。已经提权时不显示：那时候点它没有任何意义。
         if (!IsElevated())
             AddItem(menu, Strings.Get("Tray_RestartElevated"), OfferElevation);
@@ -158,11 +157,13 @@ public sealed class TrayService : IDisposable
     /// 需要提权才能搬的窗口（可点击，提供"点它重启"这条出路）；非权限原因的失败（§own-decision，
     /// 用户已批准：这类失败也不能静默吞掉，哪怕没有一个"点它就能修"的出路）；一次 no-op，带上
     /// 原因，让"什么都没发生"这件事本身有个交代；错误——它本身也走 NoOp（NoOpReason.Error，见
-    /// CommandRouter 的 catch 兜底），所以跟 no-op 共用同一个分支，不用单独判。除此之外一律静默：
+    /// CommandRouter 的 catch 兜底），所以跟 no-op 共用同一个分支，不用单独判。
+    /// 第四种例外是无人触发的自动救援**成功**——那次搬运没人点过，必须出声解释自己（见下面那条
+    /// Rescue 分支）。除此之外一律静默：
     /// 一次成功的搬运，哪怕伴随 SkippedFullscreen/SkippedHung/Corrected 这些计数，窗口动了就是
     /// 反馈本身——这些计数只进 CLI 输出（App.Describe）给脚本看，绝不在这里显形，也绝不出声、
     /// 绝不进操作中心。AccessDenied 和 OtherFailed 同时非零时只报 AccessDenied——它是唯一带得出路
-    /// 的那条，气泡一次只能显示一条，不排队堆叠（见 NotificationOverlay.Show）。
+    /// 的那条，提示卡一次只能显示一条，不排队堆叠（见 NotificationOverlay.Show）。
     ///
     /// 拆成一个纯函数（不摸 NotificationOverlay/TaskbarIcon，只吃 ExecResult+WindowShuttleAction 吐
     /// NotifyRequest?）纯粹是为了能测：四种该响的情形、以及"成功搬运/只有跳过计数"不该响，都能

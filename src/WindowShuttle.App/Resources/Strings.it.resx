@@ -14,7 +14,7 @@
   <data name="Action_ToPrimary" xml:space="preserve"><value>Manda al principale</value></data>
   <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>Manda la finestra sul monitor principale</value></data>
   <data name="Action_Gather" xml:space="preserve"><value>Raccogli tutto</value></data>
-  <data name="Action_Gather_Desc" xml:space="preserve"><value>Raccoglie tutte le finestre sul monitor principale, comprese quelle bloccate fuori schermo</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>Raccoglie sul monitor principale tutte le finestre che si trovano sugli altri monitor</value></data>
   <data name="Action_Undo" xml:space="preserve"><value>Annulla</value></data>
   <data name="Action_Undo_Desc" xml:space="preserve"><value>Ripristina le posizioni precedenti all'ultimo spostamento</value></data>
   <data name="Action_Identify" xml:space="preserve"><value>Numero schermo</value></data>
@@ -35,7 +35,7 @@
   <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>C'è un solo monitor</value></data>
   <data name="NoOp_NothingToDo" xml:space="preserve"><value>Nessuna finestra da spostare</value></data>
   <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>Nessuna finestra sotto il cursore</value></data>
-  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>La finestra attiva non può essere spostata</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>Questa finestra non può essere spostata — scegline un'altra</value></data>
   <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>Già sul monitor di destinazione</value></data>
   <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>Nessuno schermo in quella direzione</value></data>
   <data name="NoOp_Error" xml:space="preserve"><value>Spostamento non completato; nulla è stato riposizionato</value></data>

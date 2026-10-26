@@ -12,10 +12,10 @@ public enum WindowShuttleAction
 /// <summary>Error 不是任何 planner 产出的：它是 CommandRouter.Execute 的 catch 兜底用的占位值，
 /// 复用既有的 NoOp 渲染通路（CLI 的 Describe、托盘的 NoOp_{reason} resx 查找）去报告一次执行期失败，
 /// 不必为「出错了」另开一条 App 层专属的渲染路径。</summary>
-/// <summary><see cref="CursorNotOnWindow"/> 和 <see cref="FocusNotMovable"/> 是同一件事的两种说法，
+/// <remarks><see cref="CursorNotOnWindow"/> 和 <see cref="FocusNotMovable"/> 是同一件事的两种说法，
 /// 必须分开：前者属于鼠标手势（"你指的那个位置上没有能搬的窗"），后者属于快捷键/托盘/命令行
 /// （"你正在用的那扇窗搬不动"）。合并成一条的代价是至少有一条入口在说假话——键盘用户看到
-/// 「鼠标下没有窗口」时，鼠标在哪儿跟他刚做的事毫无关系。</summary>
+/// 「鼠标下没有窗口」时，鼠标在哪儿跟他刚做的事毫无关系。</remarks>
 public enum NoOpReason
 {
     OnlyOneMonitor, NothingToDo, CursorNotOnWindow, FocusNotMovable,
@@ -45,8 +45,8 @@ public sealed record PlanRequest(
 
 /// <param name="Target">屏幕坐标。ShowState=Normal 走 SetWindowPos；Minimized/Maximized 走 placement（§7）。</param>
 /// <param name="DestWork">目标屏工作区。WindowCommitter 提交后拿它做第二遍测量纠偏——某些应用
-/// （典型是 WPF 默认 WM_DPICHANGED 处理）会在我们落位后自己按 DPI 比例再缩放一次，见
-/// overflow-diagnosis.md。只有 ShowState.Normal 的移动会用到它。</param>
+/// （典型是 WPF 默认 WM_DPICHANGED 处理）会在我们落位后自己按 DPI 比例再缩放一次。
+/// 只有 ShowState.Normal 的移动会用到它。</param>
 public sealed record PlannedMove(nint Hwnd, ShowState ShowState, RectPx Target, RectPx DestWork);
 
 /// <param name="RaiseMoved">提交后把搬动的那扇窗提到最前。只给「你指着一扇窗，把它送过去」这类动作用

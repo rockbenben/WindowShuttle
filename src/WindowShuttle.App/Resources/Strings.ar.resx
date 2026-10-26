@@ -14,7 +14,7 @@
   <data name="Action_ToPrimary" xml:space="preserve"><value>إرسال إلى الرئيسية</value></data>
   <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>يرسل النافذة إلى الشاشة الرئيسية</value></data>
   <data name="Action_Gather" xml:space="preserve"><value>جمع الكل</value></data>
-  <data name="Action_Gather_Desc" xml:space="preserve"><value>يجمع كل النوافذ في الشاشة الرئيسية، بما فيها العالقة خارج الشاشة</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>يجمع كل النوافذ الموجودة على الشاشات الثانوية إلى الشاشة الرئيسية</value></data>
   <data name="Action_Undo" xml:space="preserve"><value>تراجع</value></data>
   <data name="Action_Undo_Desc" xml:space="preserve"><value>يستعيد المواضع كما كانت قبل آخر نقل</value></data>
   <data name="Action_Identify" xml:space="preserve"><value>رقم الشاشة</value></data>
@@ -35,7 +35,7 @@
   <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>لا توجد سوى شاشة واحدة</value></data>
   <data name="NoOp_NothingToDo" xml:space="preserve"><value>لا توجد نوافذ لنقلها</value></data>
   <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>لا توجد نافذة تحت المؤشر</value></data>
-  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>لا يمكن نقل النافذة النشطة</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>لا يمكن نقل هذه النافذة — اختر نافذة أخرى</value></data>
   <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>النافذة على الشاشة الهدف بالفعل</value></data>
   <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>لا توجد شاشة في هذا الاتجاه</value></data>
   <data name="NoOp_Error" xml:space="preserve"><value>تعذّر إتمام النقل؛ لم يتغيّر موضع أي نافذة</value></data>

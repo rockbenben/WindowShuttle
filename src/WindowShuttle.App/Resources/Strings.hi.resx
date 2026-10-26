@@ -14,7 +14,7 @@
   <data name="Action_ToPrimary" xml:space="preserve"><value>मुख्य स्क्रीन पर भेजें</value></data>
   <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>विंडो को मुख्य मॉनिटर पर भेजता है</value></data>
   <data name="Action_Gather" xml:space="preserve"><value>सभी समेटें</value></data>
-  <data name="Action_Gather_Desc" xml:space="preserve"><value>सभी विंडो को मुख्य मॉनिटर पर समेटता है, स्क्रीन से बाहर अटकी विंडो समेत</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>दूसरे मॉनिटरों की सभी विंडो को मुख्य मॉनिटर पर समेटता है</value></data>
   <data name="Action_Undo" xml:space="preserve"><value>पूर्ववत करें</value></data>
   <data name="Action_Undo_Desc" xml:space="preserve"><value>पिछले स्थानांतरण से पहले की स्थिति लौटाता है</value></data>
   <data name="Action_Identify" xml:space="preserve"><value>स्क्रीन संख्या</value></data>
@@ -35,7 +35,7 @@
   <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>केवल एक मॉनिटर है</value></data>
   <data name="NoOp_NothingToDo" xml:space="preserve"><value>स्थानांतरित करने के लिए कोई विंडो नहीं</value></data>
   <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>कर्सर के नीचे कोई विंडो नहीं</value></data>
-  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>सक्रिय विंडो को हिलाया नहीं जा सकता</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>यह विंडो हिलाई नहीं जा सकती — दूसरी विंडो चुनें</value></data>
   <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>विंडो पहले से लक्षित मॉनिटर पर है</value></data>
   <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>उस दिशा में कोई स्क्रीन नहीं है</value></data>
   <data name="NoOp_Error" xml:space="preserve"><value>स्थानांतरण पूरा नहीं हो सका; किसी विंडो की जगह नहीं बदली</value></data>

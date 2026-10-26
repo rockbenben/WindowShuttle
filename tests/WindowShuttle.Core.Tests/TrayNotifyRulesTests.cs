@@ -102,7 +102,7 @@ public class TrayNotifyRulesTests
         Assert.Equal(Strings.Plural("Toast_OtherFailed", 2), n.Value.Text);
     }
 
-    // 气泡一次只能显示一条（NotificationOverlay 不排队）：两种失败同时发生时，AccessDenied 优先——
+    // 提示卡一次只能显示一条（NotificationOverlay 不排队）：两种失败同时发生时，AccessDenied 优先——
     // 它是唯一带得出路（点它提权重启）的那条。
     [Fact] public void AccessDenied_takes_priority_over_OtherFailed_when_both_are_nonzero()
     {

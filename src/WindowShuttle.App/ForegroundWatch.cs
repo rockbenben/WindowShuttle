@@ -104,7 +104,8 @@ internal sealed class ForegroundWatch : IDisposable
         if (GetWindowThreadProcessId(hwnd, out uint pid) == 0 || pid == 0) return;
         bool blocks = BlocksUs(pid);
         // 每一次前台切换都记一行，不只记会报警的那些。"卡为什么没弹"有三种断法——事件没来、
-        // 完整性判低了、判对了但被"一个会话只说一次"压掉——隔着屏幕分不出是哪一种，猜过一次就够了。
+        // 完整性判低了、判对了但被"最近用过手势"的时间窗压掉（见 App 里的 GestureRecency）——
+        // 隔着屏幕分不出是哪一种，猜过一次就够了。
         if (ChordDebug.Enabled)
             ChordDebug.Log($"fg     pid={pid} integrity=0x{IntegrityOf(pid)?.ToString("X") ?? "?"} blocks={blocks}");
         // 换到别处就撤销计时：只有**停住**才算，见 Dwell。

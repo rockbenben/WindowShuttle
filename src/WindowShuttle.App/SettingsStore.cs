@@ -22,7 +22,7 @@ public sealed class Settings
     public bool RescueOnDisplayChange { get; set; } = false;
     public Dictionary<string, string> Hotkeys { get; set; } = [];
     // 鼠标 chord 表，跟 Hotkeys 同构：键是 WindowShuttleAction 成员名，值是 MouseChordGesture.ToString()
-    // 或空串（未绑定）。全部默认空（§own-decision，见 mouse-hook-spike.md）：一个低级鼠标钩子没有
+    // 或空串（未绑定）。全部默认空（§own-decision，见 docs/design-notes.md）：一个低级鼠标钩子没有
     // RegisterHotKey 那种注册期冲突信号，装上就会静默拿走这个手势，不像热键那样能在设置页标红——
     // 默认空是保住"绝不悄悄占用组合"这条原则的唯一办法。没有单独的注册表/别的落地点，就老老实实
     // 待在 JSON 里。曾经是两个写死的 bool（MouseChordToPrimary/MouseChordSwapTop）；SettingsStore.Load
@@ -79,6 +79,23 @@ public static class SettingsStore
         ["Undo"] = "Ctrl+Alt+2",
     };
 
+    /// <summary>只有划动类动作可以绑裸按钮。点击类绑了裸右键 = 全系统右键菜单当场消失，没有任何理由
+    /// 值得这个代价；而划动有两条归还路径——没划出方向就把那次点击原样补发，按住不动超时就把按下交还，
+    /// 两条都不吃菜单。</summary>
+    public static bool AllowsBareButton(string actionKey) => actionKey == "ToDirection";
+
+    /// <summary>这个动作能不能绑键盘快捷键。只有「按方向送屏」不能——**一个热键携带不了方向**。
+    ///
+    /// 这不是洁癖，是修一个真缺陷：它先前在快捷键表里是可录的，而 <see cref="SwapPlanner.Plan"/>
+    /// 的 switch 根本没有它的分支（手势路径在钩子层就把方向换算成了 ToNext+目标屏，压根到不了
+    /// Plan）。于是给它录一个快捷键、按下去，Plan 抛 ArgumentOutOfRangeException，被 CommandRouter
+    /// 的兜底 catch 接成退出码 3，用户看到的是一张红色错误卡——一个明明列在界面上的动作，绑了就报错。
+    ///
+    /// 挡在两处，不是一处：界面上那一格画成不可录（<see cref="MainWindow.BuildCap"/>），
+    /// <see cref="HotkeyService.Apply"/> 也拒绝注册——后者管的是手改 settings.json 那条路，
+    /// 光靠界面挡不住。</summary>
+    public static bool AllowsHotkey(string actionKey) => actionKey != "ToDirection";
+
     /// <summary>出厂只绑四个手势——{Ctrl, Alt} × {右键, 中键} 那半张网格，Shift 整行留白。
     ///
     ///                        右键 = 这一扇窗          中键 = 一次动一堆窗
@@ -126,23 +143,6 @@ public static class SettingsStore
     ///
     /// 代价没有变，所以设置条底部那句警告常驻：低级鼠标钩子没有 RegisterHotKey 那种注册期冲突信号，
     /// 绑上就静默拿走这个组合，界面上没法像快捷键那样标红。</summary>
-    /// <summary>只有划动类动作可以绑裸按钮。点击类绑了裸右键 = 全系统右键菜单当场消失，没有任何理由
-    /// 值得这个代价；而划动有两条归还路径——没划出方向就把那次点击原样补发，按住不动超时就把按下交还，
-    /// 两条都不吃菜单。</summary>
-    public static bool AllowsBareButton(string actionKey) => actionKey == "ToDirection";
-
-    /// <summary>这个动作能不能绑键盘快捷键。只有「按方向送屏」不能——**一个热键携带不了方向**。
-    ///
-    /// 这不是洁癖，是修一个真缺陷：它先前在快捷键表里是可录的，而 <see cref="SwapPlanner.Plan"/>
-    /// 的 switch 根本没有它的分支（手势路径在钩子层就把方向换算成了 ToNext+目标屏，压根到不了
-    /// Plan）。于是给它录一个快捷键、按下去，Plan 抛 ArgumentOutOfRangeException，被 CommandRouter
-    /// 的兜底 catch 接成退出码 3，用户看到的是一张红色错误卡——一个明明列在界面上的动作，绑了就报错。
-    ///
-    /// 挡在两处，不是一处：界面上那一格画成不可录（<see cref="MainWindow.BuildCap"/>），
-    /// <see cref="HotkeyService.Apply"/> 也拒绝注册——后者管的是手改 settings.json 那条路，
-    /// 光靠界面挡不住。</summary>
-    public static bool AllowsHotkey(string actionKey) => actionKey != "ToDirection";
-
     public static Dictionary<string, string> DefaultMouseChords() => new()
     {
         // 主力动作，拿抢得最少的那一格（理由见类注释）。

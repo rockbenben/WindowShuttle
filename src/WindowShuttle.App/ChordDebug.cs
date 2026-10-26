@@ -20,8 +20,8 @@ internal static class ChordDebug
     /// <summary>开关只在进程启动时读一次。不能每次调用都 File.Exists——这个方法会从 WH_MOUSE_LL 的
     /// 回调里调，那个回调有 300ms 的系统超时预算且必须便宜到可以忽略（见 MouseChordService 的类注释），
     /// 在里面做磁盘 I/O 正是它明令禁止的事。代价是开日志要重启一次应用，值得。</summary>
-    /// <summary>公开而不是私有：调用点要用它把插值串本身也挡在门外（钩子回调里不许分配），
-    /// 光在 Log 内部判断是拦不住的——那时候字符串早拼好了。</summary>
+    /// <remarks>公开而不是私有：调用点要用它把插值串本身也挡在门外（钩子回调里不许分配），
+    /// 光在 Log 内部判断是拦不住的——那时候字符串早拼好了。</remarks>
     public static readonly bool Enabled = SafeExists();
 
     private static bool SafeExists()

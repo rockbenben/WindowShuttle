@@ -13,8 +13,8 @@
 - **Flick, don't aim.** `Ctrl` + right button, throw the pointer at a screen, let go. You were already pointing at it, so there is no screen number to translate first. Misflicked? `Ctrl` + middle-click puts it back.
 - **One window or the whole screen, same tool.** Seven actions on one scale: send this one somewhere, trade two screens outright, or gather everything home after a monitor comes off. All of them from the keyboard, the mouse, the tray menu or the CLI.
 - **Geometry is recomputed, not copied.** Mixed DPI is the main case, not an edge case: sizes are rescaled for the destination, maximized stays maximized, minimized restores on the new screen, and a snapped window keeps its half or its quarter.
-- **The map is the control surface.** The panel at the top draws your monitors at the size and position they actually have on your desk — drag a window from one card to another and it moves.
-- **Nothing to commit to.** One portable exe, no installer, no account, nothing phoned home. Windows only.
+- **The map is the control surface.** The panel at the top draws your monitors at the size and position they actually have on your desk — drag a window from one card to another and it moves. The map redraws after every move, so it always shows where the windows are now; hover a truncated chip to read its full title.
+- **Nothing to commit to.** One portable exe, no installer, no account. It stays offline unless you ask it to check for updates — that one box is the only thing that ever goes online. Windows only.
 
 ## Does it fit your setup
 
@@ -23,7 +23,7 @@
 | **Windows** | 10 or 11 |
 | **Architecture** | x64. Only x64 builds are published — there is no native ARM64 one |
 | **.NET** | Not needed for the standalone build; the smaller one wants the [.NET 10 desktop runtime](https://dotnet.microsoft.com/download/dotnet/10.0) |
-| **Monitors** | Two or more. On a single screen every action answers *Only one screen* and moves nothing |
+| **Monitors** | Two or more. The screen-to-screen actions need at least two; on a single screen they answer *Only one screen* (or *nothing to do*) and move nothing |
 | **Mixed DPI / resolutions** | Supported, and the point of the thing: geometry is rescaled for the target screen instead of copied pixel-for-pixel |
 | **Admin-owned windows** | Need WindowShuttle itself to run elevated — see [Known limitations](#known-limitations) |
 
@@ -35,17 +35,17 @@
 - **`WindowShuttle-<version>-win-x64-needs-dotnet10.zip`** — the same app without the bundled runtime; requires the [.NET 10 desktop runtime](https://dotnet.microsoft.com/download/dotnet/10.0) already installed on the machine. Much the smaller download; the release page prints both sizes.
 - **`WindowShuttle.exe`** — that same build as the zip above, with no zip around it: click, run, or drop it over your existing copy to update. Windows offers the runtime download if it is missing.
 
-All three unpack to (or already are) the same single-file `WindowShuttle.exe` — no installer, no account. The only difference is startup cost: the standalone exe unpacks itself to a temp folder on every launch, which costs it roughly 200ms more than the runtime-installed build on a one-shot CLI call like `list`. That gap doesn't touch the resident tray app or hotkey response — it's paid once at launch either way, not on every swap.
+All three unpack to (or already are) the same single-file `WindowShuttle.exe` — no installer, no account. The only difference is startup cost: the standalone exe unpacks itself to a temp folder on every launch, which makes it slower to start than the runtime-installed build — most visibly on a one-shot CLI call like `list`. That gap doesn't touch the resident tray app or hotkey response — it's paid once at launch either way, not on every swap.
 
 The exe isn't code-signed, so Windows SmartScreen warns on first run: click **More info → Run anyway**.
 
-**When something goes wrong.** If an action ever dies mid-step, the app recovers, keeps running, and says so on a card — the details are appended to `%APPDATA%\WindowShuttle\crash.log`. That file only exists if something actually crashed; an empty search there is itself the answer.
+**When something goes wrong.** If an action ever dies mid-step, the app recovers, keeps running, and says so on a card — the details are appended to `%APPDATA%\WindowShuttle\crash.log`. The same log catches side failures (a notification or map refresh that failed) without reversing a move that already completed. The file only exists if something actually went wrong; an empty search there is itself the answer.
 
 **Removing it.** There is no installer, so there is nothing to uninstall — with one exception: if you ever ticked *As administrator*, WindowShuttle registered a **scheduled task**, and deleting the exe would leave that task behind, pointing every logon at a file that no longer exists. Untick *Start with Windows* first — that clears both the task and the registry entry — then delete the exe. Settings live in `%APPDATA%\WindowShuttle` and can go with it.
 
 ## The seven actions
 
-All seven are in the tray menu and the CLI. Two ship with a keyboard shortcut and four with a mouse gesture:
+Six of the seven are in the tray menu and the CLI; *Send by direction* is mouse-gesture only, because a menu click or a command has no direction. *Identify screens* is a separate tool in the tray menu and the CLI. Two actions ship with a keyboard shortcut and four with a mouse gesture:
 
 Below, "the window" means **whatever your hand is on**: a mouse gesture acts on the window under the pointer (as of the moment you pressed), while the keyboard, the tray menu and the CLI all act on the **current foreground window** (see [Known limitations](#known-limitations) for why the two differ).
 
@@ -56,12 +56,12 @@ Below, "the window" means **whatever your hand is on**: a mouse gesture acts on 
 | Send to primary | *(unbound)* | *(unbound)* | Send that window to the primary monitor and raise it |
 | Send to next monitor | *(unbound)* | *(unbound)* | Send that window to the monitor on its right, wrapping to the leftmost, and raise it |
 | Send by direction | *(not applicable)* | **`Ctrl` + right, flick** | Flick toward a screen and the window under the cursor goes there. See [Mouse gestures](#mouse-gestures) |
-| Gather all | *(unbound)* | *(unbound)* | Gather every window back to the primary monitor, including ones stranded off-screen after unplugging a display |
+| Gather all | *(unbound)* | *(unbound)* | Gather every window sitting on a secondary screen back to the primary monitor. A window stranded completely off-screen after a display is unplugged is a different case — that is the automatic rescue, below |
 | Undo | `Ctrl+Alt+2` | `Ctrl` + middle-click | Restore the positions from before the last move |
 
 There is also one tool that moves nothing: **Identify screens**, the button next to *Refresh* above the map. Press it and each screen flashes its own number in the middle — that's how you check that the arrangement Windows believes in matches the one on your desk. It takes no shortcut or gesture slot (it isn't a window-moving action); the tray menu and the `identify` command trigger it too.
 
-**Why only two hotkeys are bound out of the box, on purpose:** a global hotkey takes that combination away from *every* application on the desktop, so WindowShuttle claims as little as it can get away with — `Swap` and `Undo`, because being unable to undo a bad move is the worst first impression a window-moving tool can make. The rest are yours to bind. Every action's shortcut slot shows one of three states: bound (normal), unbound (gray placeholder text, not an error), or conflict (red border + tooltip, when another program already holds that combination). To release a bound hotkey, click its row and press **Delete** or **Backspace** — it clears back to unbound, saved immediately, no editing `settings.json` by hand required. *Why `Ctrl+Alt+<letter>` is avoided by default: [docs/design-notes.md](docs/design-notes.md).*
+**Why only two hotkeys are bound out of the box, on purpose:** a global hotkey takes that combination away from *every* application on the desktop, so WindowShuttle claims as little as it can get away with — `Swap` and `Undo`, because being unable to undo a bad move is the worst first impression a window-moving tool can make. The rest are yours to bind. Every action's shortcut slot shows one of three states: bound (normal), unbound (gray placeholder text, not an error), or conflict (red border + tooltip, when another program already holds that combination). *Send by direction* is the exception — it carries no shortcut at all, so its slot shows a dash and refuses to record. To release a bound hotkey, click its key slot and press **Delete** or **Backspace** — it clears back to unbound, saved immediately, no editing `settings.json` by hand required. After a successful capture the slot keeps keyboard focus (so Tab keeps its place) but stops listening; click it again to record another combination. *Why `Ctrl+Alt+<letter>` is avoided by default: [docs/design-notes.md](docs/design-notes.md).*
 
 ### Mouse gestures
 
@@ -87,7 +87,7 @@ Two clues instead of four facts. **The button says how much**: right sits under 
 
 **Hold `Ctrl` and the right button, flick toward the screen you want, let go.** The window under the cursor goes there. No need to work out which number that screen is — you're already pointing at it. Misflicked? `Ctrl` + middle-click puts it back, without your hand leaving the mouse.
 
-- **How far counts as a flick**: 40 pixels. Anything shorter isn't a direction — the bubble tells you to flick somewhere, and the click is replayed as-is.
+- **How far counts as a flick**: 40 pixels. Anything shorter isn't a direction — the card tells you to flick somewhere, and the click is replayed as-is.
 - **Direction is the angle of the whole stroke, split at 45°, diagonals counting as horizontal.** It takes the farthest the stroke ever reached on each axis: within 45° of horizontal counts as left/right, steeper counts as up/down — an exact diagonal goes to left/right, the overwhelmingly common direction on a row of monitors. The whole stroke is measured, not the release point: a fast lateral flick always carries a downward tail, and judging by where you let go misreads a crisp sideways flick as vertical (caught in real use). Swinging out and back still counts — the distance you reached sideways doesn't vanish because you came back.
 - **Flicking across a screen edge is fine**: what moves is always the window you were pointing at **when you pressed**, no matter which screen you release on — flicking toward the screen on the right naturally ends up on it.
 - **The edges wrap around**: flick right on the rightmost screen and the window cycles to the leftmost one — the same convention as *Send to next monitor* wrapping at the end. It only wraps along the same axis: flick up on a row of monitors and there genuinely is no screen that way, so it still says so.
@@ -96,15 +96,15 @@ Two clues instead of four facts. **The button says how much**: right sits under 
 
 **Why not the bare right button.** That is the usual shape for gesture software, and it does work here — verified by watching the messages a real Win32 window receives, not by counting menus. It isn't the default because the stakes are lopsided: what you save is one modifier key, what you bet is the system-wide context menu — and if the replay ever fails on a machine we can't test, the victim is every right-click you own. The capability is still there for anyone who wants it: record that slot as a bare right button (it is allowed for this action only). *The measurement write-up: [design notes](docs/design-notes.md).*
 
-**The four that ship do take combinations away from other programs** — `Ctrl` + middle-click is a browser's background tab, `Alt` + right-click is AltSnap — and that is a deliberate trade, not an accident: a bound gesture is intercepted before any application sees it, WindowShuttle always wins the combination it recorded. If you would rather give one back, click that slot and press **Delete**; it is one keystroke. And unlike a hotkey, whose registration fails visibly (the red state), a mouse gesture gets no conflict signal from Windows at all, so a silent collision is possible — the app says so next to the gesture slots too. *Mechanism detail: [design notes](docs/design-notes.md).*
+**The four that ship do take combinations away from other programs** — `Ctrl` + middle-click is a browser's background tab, `Alt` + right-click is AltSnap — and that is a deliberate trade, not an accident: a bound gesture is intercepted before any application sees it, WindowShuttle always wins the combination it recorded. If you would rather give one back, click that slot and press **Delete**; it is one keystroke. And unlike a hotkey, whose registration fails visibly (the red state), a mouse gesture gets no conflict signal from Windows at all, so a silent collision is possible — the app says so once, in the settings strip at the bottom of the window, right after the mouse-glyph mark that identifies every gesture slot. *Mechanism detail: [design notes](docs/design-notes.md).*
 
-Left alone on purpose: **bare buttons — none are used out of the box** (see the section above); and the side buttons, which many mice do not have, so they stay out of the defaults and are yours to record. **Treat the Windows key as unavailable** — Windows reclaims that key before the click reaches any application, so a press with no readable modifier is dropped and no binding is stored; that is why the recording prompt names only `Ctrl` / `Alt` / `Shift`. The app does **not** pop a card explaining this — what needed saying is in the prompt, before you act. *How it was measured: [design notes](docs/design-notes.md).*
+Left alone on purpose: **bare buttons — none are used out of the box** (see the section above); and the side buttons, which many mice do not have, so they stay out of the defaults and are yours to record. **Treat the Windows key as unavailable** — Windows reclaims that key before the click reaches any application, so a press with no readable modifier is dropped and no binding is stored; the one exception is *Send by direction*, whose slot takes a bare button by design. That is why the recording prompt names only `Ctrl` / `Alt` / `Shift`. The app does **not** pop a card explaining this — what needed saying is in the prompt, before you act. *How it was measured: [design notes](docs/design-notes.md).*
 
 **Bind no gestures at all and the hook does not exist in the process** — not "installed but idle". Clear all four slots with `Delete` and WindowShuttle leaves the mouse-input path entirely, leaving keyboard shortcuts, the tray menu and the CLI. Worth knowing: if you run AutoHotkey, Logitech Options+, PowerToys or similar, they sit on the same hook chain; whichever link gets slow, the symptom is the same — a sluggish pointer and clicks that occasionally stick — so disabling them one at a time is the way to find it. *The hook's thread architecture and its 300 ms budget: [design notes](docs/design-notes.md).*
 
 ## Settings
 
-The bar along the bottom of the main window. Defaults in brackets:
+The bar along the bottom of the main window, plus one box in the title bar. Defaults in brackets:
 
 - **Skip fullscreen apps** *(on)* — a window that exactly fills a monitor with no title bar or thick border is left alone. This applies to every action.
 - **Rescue off-screen windows when a monitor disconnects** *(**off**)* — turn it on and, about two seconds after you unplug a display, any window left completely outside every remaining screen is pulled back to the primary.
@@ -113,6 +113,7 @@ The bar along the bottom of the main window. Defaults in brackets:
 
   It only touches windows with zero overlap with any monitor, so anything you can still see stays put, and it deliberately does **not** take the undo slot: undo still steps back the last move *you* made.
 - **Keep running in the tray when closed** *(on)* — the close button hides the window instead of exiting. Turn it off and closing the window quits.
+- **Check for updates** *(off; in the title bar, next to the GitHub link)* — the only thing in this program that ever goes online. Tick it and each launch asks GitHub once whether a newer release exists; if there is one, the standalone zip is downloaded, its SHA-256 is checked against the one published next to it, and the card says where the new program landed. It does **not** replace the running copy — Windows locks the exe that is executing, and overwriting it leaves a half-installed program behind. There is a *Check now* button next to the box for asking without waiting for the next start.
 - **Start with Windows** *(**on**)* — a tray-resident tool that doesn't start with the machine loses half its point. The plain tier is a `HKCU\...\Run` entry passing `--tray`, so the boot launch goes straight to the tray without putting a window in your face; launching the exe yourself opens the main window.
 - **As administrator** *(off; under Start with Windows)* — swaps the registry entry for a **Run-with-highest-privileges scheduled task**: one UAC prompt when you tick it, then every boot starts silently elevated.
 
@@ -132,6 +133,7 @@ The bar along the bottom of the main window. Defaults in brackets:
 | `undo` | Undo |
 | `identify` | Flash each screen's number |
 | `list` | Print monitors and movable windows as JSON (every window carries `position`, the same numbering `--to <n>` takes). *Movable* means the same thing here as everywhere else in the app: windows that are not responding are left out, and so are fullscreen ones while *Skip fullscreen apps* is on — so a window absent from this list is a window no command would have moved either |
+| `--help` | Print the usage text and exit 0. A question, not a typo — an unknown verb exits 3 |
 
 **There is one screen numbering in this app: position, counted left to right** (then top to bottom within a column), 1-based. It is what the map prints, what *Identify screens* flashes (the button next to Refresh), what `--to <n>` takes, and what `list` reports as `position`.
 
@@ -147,7 +149,7 @@ If WindowShuttle is already resident in the tray, running a CLI command relays i
 
 ## Known limitations
 
-- **Windows belonging to elevated (administrator) programs can't be moved.** A non-elevated process can't reposition a higher-integrity window — Windows blocks it (UIPI), not a WindowShuttle bug. WindowShuttle counts how many windows this happened to and offers to restart itself elevated — click the tray balloon, confirm the prompt, and it relaunches with admin rights. This is a real, visible behavior: on the author's daily desktop, 6 of 27 open windows hit it on an average swap.
+- **Windows belonging to elevated (administrator) programs can't be moved.** A non-elevated process can't reposition a higher-integrity window — Windows blocks it (UIPI), not a WindowShuttle bug. WindowShuttle counts how many windows this happened to and offers to restart itself elevated — click the notification card, confirm the prompt, and it relaunches with admin rights. This is a real, visible behavior: on the author's daily desktop, 6 of 27 open windows hit it on an average swap.
 - **Gestures stop working entirely while an elevated program has focus.** When the foreground window belongs to a program running as administrator, Windows stops delivering mouse events to a normal-privilege global hook like ours — **regardless of which screen the cursor is on or which window you click**. Every gesture goes silent together. Focus any ordinary window (one click elsewhere) and it recovers immediately; no restart needed. Measured: with an ordinary window focused, 6 of 6 gestures landed; with an elevated window focused, 0 of 5 landed on ordinary windows.
 
   **WindowShuttle tells you about this itself**, but only while you are actually using gestures: if you triggered a mouse gesture within the last three minutes and an elevated program then takes and holds the foreground, an actionable card appears; clicking it takes the *Restart as administrator* route. The condition is "you are using gestures", not "the foreground changed" — the alternative nagged people who never meant to move a window. *Why, with the tested-and-rejected version: [design notes](docs/design-notes.md).*
@@ -163,7 +165,7 @@ If WindowShuttle is already resident in the tray, running a CLI command relays i
 - **Modal dialogs owned by another window are not moved.** v1 only moves top-level windows (the ones you'd see in Alt+Tab); a dialog attached to a window that gets swapped stays behind on the old monitor.
 - **Undo is a single step.** WindowShuttle keeps exactly one snapshot: the positions from before the last move *you* made. Pressing undo twice returns you to where you were rather than stepping further back. The automatic off-screen rescue deliberately does not overwrite that snapshot, so unplugging a monitor never costs you the undo you were about to press.
 - **Fullscreen applications are skipped by default** (a window that exactly fills a monitor with no title bar or thick border — games, video players). Turn off "Skip fullscreen apps" at the bottom of the main window to include them.
-- **Windows that aren't responding are skipped, and WindowShuttle says so** — the tray balloon and the CLI result line both report a "skipped N not-responding window(s)" count, the same way they already report skipped fullscreen apps.
+- **Windows that aren't responding are skipped, and the CLI says so** — the CLI result line reports a "skipped N not-responding window(s)" count, the same way it reports skipped fullscreen apps. The card stays quiet about a move that succeeded: the window moved, and that is the feedback.
 - **Windows on another virtual desktop are invisible to WindowShuttle, on purpose.** Windows marks a window as "cloaked" while its virtual desktop isn't the active one — the same flag used for suspended UWP apps — and WindowShuttle treats cloaked windows as not there, so they're excluded from every action, including `list`. This is deliberate, not a bug: `gather` reaching across desktops to yank a window onto your current screen would be more surprising than just leaving it where it is. Switch to that virtual desktop first if you want to move something on it.
 
 ## Languages
@@ -196,7 +198,7 @@ dotnet publish src/WindowShuttle.App -c Release -p:PublishProfile=win-x64       
 dotnet publish src/WindowShuttle.App -c Release -p:PublishProfile=win-x64-needs-dotnet10  # small, needs the .NET 10 desktop runtime
 ```
 
-Every push runs the tests, both self-check switches and the CLI exit codes. Pushing a `v*` tag additionally publishes both builds, writes `SHA256SUMS.txt` and attaches a build-provenance attestation, so a downloaded asset can be checked with `gh attestation verify <file> -R rockbenben/WindowShuttle` rather than trusting a checksum that sits on the same page as the file it vouches for.
+Every push runs the tests, the `--smoke` self-check and the CLI exit codes. The other self-check switch, `--shots`, renders the whole screenshot matrix — it is far too slow for CI, so it stays a local step, listed in [`docs/manual-checks.md`](docs/manual-checks.md). Pushing a `v*` tag additionally publishes both builds, writes `SHA256SUMS.txt` and attaches a build-provenance attestation, so a downloaded asset can be checked with `gh attestation verify <file> -R rockbenben/WindowShuttle` rather than trusting a checksum that sits on the same page as the file it vouches for.
 
 What no runner can reach — a real UAC prompt, physically unplugging a display, gestures while an elevated window holds the foreground, a key press that synthetic input reports differently from a real finger, and anything judged by eye — is in [`docs/manual-checks.md`](docs/manual-checks.md), grouped by *why* each one needs hands. Walk it before tagging.
 

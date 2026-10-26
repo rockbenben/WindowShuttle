@@ -32,7 +32,7 @@ public partial class MainWindow
         ["Gather"] = "⇲",        // ⇲ 全部收拢到一处
     };
 
-    /// <summary>这条动作会碰到哪几块屏。返回 null＝不涉及特定屏（撤销、修正跨屏），不作预览——
+    /// <summary>这条动作会碰到哪几块屏。返回 null＝不涉及特定屏（撤销），不作预览——
     /// 与其画一个"全都算"的假示意图，不如什么都不画。</summary>
     private (int From, int To)? PreviewPair(string actionKey)
     {

@@ -14,7 +14,7 @@
   <data name="Action_ToPrimary" xml:space="preserve"><value>Enviar ao principal</value></data>
   <data name="Action_ToPrimary_Desc" xml:space="preserve"><value>Envia a janela para o monitor principal</value></data>
   <data name="Action_Gather" xml:space="preserve"><value>Reunir tudo</value></data>
-  <data name="Action_Gather_Desc" xml:space="preserve"><value>Reúne todas as janelas no monitor principal, inclusive as presas fora da tela</value></data>
+  <data name="Action_Gather_Desc" xml:space="preserve"><value>Reúne no monitor principal todas as janelas que estão nos outros monitores</value></data>
   <data name="Action_Undo" xml:space="preserve"><value>Desfazer</value></data>
   <data name="Action_Undo_Desc" xml:space="preserve"><value>Restaura as posições de antes da última movimentação</value></data>
   <data name="Action_Identify" xml:space="preserve"><value>Número da tela</value></data>
@@ -35,7 +35,7 @@
   <data name="NoOp_OnlyOneMonitor" xml:space="preserve"><value>Há apenas um monitor</value></data>
   <data name="NoOp_NothingToDo" xml:space="preserve"><value>Nenhuma janela para mover</value></data>
   <data name="NoOp_CursorNotOnWindow" xml:space="preserve"><value>Nenhuma janela sob o cursor</value></data>
-  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>A janela ativa não pode ser movida</value></data>
+  <data name="NoOp_FocusNotMovable" xml:space="preserve"><value>Esta janela não pode ser movida — escolha outra</value></data>
   <data name="NoOp_AlreadyOnTarget" xml:space="preserve"><value>Já está no monitor de destino</value></data>
   <data name="NoOp_NoScreenThatWay" xml:space="preserve"><value>Nenhuma tela nessa direção</value></data>
   <data name="NoOp_Error" xml:space="preserve"><value>Não foi possível concluir a movimentação; nada mudou de lugar</value></data>

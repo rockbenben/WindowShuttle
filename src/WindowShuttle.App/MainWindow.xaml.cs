@@ -21,10 +21,10 @@ public partial class MainWindow : FluentWindow
     // of a field on this class.
 
     /// <summary>标牌字：Windows 自带的 DIN 系 Bahnschrift，路牌和站台号用的就是这一类，而屏幕编号
-    /// 恰好就是一个指路用的数字。全应用只在两个地方用它——地图卡片上的屏号、以及「屏幕序号」那块
-    /// 全屏浮层上的大号数字（OverlayWindow 引的就是这个字段），加上键帽词条。internal 是为了让
+    /// 恰好就是一个指路用的数字。全应用只在三处用它——地图卡片上的屏号、「屏幕序号」那块
+    /// 全屏浮层上的大号数字（OverlayWindow 引的就是这个字段），以及键帽词条。internal 是为了让
     /// OverlayWindow 引同一支而不是自己再 new 一个同名字符串：这个字形的辨识度靠的就是"只在这几处
-    /// 出现"，两处各写各的迟早会漂。绝不能喂中文——它没有中文字形。</summary>
+    /// 出现"，各处各写各的迟早会漂。绝不能喂中文——它没有中文字形。</summary>
     internal static readonly FontFamily SignFont = new("Bahnschrift, Segoe UI");
 
     /// <summary>数据字：分辨率、缩放比、刷新率这类要对齐的数字。同样绝不喂中文。</summary>
@@ -34,8 +34,9 @@ public partial class MainWindow : FluentWindow
     /// 也引它们——之前两边各写了一份字面量，改了 XAML 那份，测试就会继续按一个应用早已不用的尺寸
     /// 去验"六档分辨率都放得下"，绿着但验的是别的东西。
     ///
-    /// 高度给得比内容实际需要的多一截：默认宽度下动作区是**两列**，现在这份清单（六个固定动作 +
-    /// 最多三行「送去第 N 块屏」，主屏那一块不单列）就是四到五行卡，加上地图带，紧巴巴算下来
+    /// 高度给得比内容实际需要的多一截：默认宽度下动作区是**两列**，现在这份清单（七个固定动作：
+    /// 按方向送屏 / 撤销 / 对调最前窗口 / 整屏互换 / 送去主屏 / 全部收拢 / 送去下一块屏）就是四行卡，
+    /// 加上地图带，紧巴巴算下来
     /// 七百出头就够，但那点余量经不起任何变化——多接一块屏、换一种更长的语言，就得开始滚动。
     /// 首次启动那一眼要能一次看全，这是这扇窗唯一的任务。真放不下的小屏由 ComputeStartupBounds
     /// 按工作区夹取兜底，给大了不会溢出屏幕。
@@ -50,7 +51,8 @@ public partial class MainWindow : FluentWindow
     /// 这两个常量。
     ///
     /// 加宽才是喂得进去的那一头：带高按 cw × 长宽比 算，窗口越宽地图越高，同时动作卡也更宽。
-    /// 1120 是两列的上界附近——再宽到约 1230 就切三列，卡片行数减少，内容反而更矮，又空出来。
+    /// 1120 落在两列——再宽到约 1390 才切三列（分列门槛量的是动作区自己的 1300，加上左右边距和
+    /// 滚动条约 90，见 MainWindow.Hotkeys.cs），卡片行数减少，内容反而更矮，又空出来。
     /// 900 是配合 1120 之后内容自然长到的高度。改任何一个都要回头把另一个实测一遍。</summary>
     public const double DefaultWidthDip = 1120, DefaultHeightDip = 900;
 
@@ -65,8 +67,11 @@ public partial class MainWindow : FluentWindow
 
     /// <summary>恢复上次尺寸的下限，比拖拽下限高——见 <see cref="ComputeStartupBounds"/> 的说明。
     ///
-    /// 两个数的来历：860 宽是动作区还能切两列的窗口宽度（两列门槛量的是动作区自己的 760，加上左右
-    /// 边距和滚动条约 90）；620 高是地图带落在它的下限 140 时，动作区还能露出三张卡的高度。低于
+    /// 两个数的来历：860 宽是当初按"动作区还能切两列"倒推出来的窗口宽度——门槛量的是动作区自己的
+    /// 宽度，加上左右边距和滚动条约 90，所以那会儿的门槛 760 对应 860 宽。门槛后来提到 870
+    /// （见 MainWindow.Hotkeys.cs 的分列门槛，那里记着为什么提），860 宽现在落在动作区约 770 的
+    /// 位置，也就是**一列**——这两个数是一起算的，改门槛就得回头重算它。
+    /// 620 高是地图带落在它的下限 140 时，动作区还能露出三张卡的高度。低于
     /// 任一条，这扇窗就摆不下它自己的内容，那不是一个值得在下次启动时重现的"偏好"。</summary>
     public const double RestoreMinWidthDip = 860, RestoreMinHeightDip = 620;
 
@@ -363,8 +368,9 @@ public partial class MainWindow : FluentWindow
         DrawMonitors();
     }
 
-    /// <summary>显示器增减时由 App 的 DisplaySettingsChanged 调。窗口没显示就不用管——重新显示时
-    /// IsVisibleChanged 会自己刷一次。</summary>
+    /// <summary>显示器增减时由 App 的 DisplaySettingsChanged 调；任何入口搬完窗也由 App 订阅的
+    /// Router.Executed 调（见 App.OnStartup，只在真有窗口被搬动时才刷）。窗口没显示就不用管——
+    /// 重新显示时 IsVisibleChanged 会自己刷一次。</summary>
     internal void RefreshMonitors()
     {
         if (IsVisible) Refresh();

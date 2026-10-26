@@ -192,7 +192,7 @@
                         </DockPanel>
 
                         <!-- 鼠标手势的代价常驻可见，不等到绑上了才提醒——低级鼠标钩子没有 RegisterHotKey
-                             那种注册期冲突信号（§own-decision，见 mouse-hook-spike.md），事后提醒等于没提醒。
+                             那种注册期冲突信号（§own-decision，见 docs/design-notes.md），事后提醒等于没提醒。
                              前面那个鼠标字形跟每张动作卡右侧的手势位是同一个记号，一眼能对上这段话在说谁。 -->
                         <DockPanel Margin="0,8,0,0">
                             <ContentControl x:Name="MouseCautionGlyph" Margin="1,2,7,0" VerticalAlignment="Top"/>

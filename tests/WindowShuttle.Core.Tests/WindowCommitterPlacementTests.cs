@@ -11,13 +11,13 @@ namespace WindowShuttle.Core.Tests;
 ///
 /// 修复不是简单地把两步砍成一步（那样 rcNormalPosition 确实不再被污染，但真实 150%/125%/125% 三屏上
 /// 实测：窗口已经处于最大化态时，Windows 把 showCmd=SW_SHOWMAXIMIZED 的单次 SetWindowPlacement 当成
-/// "目标状态没变"的空操作，窗口视觉上根本不会挪到新显示器——跨屏搬运直接失效，3/3 case 全部原地不动，
-/// 见 maximized-restore-fix-report.md）。真正的修复是两步都用 SetWindowPlacement、都带上同一个 target
+/// "目标状态没变"的空操作，窗口视觉上根本不会挪到新显示器——跨屏搬运直接失效，3/3 case 全部原地不动）。
+/// 真正的修复是两步都用 SetWindowPlacement、都带上同一个 target
 /// rcNormalPosition：第一步强制转成 SW_SHOWNORMAL 逼 Windows 真的转一次状态（让窗口落到目标屏），第二
 /// 步转回 SW_SHOWMAXIMIZED 时把 target 再传一遍，无条件覆盖掉中间态里可能发生的任何污染。
 ///
 /// 这里只测 BuildPlacement/BuildPlacementSteps 产出的结构体本身（纯函数，不碰 Win32），不测 Win32
-/// 落位效果——那部分只能靠真实窗口验证（见 maximized-restore-fix-report.md）。</summary>
+/// 落位效果——那部分只能靠真实窗口验证（见 docs/manual-checks.md 的「最大化窗口的完整来回」一条）。</summary>
 public class WindowCommitterPlacementTests
 {
     private static readonly RectPx Target = RectPx.FromLTWH(100, 200, 800, 600);

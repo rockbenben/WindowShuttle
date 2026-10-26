@@ -4,21 +4,6 @@ using System.Windows.Threading;
 
 namespace WindowShuttle.Core.Tests;
 
-/// <summary>Everything in this assembly that touches real WPF-UI controls (<c>ui:TitleBar</c>,
-/// <c>ui:Button</c>, <c>ui:Card</c>, the Fluent-restyled <c>CheckBox</c>/<c>ComboBox</c>) needs an
-/// <see cref="Application"/> carrying WPF-UI's <c>ThemesDictionary</c>/<c>ControlsDictionary</c> —
-/// production gets that from <c>App.xaml</c>, but the test project never creates an Application, so
-/// those controls have no template, measure to (0,0), and the whole visual tree they sit in collapses
-/// (not just those controls — the ancestor Grid too).
-///
-/// <see cref="Application"/> is one-per-AppDomain and thread-affine, so this fixture owns exactly one
-/// background STA thread for the life of the collection, creates the one Application on it before
-/// anything else runs, and pumps its Dispatcher. Every test marshals its WPF work onto that thread via
-/// <see cref="Invoke(Action)"/>/<see cref="Invoke{T}(Func{T})"/> instead of spinning its own thread.
-/// One shared dispatcher also means the app's static SolidColorBrush fields (see AppTheme.Frozen /
-/// NotificationOverlay.Frozen) only ever get first touched by one thread for the whole run — the
-/// separate-thread-per-test scheme this replaces was the actual reason those Freeze() calls were load-
-/// bearing (a non-frozen Freezable binds permanently to whichever thread first touches it).</summary>
 /// <summary>把一扇窗按**指定尺寸**显示出来，不受跑测试这台机器的屏幕大小影响。
 ///
 /// 为什么需要它：MainWindow 在 <c>OnSourceInitialized</c> 里调 <c>ApplyStartupBounds</c>，直接用
@@ -54,6 +39,21 @@ internal static class WpfWindowSizing
     }
 }
 
+/// <summary>Everything in this assembly that touches real WPF-UI controls (<c>ui:TitleBar</c>,
+/// <c>ui:Button</c>, <c>ui:Card</c>, the Fluent-restyled <c>CheckBox</c>/<c>ComboBox</c>) needs an
+/// <see cref="Application"/> carrying WPF-UI's <c>ThemesDictionary</c>/<c>ControlsDictionary</c> —
+/// production gets that from <c>App.xaml</c>, but the test project never creates an Application, so
+/// those controls have no template, measure to (0,0), and the whole visual tree they sit in collapses
+/// (not just those controls — the ancestor Grid too).
+///
+/// <see cref="Application"/> is one-per-AppDomain and thread-affine, so this fixture owns exactly one
+/// background STA thread for the life of the collection, creates the one Application on it before
+/// anything else runs, and pumps its Dispatcher. Every test marshals its WPF work onto that thread via
+/// <see cref="Invoke(Action)"/>/<see cref="Invoke{T}(Func{T})"/> instead of spinning its own thread.
+/// One shared dispatcher also means the app's static SolidColorBrush fields (see AppTheme.Frozen /
+/// NotificationOverlay.Frozen) only ever get first touched by one thread for the whole run — the
+/// separate-thread-per-test scheme this replaces was the actual reason those Freeze() calls were load-
+/// bearing (a non-frozen Freezable binds permanently to whichever thread first touches it).</summary>
 public sealed class WpfTestHost : IDisposable
 {
     private static readonly TimeSpan InvokeTimeout = TimeSpan.FromSeconds(20);

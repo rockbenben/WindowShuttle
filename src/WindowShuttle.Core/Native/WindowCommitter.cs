@@ -41,7 +41,7 @@ public static class WindowCommitter
         foreach (var m in plan.Moves.Where(m => m.ShowState != ShowState.Normal))
             Tally(SetPlacement(m), ref moved, ref denied, ref failed);
 
-        // 第二遍：测量后纠偏。诊断（overflow-diagnosis.md）确认部分应用（典型是 WPF 默认的
+        // 第二遍：测量后纠偏。实测确认部分应用（典型是 WPF 默认的
         // WM_DPICHANGED 处理）会在我们上面的 SetWindowPos/DeferWindowPos 落位*之后*、在同一个消息
         // 循环里按新旧显示器的 DPI 比例把自己重新缩放一次，导致最终矩形比目标屏还大——这发生在目标
         // 进程内部，我们没法事先拦截，只能提交完再读一遍实际矩形，超了就钳回去。只对刚成功落位的
@@ -163,8 +163,7 @@ public static class WindowCommitter
     /// 强制改成 SW_SHOWNORMAL）解决 1)，逼真实转一次状态、把窗口落到目标屏；第二步把 rcNormalPosition
     /// 再传一遍、无条件覆盖掉中间态里可能发生的任何污染，不管目标应用做了什么反应，解决 2)。在真实
     /// WPF 窗口、真实 150%/125% 硬件上验证过 125→150、150→125、同 DPI 跨屏、来回搬运四种组合，
-    /// rcNormalPosition 每次都精确落在 target，窗口也确实挪到了目标屏（细节见
-    /// maximized-restore-fix-report.md）。</summary>
+    /// rcNormalPosition 每次都精确落在 target，窗口也确实挪到了目标屏。</summary>
     internal static IReadOnlyList<Win32.WINDOWPLACEMENT> BuildPlacementSteps(PlannedMove m)
     {
         var target = BuildPlacement(m);

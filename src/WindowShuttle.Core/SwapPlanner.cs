@@ -260,15 +260,15 @@ public static class SwapPlanner
     /// <summary>屏幕的**排列顺序**：从左到右，同一列再从上到下。
     ///
     /// 这是全应用寻址显示器的唯一顺序——地图按它画（MainWindow.Map.cs 的 EffectiveLayout）、
-    /// 「下一块屏」按它循环、「送去第 N 块屏」按它数、`屏幕编号` 按它闪、CLI 的 `--to` 也是它。
+    /// 「下一块屏」按它循环、命令行的 `--to <n>` 按它数、`屏幕编号` 按它闪、地图上印的屏号也是它。
     ///
     /// 为什么不用 <see cref="MonitorInfo.Index"/>：那是 `\\.\DISPLAYn` 里的 n，Windows 给显示设备
     /// 的编号，**跟屏幕摆在哪儿没有关系**，而且换端口、插拔坞站、重装显卡驱动之后可能重排。实测的
     /// 三屏就是反例：物理上是 2 | 1 | 3（左中右），编号却是 1,2,3。曾经「下一块屏」按 Index 循环，
     /// 于是从最右那块跳回中间的主屏，用户看到的是"怎么又回主屏了"——同一个应用里两套顺序并存，
     /// 迟早会以这种形式发作。Index 现在只用来做身份（布局指纹、归属判定），不用来寻址。</summary>
-    /// <summary>返回 List 而不是 IReadOnlyList：调用方要的往往是 FindIndex，接口上没有它，
-    /// 于是每个调用点都得再 .ToList() 拷一遍——而集合表达式已经物化过一次了，那是白拷第二遍。</summary>
+    /// <remarks>返回 List 而不是 IReadOnlyList：调用方要的往往是 FindIndex，接口上没有它，
+    /// 于是每个调用点都得再 .ToList() 拷一遍——而集合表达式已经物化过一次了，那是白拷第二遍。</remarks>
     public static List<MonitorInfo> ByPosition(IReadOnlyList<MonitorInfo> ms)
         => [.. ms.OrderBy(m => m.MonitorRect.Left).ThenBy(m => m.MonitorRect.Top)];
 
