@@ -14,7 +14,14 @@ jobs:
       - uses: actions/checkout@v7
       - uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.0.x
+          # SDK 版本只有 global.json 一个来源：本地、CI、CI 重跑都读同一份文件。
+          # global-json-file 按 global.json 的 sdk.version + rollForward 解析——latestMinor 被折成
+          # 区间 "10"，装到的仍是**最新的 10.x**，与原先 dotnet-version: 10.0.x 等价。
+          #
+          # ⚠️ 代价是 global.json 的 version 必须是完整形式（10.0.100 这类）：带 rollForward 时
+          # setup-dotnet 会拿 /^\d+\.\d+\.[1-9]\d{2,}$/ 校验它，"10.0.0" 这种写法会直接抛错，
+          # 不是"能跑但不好看"。所以改这一行之前 global.json 必须先改成完整版本号。
+          global-json-file: global.json
       # --minimum-expected-tests is Microsoft.Testing.Platform's own guard against a silent 0-test run
       # (a mis-loaded adapter can make a test run exit 0 with nothing executed). It replaces the trx
       # parsing this step used to do; see the test .csproj for the two properties that put xunit.v3
@@ -120,6 +127,10 @@ jobs:
     needs: test
     runs-on: windows-latest
     timeout-minutes: 20
+    # 发布这一步记成一次 deployment：仓库设置里有一个同名 environment。
+    # ⚠️ 它**没有配 required reviewers**——推 tag 仍然直接发布，没有人工闸。
+    # 要加闸就到这个 environment 的保护规则里加 reviewers，那时 tag 推送会停下来等人批。
+    environment: release
     permissions:
       contents: write
       id-token: write        # attest 那步拿 OIDC 令牌去签来源证明
@@ -128,7 +139,14 @@ jobs:
       - uses: actions/checkout@v7
       - uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.0.x
+          # SDK 版本只有 global.json 一个来源：本地、CI、CI 重跑都读同一份文件。
+          # global-json-file 按 global.json 的 sdk.version + rollForward 解析——latestMinor 被折成
+          # 区间 "10"，装到的仍是**最新的 10.x**，与原先 dotnet-version: 10.0.x 等价。
+          #
+          # ⚠️ 代价是 global.json 的 version 必须是完整形式（10.0.100 这类）：带 rollForward 时
+          # setup-dotnet 会拿 /^\d+\.\d+\.[1-9]\d{2,}$/ 校验它，"10.0.0" 这种写法会直接抛错，
+          # 不是"能跑但不好看"。所以改这一行之前 global.json 必须先改成完整版本号。
+          global-json-file: global.json
       - name: Publish (self-contained + framework-dependent, win-x64)
         shell: pwsh
         run: |
@@ -151,9 +169,19 @@ jobs:
           # attestation 的输入：加资产只改这一句，签名自动跟着覆盖到，不会「漏签一个还不报错」。
           # 格式是 shasum 那套「摘要 + 空格 + 模式标志 + 文件名」，下面两个空格 = 分隔空格 + 文本模式。
           # 编码写死 ascii：内容本来全是 ASCII，写死就不吃两代 PowerShell 默认编码（BOM）的差异。
-          Get-FileHash *.zip, src/WindowShuttle.App/bin/Release/publish-needs-dotnet10/WindowShuttle.exe -Algorithm SHA256 |
-            ForEach-Object { "{0}  {1}" -f $_.Hash.ToLower(), (Split-Path $_.Path -Leaf) } |
-            Set-Content SHA256SUMS.txt -Encoding ascii
+          $lines = Get-FileHash *.zip, src/WindowShuttle.App/bin/Release/publish-needs-dotnet10/WindowShuttle.exe -Algorithm SHA256 |
+            ForEach-Object { "{0}  {1}" -f $_.Hash.ToLower(), (Split-Path $_.Path -Leaf) }
+          # ⚠️ **行尾必须是 LF，不能用 Set-Content。** 它在 Windows 上写 CRLF，而 sha256sum
+          # 把那个 `\r` 当成文件名的一部分：Linux / macOS / WSL / Git Bash 里
+          # `sha256sum -c SHA256SUMS.txt` 逐条报
+          #   sha256sum: 'WindowShuttle-…-win-x64.zip'$'\r': No such file or directory → FAILED
+          # **摘要是对的**（把 `\r` 去掉两条都 OK），坏的是这个文件存在的目的——它被下载去
+          # 就是为了让人一条命令验完，而那条命令在非 Windows 上必然报错，看起来像包被改过。
+          # v1.0.1 发出去的那份就是 CRLF（已发布资产实测：3 行全是 CRLF）。
+          # WriteAllText 不写 BOM（内容是纯 ASCII，字节与 ascii 编码一致），`n` 显式写 LF。
+          [System.IO.File]::WriteAllText(
+            (Join-Path (Get-Location).Path 'SHA256SUMS.txt'),
+            (($lines -join "`n") + "`n"))
           Get-Content SHA256SUMS.txt
       # 比 SHA256SUMS 强一档：sums 和它校验的文件挂在同一个 release 页上，能换资产的人也能换 sums。
       # 来源证明存在 GitHub 那边，用户 `gh attestation verify <文件> -R rockbenben/WindowShuttle`
@@ -187,6 +215,10 @@ jobs:
             - `WindowShuttle-${{ github.ref_name }}-win-x64.zip` — .NET runtime included; unzip and run on any Windows 10/11 x64. Take this if you're unsure. / 内含 .NET 运行时，解压即用；拿不准、内网机、离线机就选它。
             - `WindowShuttle-${{ github.ref_name }}-win-x64-needs-dotnet10.zip` — same app without the bundled runtime; needs the [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0) installed. / 同一个程序，只是不带运行时；需要电脑上已装 [.NET 10 桌面运行时](https://dotnet.microsoft.com/download/dotnet/10.0)。
             - `WindowShuttle.exe` — the same build as the zip above, unzipped: click, run, or drop it over your existing WindowShuttle.exe to update. Windows will offer the runtime download if it is missing. / 就是上面那个不含运行时的版本，只是没打包：点开即用，也可直接覆盖现有的 WindowShuttle.exe 完成更新。缺运行时时 Windows 会自己提示下载。
+
+            **Windows will warn on first run: this build is not code-signed.** Click *More info → Run anyway*. / **首次运行 Windows 会拦一下：这个构建没有代码签名。**点**更多信息 → 仍要运行**。
+
+            **Verifying the download:** `SHA256SUMS.txt` next to the assets covers every file here (LF line endings — `sha256sum -c SHA256SUMS.txt` works as-is on Linux/macOS/WSL). For provenance instead of a checksum: `gh attestation verify WindowShuttle.exe -R rockbenben/WindowShuttle`. / **校验下载的文件：** 旁边的 `SHA256SUMS.txt` 覆盖这里每一个文件（LF 行尾，Linux/macOS/WSL 上 `sha256sum -c SHA256SUMS.txt` 直接可用）。要来源证明而不是校验值：`gh attestation verify WindowShuttle.exe -R rockbenben/WindowShuttle`。
           generate_release_notes: true
       # 把 release 发布出去，并显式把 `releases/latest` 指到它，然后自己确认一遍。
       #

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 2,
+  "status": "house-style-default",
+  "verifiedOn": "2026-10-26",
+  "framework": "wpf",
+  "channel": "stable",
+  "platforms": ["windows-x64"],
+  "packageManager": "nuget (PackageReference; no Node toolchain in this repo)",
+  "node": "n/a — this repo has no Node build step",
+  "distribution": {
+    "primary": "github-releases",
+    "secondary": [],
+    "windows": "single-file portable exe (self-contained + needs-dotnet10 variants); a portable build does not self-update, the app's opt-in update check downloads the new build and tells the user where it landed",
+    "macos": "n/a",
+    "linux": "n/a"
+  },
+  "updater": "in-app, opt-in, default off — the only network path this program has; it downloads the release zip, verifies it against the published SHA256SUMS.txt, and unpacks it next to the running copy without replacing it",
+  "signing": {
+    "windows": "unsigned; the SmartScreen warning is documented in the README and in the release body",
+    "macos": "n/a",
+    "linux": "n/a"
+  },
+  "versionSource": "git tag vX.Y.Z, injected with -p:Version by the release workflow; the csproj falls back to `git describe --tags --abbrev=0` for local builds and to VersionFallback when that fails",
+  "release": "single job: publish both profiles -> SHA256SUMS (LF) -> provenance attestation -> publish + make_latest -> assert releases/latest points at the tag; the job runs under the `release` environment (no required reviewers — see deviations)",
+  "actionPins": "major tags (@v7); exact version (@v7.0.1) when tighter is needed; never full SHA",
+  "immutableReleases": "not enabled",
+  "deviations": [
+    {
+      "rule": "platforms",
+      "value": ["windows-x64"],
+      "reason": "Windows-only by construction: window placement goes through Win32 SetWindowPos/SetWindowPlacement, the global mouse hook is WH_MOUSE_LL, and elevated-window handling is UIPI. A macOS/Linux build would be a different program, not a port.",
+      "revisitWhen": "only if a Windows-on-Linux/Wine distribution becomes a stated goal"
+    },
+    {
+      "rule": "windows-unsigned",
+      "reason": "No code-signing certificate yet. The release body and the README both tell the user to click 'More info -> Run anyway', which is the documented interim state rather than an oversight.",
+      "revisitWhen": "Azure Artifact Signing is approved (see https://learn.microsoft.com/azure/artifact-signing/)"
+    },
+    {
+      "rule": "updater-default-off",
+      "reason": "The update check IS built in, but it is off by default: this program must not contact the network unless the user asks it to. Ticking the box is the only thing that ever goes online.",
+      "revisitWhen": "first user request to default it on, or 2027-01-01"
+    },
+    {
+      "rule": "release-approval",
+      "reason": "The `release` environment exists so the publish step is recorded as a deployment, but it has no required reviewers — a pushed tag still publishes immediately. The maintainer decided against a human gate for now.",
+      "revisitWhen": "the first time a bad release has to be forward-fixed, or when the repo gains outside contributors"
+    }
+  ],
+  "notes": "audit.mjs reads `platforms` and `deviations[]` only. rule == 'platforms' narrows the platform matrix; rule == <finding id> (e.g. windows-unsigned) moves that finding to 'accepted' (not counted in P0/P1/P2). A deviation without reason + revisitWhen is reported as drift. `updater-default-off` and `release-approval` are not finding ids — they are recorded here so the next reviewer does not have to rediscover them. Everything else is guidance for the agent."
+}
