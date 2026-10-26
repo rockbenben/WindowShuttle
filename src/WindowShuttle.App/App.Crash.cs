@@ -4,7 +4,7 @@ using System.Windows.Threading;
 
 namespace WindowShuttle.App;
 
-/// <summary>未捕获异常的三个入口，以及它们唯一的去处：一个追加式的文本日志。
+/// <summary>未捕获异常的三个入口，以及（含被 catch 的旁路失败）唯一的去处：一个追加式的文本日志。
 ///
 /// 为什么托盘应用尤其需要这个：WPF 默认在 UI 线程抛出未捕获异常时直接结束进程。对一个有主窗口的
 /// 应用，用户至少看得见窗口消失；对这个应用，消失的是托盘图标——快捷键和鼠标手势一起哑掉，而屏幕上
@@ -17,6 +17,8 @@ namespace WindowShuttle.App;
 ///     拦不住，只能留个堆栈。
 ///   · <see cref="TaskScheduler.UnobservedTaskException"/> —— 没人 await 的 Task。同上，另外它
 ///     由 GC 触发，时机不确定，日志里的时间戳跟出错时刻可能差很远。
+///
+/// 同一份日志也接收已被 catch 的旁路失败（通知/地图刷新），它们是用户看不见、但排查时想知道的那类。
 ///
 /// 日志不引框架：一个追加一行的文件就够，跟 settings.json 同目录（绿色版跟着 exe 走的是配置目录，
 /// 不是 exe 目录——见 SettingsStore.AppDir）。写日志本身也包在 try 里：崩溃处理里再抛一次异常，
@@ -57,7 +59,7 @@ public partial class App
         };
     }
 
-    private static void Log(string where, Exception? ex)
+    internal static void Log(string where, Exception? ex)
     {
         try
         {

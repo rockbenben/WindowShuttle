@@ -6,7 +6,7 @@ namespace WindowShuttle.App;
 
 public sealed record ExecResult(int ExitCode, MovePlan Plan, CommitResult? Commit);
 
-/// <summary>热键/托盘/CLI 三个入口收敛到这里（§3）。撤销栈只有这一处写入。</summary>
+/// <summary>热键/鼠标手势/托盘/CLI/IPC 都收敛到这里（§3）。撤销栈只有这一处写入。</summary>
 public sealed class CommandRouter
 {
     public int? LastSwapPartner { get; private set; }
@@ -30,10 +30,11 @@ public sealed class CommandRouter
             _ => RunPlanned(action, toMonitor, fromMouseGesture, at, referent),
         });
 
-    /// <summary>所有对外入口的唯一出口：一把锁、一层 try/catch、一次 <see cref="Executed"/>。
+    /// <summary>所有对外入口的唯一出口：一把锁、搬运与 <see cref="Executed"/> 分发各自一层 try/catch、一次事件。
     ///
-    /// 五个入口（热键 lambda / 鼠标手势 / 托盘菜单 / CLI 一次性路径 / WM_COPYDATA）里，CLI 和
-    /// WM_COPYDATA 各自还包着一层 try/catch，其余三个是裸调用。RunPlanned 经 UndoStore.Save 落盘，
+    /// 六个入口（热键 lambda / 鼠标手势 / 托盘菜单 / 地图拖放 MoveWindowTo / CLI 一次性路径 /
+    /// WM_COPYDATA）里，CLI 和 WM_COPYDATA 各自还包着一层 try/catch，其余四个是裸调用。
+    /// RunPlanned 经 UndoStore.Save 落盘，
     /// %APPDATA%\WindowShuttle 不可写就会抛——不受保护的入口会直接带走整个驻留进程，而同一条命令
     /// 走 CLI 却能干净退出码 3。
     ///
@@ -47,7 +48,10 @@ public sealed class CommandRouter
             ExecResult result;
             try { result = run(); }
             catch (Exception) { result = new ExecResult(3, MovePlan.NoOpPlan(NoOpReason.Error), null); }
-            Executed?.Invoke(result, action);
+            // 通知/地图刷新是结果的旁路，不是搬运本身。任何订阅者抛异常都不能把已经完成的搬运
+            // 反转成退出码 3，更不能从热键/托盘入口带走整个驻留进程。
+            try { Executed?.Invoke(result, action); }
+            catch (Exception ex) { App.Log("执行结果事件", ex); }
             return result;
         }
     }
@@ -159,8 +163,10 @@ public sealed class CommandRouter
         var (movable, fs, hung) = SwapPlanner.SelectMovable(windows, monitors, App.Cfg.SkipFullscreen);
         var f = movable.FirstOrDefault(w => w.Hwnd == hwnd);
         var to = monitors.FirstOrDefault(m => m.Index == monitorIndex);
-        // 计数带上：跳过的原因要能出声（气泡按 SkippedFullscreen/SkippedHung 报），
-        // 否则用户看到的是"我拖了，它没动，也没人告诉我为什么"。
+        // 计数带上：跳过的原因要留在计划里——命令行那条路会把它们报出来（App.Describe）。
+        // 提示卡在搬运成功时保持沉默（窗动了就是反馈本身，见 TrayService.DecideNotification）；
+        // 一扇都没搬动时它只答"没有可搬运的窗口"，所以下面这个 no-op 分支才带着原因回去，
+        // 而不是让用户看到"我拖了，它没动，也没人告诉我为什么"。
         if (f is null || to is null)
             return new ExecResult(1, new MovePlan([], fs, hung, null, NoOpReason.NothingToDo), null);
         var from = monitors.First(m => m.Index == SwapPlanner.OwnerIndex(f, monitors));

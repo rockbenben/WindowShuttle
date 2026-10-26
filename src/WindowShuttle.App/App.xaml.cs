@@ -179,7 +179,7 @@ public partial class App : Application
             return;
         }
 
-        // ④ 驻留模式：托盘常驻，不自动开主窗口
+        // ④ 驻留模式：托盘常驻；手动启动时把主窗口摆出来，只有开机自启（--tray）才不打扰
         // 自启项的内容体检，放在这里而不是等用户去动复选框：升级和"把 exe 挪个地方"这两件事都不会
         // 经过设置页，而它们都会让那一行失效或行为倒退（见 RepairRunValue）。一次注册表读取，
         // 不存在就立刻返回，不会替没开自启的人开自启。
@@ -194,6 +194,16 @@ public partial class App : Application
         _mouseChords.Stroked += (sx, sy, dx, dy) => { _lastGesture = DateTime.UtcNow; RunStroke(sx, sy, dx, dy); };
         _mouseChords.Captured += (b, m) => _main?.OnChordCaptured(b, m);
         _mouseChords.Apply(Cfg);
+        // 任何入口搬完窗，主窗口若开着都要跟着重画：手势/快捷键/托盘以前都不刷新，地图上那扇窗
+        // 还停在原来的屏，直到用户点「刷新」。拖放以前在 OnCardDrop 里自己刷；现在统一收到这里，
+        // 才不会有哪个入口漏掉。no-op 没有搬动任何窗，不重画；订阅自己的异常只记日志，不能让
+        // TrayService 的通知或搬运结果被它连带。
+        Router.Executed += (r, _) =>
+        {
+            if (r.Commit is not { Moved: > 0 }) return;
+            try { _main?.RefreshMonitors(); }
+            catch (Exception ex) { Log("地图刷新", ex); }
+        };
         _tray = new TrayService(Router, ShowMain, () => Shutdown(0));
         // 管理员程序占前台时手势整个哑掉，而且毫无迹象可循——主动说一句，见 ForegroundWatch 类注释。
         _foreground = new ForegroundWatch();
@@ -258,10 +268,9 @@ public partial class App : Application
         _rescueDebounce.Tick += (_, _) =>
         {
             _rescueDebounce!.Stop();
+            // 地图的重画由 OnDisplaySettingsChanged（显示器清单）和 Executed（真有窗口被救回）
+            // 各自负责；这里再刷一次只会多一遍整图重建。
             Router.Execute(WindowShuttleAction.Rescue, null);
-            // 主窗口开着的话，它那张地图还画着刚拔掉的那块屏——它只在 Loaded/显示/点刷新时重新探测。
-            // 往一张已经不存在的屏卡上拖窗口会静默无效（MoveWindowTo 找不到那个 Index）。
-            _main?.RefreshMonitors();
         };
         Microsoft.Win32.SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
     }
@@ -269,24 +278,15 @@ public partial class App : Application
     private void OnDisplaySettingsChanged(object? sender, EventArgs e)
         => Dispatcher.BeginInvoke(() =>
         {
-            // 地图刷新跟救援是两件事，别共用这道闸：计时器的 Tick 里既跑救援也调 RefreshMonitors，
-            // 原来在这里直接 return，等于用户一关掉"拔屏自动救援"，主窗口那张地图也不再跟着
-            // 显示器增减更新了——图上还画着已经拔掉的那块屏，往它上面拖窗口静默无效。
+            // 地图刷新跟救援是两件事，别共用这道闸：原来在这里直接 return，等于用户一关掉
+            // "拔屏自动救援"，主窗口那张地图也不再跟着显示器增减更新了——图上还画着已经拔掉的
+            // 那块屏，往它上面拖窗口静默无效。
             _main?.RefreshMonitors();
             if (!Cfg.RescueOnDisplayChange) return;
             _rescueDebounce!.Stop();
             _rescueDebounce.Start();
         });
 
-    /// <summary>键盘快捷键和鼠标手势共用的分发。两者绑定的动作集合完全相同，所以分流规则也必须相同。
-    ///
-    /// 两个入口只准共用这一个函数，差别只允许是传进来的参数。这条规矩是买来的：它们曾经各写一份
-    /// lambda，鼠标那份漏了 Identify 的分流（Identify 不是可规划动作，SwapPlanner.Plan 对它直接抛，
-    /// 被守卫接成退出码 3 的 Error），于是把它绑到手势上按一下只得到一张红色错误卡，走快捷键却正常。
-    /// Identify 现在已经不可绑定（入口是地图栏的按钮和托盘），但"两个入口共用一处分发"这条留着。
-    ///
-    /// <paramref name="fromMouseGesture"/> 就是那唯一的差别：手已经在鼠标上时不做光标跟随，
-    /// 见 CommandRouter.Execute 的参数说明。</summary>
     /// <summary>方向手势落地：把「往哪儿划了多远」换算成一块具体的屏，然后走 ToNext 的
     /// TargetPosition —— 那条路已经把"光标下那扇窗 → 指定屏"整套做完了（命中判定、抬到最前、
     /// 撤销栈、光标跟随），这里不该再有第二份。
@@ -330,6 +330,15 @@ public partial class App : Application
             SwapPlanner.PositionOf(target, monitors), fromMouseGesture: true, at: press);
     }
 
+    /// <summary>键盘快捷键和鼠标手势共用的分发。两者绑定的动作集合完全相同，所以分流规则也必须相同。
+    ///
+    /// 两个入口只准共用这一个函数，差别只允许是传进来的参数。这条规矩是买来的：它们曾经各写一份
+    /// lambda，鼠标那份漏了 Identify 的分流（Identify 不是可规划动作，SwapPlanner.Plan 对它直接抛，
+    /// 被守卫接成退出码 3 的 Error），于是把它绑到手势上按一下只得到一张红色错误卡，走快捷键却正常。
+    /// Identify 现在已经不可绑定（入口是地图栏的按钮和托盘），但"两个入口共用一处分发"这条留着。
+    ///
+    /// <paramref name="fromMouseGesture"/> 就是那唯一的差别：手已经在鼠标上时不做光标跟随，
+    /// 见 CommandRouter.Execute 的参数说明。</summary>
     /// <param name="at">鼠标手势传按下点；键盘/托盘传 null（它们认焦点窗口，光标无关）。</param>
     private static void RunBound(WindowShuttleAction a, bool fromMouseGesture, PointPx? at = null)
     {
@@ -355,7 +364,7 @@ public partial class App : Application
 
     /// <summary>
     /// 驻留切换用；verb 为 null 时与旧版行为一致（语言切换重启，Task 14 用）。
-    /// verb 非空走提权重启（TrayService 的 AccessDenied 气泡点击）——两条路径必须共用同一处放锁逻辑，
+    /// verb 非空走提权重启（TrayService 的 AccessDenied 提示卡点击）——两条路径必须共用同一处放锁逻辑，
     /// 否则新进程的单实例检查会在旧进程放锁前跑到，误判"已有驻留实例"转而投递 show 后退出，UAC 白点了。
     /// 若 Process.Start 失败（提权被用户拒绝），旧进程还活着，必须把锁补回去——不能让它裸奔成没有
     /// 单实例保护的实例，否则用户再开一个 WindowShuttle.exe 会跑出第二个驻留进程。

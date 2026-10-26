@@ -236,6 +236,16 @@ public partial class MainWindow
 
         ResolveBandHeight(cw, totalW / totalH);
 
+        // 拖动窗口边缘改尺寸时，这次布局可能刚把画布的宽度从上一帧换过来；上面读到的 cw 还是旧的，
+        // 地图就会按旧窗口的尺寸画（实测从最小尺寸拖大后带高一直停在 ~140，只有点刷新才恢复）。
+        // UpdateLayout 之后宽度才是终值，重读并重算一次；宽度没变时这一步是空操作。
+        double settledWidth = LayoutCanvas.ActualWidth;
+        if (Math.Abs(settledWidth - cw) > 0.5)
+        {
+            cw = settledWidth;
+            ResolveBandHeight(cw, totalW / totalH);
+        }
+
         double h = LayoutCanvas.ActualHeight;
         if (h < 20) return;
 
@@ -288,12 +298,14 @@ public partial class MainWindow
         header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         header.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
-        // 唯一用 Bahnschrift 的地方：屏幕编号。这是 Windows 自带的 DIN 系标牌字，路牌和站台号用的
-        // 就是这一类——而屏幕编号恰好就是一个指路用的数字。整个界面只在这一处用它，别处一概不用，
+        // 地图上唯一用 Bahnschrift 的地方：屏幕编号。这是 Windows 自带的 DIN 系标牌字，路牌和站台号用的
+        // 就是这一类——而屏幕编号恰好就是一个指路用的数字。这块地图只在这一处用它，别处一概不用，
         // 它才保得住"看见这个字形＝这是屏几"的辨识度。ASCII 数字，不存在缺中文字形的问题。
+        // （浮层那块大号数字和键帽词条也用同一支字，但那是另两处自有出处，见 MainWindow.xaml.cs
+        //  的 SignFont 说明——"同一支字"和"同一处用"是两件事。）
         //
         // 这个数字是**排列位次**（从左到右），不是 Windows 的显示设备编号。全应用寻址都用位次：
-        // 「送去第 N 块屏」数的是它、`--to` 收的是它、「屏幕序号」闪的也是它。系统编号跟屏幕摆在
+        // 命令行的 `--to <n>` 收的是它、「屏幕序号」闪的也是它。系统编号跟屏幕摆在
         // 哪儿没关系（这台机器物理上就是 2 | 1 | 3），拿它当门牌号，用户得先在脑子里做一次翻译。
         // 系统编号没有丢，降到下面那行小字里，方便跟 Windows 显示设置对号。
         var idx = new TextBlock
@@ -427,7 +439,16 @@ public partial class MainWindow
             BorderThickness = new Thickness(1), CornerRadius = new CornerRadius(4), MaxWidth = 220,
             Padding = new Thickness(7, 3, 7, 3), Margin = new Thickness(0, 0, 4, 4), Cursor = Cursors.Hand,
             Opacity = w.ShowState == ShowState.Minimized ? 0.5 : 1.0, Tag = w.Hwnd,
-            Focusable = true, ToolTip = Strings.Get("Chip_EnterTip"),
+            Focusable = true,
+            // 卡片上只印得下 40 个字符，同一前缀的几扇浏览器窗看起来一模一样；对鼠标用户，
+            // 悬停是唯一能读到全名的地方（读屏走 AutomationProperties.Name），提示里不能只有
+            // Enter 说明。长标题按 420 DIP 换行，不撑出屏幕。
+            ToolTip = new TextBlock
+            {
+                Text = $"{w.Title}\n{Strings.Get("Chip_EnterTip")}",
+                TextWrapping = TextWrapping.Wrap,
+                MaxWidth = 420,
+            },
             Child = new StackPanel { Orientation = Orientation.Horizontal, Children = { dot, text } },
         };
         // 读屏念得出是谁的窗口，而不只是"一个可拖的东西"。
@@ -470,7 +491,8 @@ public partial class MainWindow
         // 带上自己的句柄：搬过去的窗该露出来，但不能盖住用户此刻还拖着的这张地图（MovePlan.KeepBelow）。
         App.Router.MoveWindowTo(hwnd, (int)((Border)sender).Tag,
             new System.Windows.Interop.WindowInteropHelper(this).Handle);
-        Refresh();
+        // 搬运之后的地图重画由 App 订阅 Router.Executed 负责（见 App.OnStartup，只在真有窗口搬动时）；
+        // 显示器增减那条由 OnDisplaySettingsChanged 负责。这里不再自己调 Refresh。
     }
 
     /// <summary>零窗口时地图上的那句空态交代（batch1 B7）。「全屏被跳过」这半句只在开关真的

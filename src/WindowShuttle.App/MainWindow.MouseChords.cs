@@ -14,8 +14,8 @@ public partial class MainWindow
 {
     private readonly Dictionary<string, Border> _mouseCaps = [];
 
-    // ---------- 鼠标 chord 录制：热键区旁边的第二个键位区，录法/三态视觉语言完全照抄键盘那一套，
-    // 只是输入源换成鼠标按钮。
+    // ---------- 鼠标 chord 录制：热键区旁边的第二个键位区，录制态外观/三态视觉语言跟键盘那一套共用，
+    // 输入源换成鼠标按钮；成功后的焦点策略不同——鼠标录完清焦点，键盘保留焦点（见 FinishHotkeyRecording）。
     //
     // 录制**经由全局钩子**，不是这块元素上的一次普通 WPF 鼠标事件。理由是改绑：录制期间钩子先把
     // 按下截走、不再走 Resolve，所以"把一个已经绑给别的动作的组合改绑过来"不会被原主人抢先吞掉并
@@ -192,8 +192,8 @@ public partial class MainWindow
         e.Handled = true;                                  // 不透出去弹右键菜单/别的默认行为
     }
 
-    // Esc 取消录制、Delete/Backspace 清空绑定——跟热键那一套的对称版本，键盘输入本身不构成手势，
-    // 只用来取消/清除；真正的手势只能来自 OnMouseChordRecord。
+    // Esc 取消录制、Delete/Backspace 清空绑定——对照热键那一套；键盘输入本身不构成手势，
+    // 只用来取消/清除；真正的手势只能来自 OnMouseChordRecord。热键成功后会保留焦点，鼠标这里不保留。
     private void OnMouseChordKeyDown(object sender, KeyEventArgs e)
     {
         var cap = (Border)sender;

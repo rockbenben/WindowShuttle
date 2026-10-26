@@ -35,6 +35,10 @@ public partial class MainWindow
 
     private readonly Dictionary<string, Border> _caps = [];
 
+    /// <summary>刚成功录到/清空的键位：焦点还留在它上面（Tab 不丢位置），但不再监听按键。
+    /// 否则下一次按键会静默改绑，Delete 也会把刚设好的绑定清掉；点它一下才重新进入录制。</summary>
+    private readonly HashSet<Border> _hotkeyRecordingSuppressed = [];
+
     // 分列门槛，量的是动作区自己的可用宽度，不是窗口宽度。多切一列是为了修"卡片太宽"这个毛病：
     // 卡宽到 780 DIP 时，动作名在最左、键位在最右，中间几百像素空白要横扫；切一列让每张回到
     // 500 上下这个"名字和键位互相够得着"的宽度。
@@ -163,12 +167,17 @@ public partial class MainWindow
         }
         var cap = NewCapShell(actionKey, new Thickness(10, 0, 0, 0));
         cap.PreviewKeyDown += OnHotkeyRecord;
-        cap.PreviewMouseLeftButtonDown += (_, _) => cap.Focus();
+        // 成功录到后焦点留在这格、但不再监听；再点它一下才是“我要重录”，不能靠焦点自动再武装。
+        cap.PreviewMouseLeftButtonDown += (_, _) =>
+        {
+            if (!cap.IsKeyboardFocusWithin) cap.Focus();
+            else if (_hotkeyRecordingSuppressed.Remove(cap)) EnterRecording(cap);
+        };
         // §hotkey-visibility 悬停态："这里能改"的提示，但录制态（聚焦）更响，悬停不能盖过它。
         cap.MouseEnter += (_, _) => { if (!cap.IsKeyboardFocusWithin) RenderCap(cap, actionKey); };
         cap.MouseLeave += (_, _) => { if (!cap.IsKeyboardFocusWithin) RenderCap(cap, actionKey); };
         cap.GotFocus += (_, _) => EnterRecording(cap);
-        cap.LostFocus += (_, _) => ExitRecording(cap, actionKey);
+        cap.LostFocus += (_, _) => { _hotkeyRecordingSuppressed.Remove(cap); ExitRecording(cap, actionKey); };
         _caps[actionKey] = cap;
         RenderCap(cap, actionKey);
         return cap;
@@ -206,7 +215,8 @@ public partial class MainWindow
 
     // ---------- 以下几件由键盘和鼠标两个录制器共用。抽出来不是为了省这几十行，是为了让两个录制态
     // 在视觉上**无法**漂移：它们是同一个交互的两种输入源，用户看到的"正在录制"必须是同一个东西。
-    // 真正不同的部分（三态 vs 两态渲染、键盘 vs 鼠标的输入解析）各自留在自己文件里。 ----------
+    // 真正不同的部分（三态 vs 两态渲染、键盘 vs 鼠标的输入解析、成功后键盘保留焦点而鼠标清焦点）
+    // 各自留在自己文件里。 ----------
 
     /// <summary>键位区的空壳：常态全透明，录制态才由 <see cref="EnterRecordingChrome"/> 点亮。
     /// 固定 BorderThickness 是为了聚焦/失焦时外形不跳；Background=Transparent（不是 null）让整块
@@ -301,8 +311,9 @@ public partial class MainWindow
     // 都不一样，三态之外单独一个"活着"的状态。
     private void EnterRecording(Border cap) => EnterRecordingChrome(cap, "Hotkey_Recording");
 
-    // 失焦即退出录制态，不管是 Tab 走的、点别处走的，还是 Esc 取消——一律回落到三态渲染，
-    // 绑定本身在这里绝不会被改动（改没改绑定由 OnHotkeyRecord 决定，这里只管界面复原）。
+    // 失焦即退出录制态；成功/清空由 FinishHotkeyRecording 主动收摊（焦点留下）。不管是 Tab 走的、
+    // 点别处走的，还是 Esc 取消——一律回落到三态渲染，绑定本身在这里绝不会被改动
+    // （改没改绑定由 OnHotkeyRecord 决定，这里只管界面复原）。
     private void ExitRecording(Border cap, string actionKey)
     {
         ExitRecordingChrome(cap);
@@ -315,7 +326,8 @@ public partial class MainWindow
         var actionKey = (string)cap.Tag!;
         var key = e.Key == Key.System ? e.SystemKey : e.Key;
 
-        // Tab / Shift+Tab 必须放行，其余一律吞掉。
+        // Tab / Shift+Tab 必须放行；录制时其余按键一律吞掉，已收摊的格子
+        // （_hotkeyRecordingSuppressed）则完全放行，让全局热键和窗口继续收到它。
         //
         // 这是一个真实的键盘陷阱（WCAG 2.1.2）：这个处理器挂的是 **PreviewKeyDown**，而 WPF 的 Tab
         // 导航发生在之后的冒泡 KeyDown 上——原来第一句就无条件 e.Handled = true，等于把导航整个吃掉。
@@ -330,30 +342,36 @@ public partial class MainWindow
         // Handled。两个录制器共用外观（见 NewCapShell 上面那段），键处理却漂移了，这条修回来。
         if (key is Key.Tab) return;
 
-        e.Handled = true;
-
         // Esc 取消录制：不碰绑定，只把焦点交出去——界面复原交给 LostFocus -> ExitRecording。
         // 单叫 Keyboard.ClearFocus() 不够：GotFocus/LostFocus 跟的是 FocusManager 的"逻辑焦点"，
         // 不是键盘焦点本身——纯清键盘焦点会让 IsKeyboardFocusWithin 变 false，但 LostFocus 事件
         // 不一定跟着触发，录制态的边框/文案会卡住不退。逻辑焦点也要一起清掉。
         if (key == Key.Escape)
         {
-            FocusManager.SetFocusedElement(FocusManager.GetFocusScope(cap), null);
-            Keyboard.ClearFocus();
+            e.Handled = true;
+            EndHotkeyRecording(cap);
             return;
         }
+
+        // 刚成功录到/刚清空的这一格保留了焦点，但已经不在录制。让按键照常往下走（全局热键、
+        // 父窗口或别的控件），而不是把用户的快捷键当成第二次录制。点它才会重新武装。
+        if (_hotkeyRecordingSuppressed.Contains(cap)) return;
+
+        e.Handled = true;
 
         if (key is Key.LeftCtrl or Key.RightCtrl or Key.LeftAlt or Key.RightAlt
                 or Key.LeftShift or Key.RightShift or Key.LWin or Key.RWin) return;
 
         // 一个全局热键会从所有应用手里夺走这个组合键；能绑上就必须能释放回去，否则唯一的退路是
-        // 手改 settings.json。Delete/Backspace 清空绑定——跟录制一样立即落盘、重新注册、刷新三态。
+        // 手改 settings.json。Delete/Backspace 清空绑定——跟录制一样立即落盘、重新注册、刷新三态，
+        // 然后退出录制态并保留焦点（FinishHotkeyRecording）。
         if (key is Key.Delete or Key.Back)
         {
             App.Cfg.Hotkeys[actionKey] = "";
             SettingsStore.Save(SettingsStore.DefaultPath, App.Cfg);
             ((App)Application.Current).ReapplyHotkeys();
             RefreshAllCaps();
+            FinishHotkeyRecording(cap, actionKey);
             return;
         }
 
@@ -378,6 +396,26 @@ public partial class MainWindow
         // ReapplyHotkeys 返回全部动作的新三态——这次改动可能把另一行从 Registered 撞成 Conflict，
         // 只刷被编辑的那一行会让那一行停在旧状态，直到重启才会显形。
         RefreshAllCaps();
+        // 录到了就退出录制态，但把键盘焦点留在这格——Tab 从这里的下一个元素继续，不回到窗口开头。
+        // 鼠标手势那侧 OnChordCaptured 直接收摊；键盘的输入源是 Tab/焦点，不能照搬那套。
+        FinishHotkeyRecording(cap, actionKey);
+    }
+
+    /// <summary>Esc / 失焦把焦点交出去；LostFocus 会把录制态的外壳复原成普通键位。</summary>
+    private void EndHotkeyRecording(Border cap)
+    {
+        _hotkeyRecordingSuppressed.Remove(cap);
+        FocusManager.SetFocusedElement(FocusManager.GetFocusScope(cap), null);
+        Keyboard.ClearFocus();
+    }
+
+    /// <summary>录到/清空后退出录制态，但保留焦点；登记“不再监听”，下一次按键不会静默改绑。</summary>
+    private void FinishHotkeyRecording(Border cap, string actionKey)
+    {
+        _hotkeyRecordingSuppressed.Add(cap);
+        ExitRecordingChrome(cap);
+        RenderCap(cap, actionKey);
+        cap.BorderBrush = AppTheme.Live;   // 焦点还在：留一个安静的焦点环，不是录制光圈
     }
 
     private void RefreshAllCaps()
