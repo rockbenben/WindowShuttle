@@ -188,6 +188,7 @@
 | 窗口尺寸记忆、1080p150 不溢出、最小尺寸下的可见性（**逐语言**，不只默认那门） | `MainWindowBoundsTests` `MainWindowCompactLayoutTests` |
 | 分列门槛：动作名在任何宽度下都不被裁成省略号 | `MainWindowCompactLayoutTests` |
 | 键位区不是键盘陷阱（Tab 进得去也出得来） | `MainWindowAccessibilityTests` |
+| 标题栏的控件不互相压住（GitHub 按钮不能盖住"检查更新"勾框） | `MainWindowTitleBarTests` |
 | 悬停 / 聚焦那一行要能跟常态分得开 | `AppThemeContrastTests` |
 | 对比度、非颜色状态标记、浮层置顶位 | `*ContrastTests` `MainWindowAccessibilityTests` `OverlayTopmostTests` |
 | RTL 下地图不镜像 | `MainWindowRtlTests` |

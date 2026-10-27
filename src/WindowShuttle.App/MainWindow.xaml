@@ -48,6 +48,18 @@
                  多折一行，动作区被挤到只剩 58px、第一张动作卡整个消失（MainWindowCompactLayoutTests
                  当场变红）。两次都是同一个根因：那条带子的宽度是有主的。 -->
             <ui:TitleBar x:Name="AppTitleBar" Grid.Row="0" Title="{loc:Loc App_Name}">
+                <!-- 应用图标：和托盘里那个是同一份资源（assets/branding 生成的 .ico，编译进
+                     Assets\windowshuttle.ico）。标题栏左边这块原本是空的——窗口标题右边紧挨着
+                     三个窗口按钮，中间没有任何标识；应用图标是这条标题栏上唯一能说明"这是哪个
+                     程序"的东西，而它已经在仓库里、且已经编进程序了。
+
+                     ⚠️ URI 必须**写死程序集名**（;component/WindowShuttle）。`pack://application:,,,/`
+                     指的是**入口程序集**：在应用里恰好就是本程序，所以托盘图标一直能用；但测试
+                     进程里入口程序集是测试宿主，那边没有这个资源，XAML 直接抛
+                     "Не удается найти ресурс assets/windowshuttle.ico"，整扇窗都构造不出来。 -->
+                <ui:TitleBar.Icon>
+                    <ui:ImageIcon Source="pack://application:,,,/WindowShuttle;component/assets/windowshuttle.ico"/>
+                </ui:TitleBar.Icon>
                 <ui:TitleBar.TrailingContent>
                     <!-- 跟最小化/最大化/关闭那三个**对平**。不能直接 VerticalAlignment=Center：标题栏
                          整条比按钮高（标题文字在它的正中），而那三个按钮是贴着顶边的一条 32 高的带子，
@@ -55,10 +67,19 @@
                          所以自己造一条同高的带子、在里面居中——写的是"跟它们同一条带子"这个意图，
                          而不是一个来路不明的偏移量。 -->
                     <Grid Height="32" VerticalAlignment="Top">
+                        <!-- ⚠️ **必须有列定义**：这个 Grid 里原本没有列，于是 GitHub 按钮和检查更新
+                             那一栈落进**同一个格子**——格子宽度取两者较大值（后者），GitHub 按钮按左对齐
+                             贴在格子最左边，正好压住 UpdateChk 的勾框方块（真机实拍：方块整个不见了，
+                             只剩 GitHub 图标和"检查更新"四个字挤在一起）。
+                             两列 Auto 之后：0 列是按钮（24+7 边距），1 列是检查更新那一栈，各归各位。 -->
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
                         <!-- 24×24 是**命中区**（WCAG 2.5.8 非内联目标下限），里面的字形仍是 16——
                              图标大小归内容管，按钮大小归手指管。ToolTip 改在构造函数里设：
                              人话一行 + URL 一行，XAML 属性给不出第二行。 -->
-                        <Button x:Name="RepoButton" Click="OnOpenRepo"
+                        <Button x:Name="RepoButton" Grid.Column="0" Click="OnOpenRepo"
                                 Width="24" Height="24" MinWidth="0" MinHeight="0" Padding="4"
                                 Margin="0,0,7,0" Background="Transparent" BorderThickness="0"
                                 Cursor="Hand" VerticalAlignment="Center" Focusable="True"
@@ -70,7 +91,7 @@
                              只放得下两张卡，多一行设置就少一张（MainWindowCompactLayoutTests 盯着
                              这件事，见那边的注释）。标题栏这一行右侧空着，宽裕得很；把开关放在
                              GitHub 链接旁边也是对的——两者问的是同一件事：这个程序自己的仓库。 -->
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
                             <CheckBox x:Name="UpdateChk" Content="{loc:Loc Settings_CheckUpdates}"
                                       ToolTip="{loc:Loc Settings_CheckUpdatesTip}" VerticalAlignment="Center"
                                       Margin="0,0,10,0" Checked="OnToggle" Unchecked="OnToggle"/>
