@@ -3,6 +3,23 @@
 The README states conclusions; this file keeps the measurements and reasoning behind them.
 Nothing here is required to use the app — it's for the reader who asks "why that shape?".
 
+## Extraction completeness and archive verification
+
+A shutdown or disk error can leave an executable present but truncated. Extraction invalidates
+the old marker first and writes .complete-sha256 only after the root executable is complete.
+The marker detects interruption and local damage. RunAsync downloads and verifies the archive
+against the release checksum on every check, so a local marker cannot establish package origin.
+
+## Verify the package users receive
+
+`tools/package-release.ps1` is shared by local packaging and CI. It checks both published
+executables are x64 single-file builds, unpacks each ZIP into a clean directory, compares the
+bytes, and runs `--smoke` with isolated application-data and temporary directories. The same
+explicit asset list feeds SHA-256 generation and release upload, so an unrelated ZIP cannot
+enter the checksums and a missing upload fails the job. The existing raw framework-dependent
+download remains available; builds remain unsigned. These local checks do not prove hosted
+publication, provenance or `releases/latest`; those still require the tagged workflow.
+
 ## Why only two hotkeys ship bound
 
 A global hotkey takes that combination away from *every* application on the desktop, not just
@@ -117,3 +134,81 @@ A chip shows at most forty characters, and several browser windows with the same
 otherwise indistinguishable. Hovering shows the full title plus the Enter hint, wrapped to
 420 DIP; the chip's automation name is also set to the full title (the tooltip is the
 sighted path).
+
+
+## Execution results and recovery
+
+The committer records changed window handles separately from failure counts: a maximized
+window can move in the first placement step and fail the second. The router stages pre-move
+positions before touching windows, publishes only changed entries, and keeps failed undo
+targets. Zero changed windows leave the previous snapshot intact. Atomic replacement avoids
+truncating the active snapshot; a pending snapshot survives final-save failure for recovery.
+Single-instance initialization waits for either a command sink or actual mutex ownership.
+An IPC timeout reports uncertainty without replaying the operation.
+
+## Protected startup paths and isolated verification
+
+Elevated tasks must point at a file and ancestor chain protected against ordinary-user
+replacement. ACL checks conservatively reject untrusted owners and applicable write grants.
+Existing tasks remain available for explicit removal and cause a warning if unsafe.
+Task Scheduler COM distinguishes missing tasks from unknown service or permission failures.
+Registry tests use temporary HKCU keys; the UIA harness uses SettingsStore.HomeOverride.
+Release tags enter scripts through environment variables. The shared release policy rejects
+published tags and non-increasing versions before publishing; publication jobs are serialized.
+The preflight reads every release page, so an older-created release with the highest version
+cannot be hidden behind recent drafts or prereleases. An offline regression executes the
+workflow's actual preflight against a simulated paginated response.
+Startup transition tests drive the real settings method with a simulated UAC result and a
+temporary registry key. Acceptance, refusal and task-operation failure cover both directions;
+actual Task Scheduler writes and consent remain manual checks.
+
+## Desktop topology and update checks
+
+The map uses one physical pixel coordinate system so vertical stacks and grids retain their
+relative placement. The footer and action viewport are remeasured together when its height
+changes. Each update check downloads a fresh archive for comparison with the release checksum;
+the local completion marker only detects interrupted extraction. A single process serializes
+checks, bounds the body transfer with cancellation, and performs hashing and extraction off
+the UI thread.
+
+
+## Undo identifies a window instance across tool restarts
+
+An HWND alone can point at a different window later. PID and process creation FILETIME reject
+a different process lifetime, but an application can recreate a window without restarting.
+Before a user move, WindowIdentityProbe records those process fields and sets a random scalar
+property named WindowShuttle.UndoIdentity.v1 on the window if it has none. Repeated moves reuse
+the token. The property belongs to that native window and survives WindowShuttle exiting; a
+destroyed window's replacement starts without it. The token is scalar data, so it owns no
+allocated memory, kernel handle, startup registration, or file to clean up.
+
+The optional Identity field keeps older JSON snapshots readable. Missing or incomplete
+identity is never reconstructed from an HWND's current occupant. Those entries, including
+pending recovery entries, are retained and skipped. A complete identity that cannot currently
+be queried is also deferred. A confirmed replacement is excluded when a successful partial
+undo publishes its next snapshot. If nothing can safely move, existing files stay untouched.
+
+Every plan produced by UndoStore.ToPlan requires identity verification. Normal undo windows
+use individual SetWindowPos calls instead of a deferred batch; placement checks run before
+each step, and correction checks again before writing. The reverse snapshot carries the same
+identity, preserving undo-of-undo. Capture failure does not turn a successful user move into
+an error; its unverifiable entry cannot later authorize an undo.
+
+Windows offers separate identity and positioning calls, so a target can still be destroyed
+between the last check and the native write. These checks narrow that race; they do not make
+the operation atomic. The marker is not authentication against a process deliberately
+editing another window's properties or the snapshot. UIPI or process query restrictions can
+make identity unavailable and therefore reduce undo availability. Downgrading to an older
+binary also restores that binary's older HWND-only behavior.
+
+## Dragging a window on the map
+
+The chip captures the initial press so crossing another title cannot change which window moves. Dragging begins at the Windows drag threshold. The destination changes fill during the drag, leaving the border available for its existing monitor status.
+
+The confirmation dialog reserves a row for its buttons. When the monitor height cap applies, the message scrolls independently so the last line and both choices remain reachable.
+
+## Main window layout
+
+The Updates menu groups a one-time check with the persistent startup preference. Opening the menu works offline. The map header carries the drag instruction so short windows can give that row back to the map and action list. Card spacing leaves the shortcut targets at their original size. The language selector aligns with the first settings row as the switches wrap.
+
+At the minimum window height, the settings controls collapse behind a toggle. The mouse gesture caution stays visible beside it. A manual toggle takes precedence over automatic resizing for the lifetime of the window. With settings collapsed, the map can shrink to its crowded-layout floor to leave two complete action rows visible.

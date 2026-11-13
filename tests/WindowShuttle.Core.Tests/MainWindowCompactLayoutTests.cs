@@ -90,9 +90,9 @@ public class MainWindowCompactLayoutTests(WpfTestHost host)
     // 用户拖得到的最小尺寸，直接引常量——写死数字的话，改了下限这条测试会继续验一个应用早已
     // 不允许的尺寸，绿着但验的是别的东西（MainWindowBoundsTests 的注释里记着同一个教训）。
     [Theory, MemberData(nameof(LongestLanguages))]
-    public void At_the_minimum_drag_size_at_least_one_action_card_is_fully_visible(string? lang)
-        => At(lang, MainWindow.MinWidthDip, MainWindow.MinHeightDip, (viewport, card) => Assert.True(viewport >= card,
-            $"[{lang ?? "系统"}] 动作区可视高度只有 {viewport:0}，装不下一张 {card:0} 高的动作卡——整个主功能面在最小尺寸下消失了（地图带 {_band:0}）"));
+    public void At_the_minimum_drag_size_at_least_two_action_cards_are_fully_visible(string? lang)
+        => At(lang, MainWindow.MinWidthDip, MainWindow.MinHeightDip, (viewport, card) => Assert.True(viewport >= 2 * card,
+            $"[{lang ?? "系统"}] 动作区可视高度只有 {viewport:0}，装不下两张各 {card:0} 高的动作卡（地图带 {_band:0}）"));
 
     /// <summary>动作名在任何宽度下都不许被裁成省略号。
     ///

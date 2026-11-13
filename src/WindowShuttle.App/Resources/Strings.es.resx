@@ -50,7 +50,9 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Iniciar con Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Como administrador</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Inicio elevado mediante una tarea programada: un aviso de UAC al marcarla y, después, cada arranque inicia en silencio como administrador. Las ventanas de programas elevados pasan a poder moverse y los gestos dejan de morir cuando uno está en primer plano</value></data>
-  <data name="Settings_CheckUpdates"><value>Buscar actualizaciones</value></data>
+  <data name="Settings_Title"><value>Configuración</value></data>
+  <data name="Settings_Updates"><value>Actualizaciones</value></data>
+  <data name="Settings_CheckUpdates"><value>Buscar actualizaciones al iniciar</value></data>
   <data name="Settings_CheckUpdatesTip"><value>Si está activado, se conecta una vez al iniciar a GitHub para ver si hay una versión más reciente: es la única vez que este programa se conecta a internet; todo lo demás ocurre en tu equipo.</value></data>
   <data name="Settings_CheckNow"><value>Buscar ahora</value></data>
   <data name="Update_Checking"><value>Buscando actualizaciones…</value></data>
@@ -75,7 +77,7 @@
   <data name="Main_Actions" xml:space="preserve"><value>Acciones</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Actualizar</value></data>
   <data name="Main_DropHint" xml:space="preserve"><value>Arrastra un elemento de ventana del mapa a otro monitor para moverla</value></data>
-  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Dibujado según el tamaño aparente de cada pantalla en tu mesa y su posición, no según sus píxeles</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Tamaños y posiciones según los píxeles del escritorio</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Haz clic en una casilla para grabar un atajo o un gesto de ratón; Supr la borra</value></data>
 
   <data name="Badge_Cursor" xml:space="preserve"><value>Cursor</value></data>
@@ -95,4 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (las apps a pantalla completa se omiten según el ajuste)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Pulsa Enter para traer esta ventana al frente</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Se produjo un error en el último paso. La aplicación sigue en marcha; los detalles se escribieron en crash.log</value></data>
+  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Error al configurar el inicio. El inicio elevado requiere una ubicación protegida contra escritura de usuarios normales. Revise el registro y la tarea existente o desactive el inicio elevado.</value></data>
 </root>

@@ -50,7 +50,9 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Starten met Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Als beheerder</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Verhoogd starten via een geplande taak: één UAC-prompt bij het aanvinken, daarna start elke boot stil als beheerder. Vensters van verhoogde programma's worden verplaatsbaar en gebaren vallen niet meer uit zolang er één op de voorgrond staat</value></data>
-  <data name="Settings_CheckUpdates"><value>Controleren op updates</value></data>
+  <data name="Settings_Title"><value>Instellingen</value></data>
+  <data name="Settings_Updates"><value>Updates</value></data>
+  <data name="Settings_CheckUpdates"><value>Bij opstarten controleren op updates</value></data>
   <data name="Settings_CheckUpdatesTip"><value>Als dit aan staat, neemt het programma bij het starten één keer contact op met GitHub om te zien of er een nieuwere versie is — dat is het enige moment waarop dit programma online gaat; al het andere blijft op je computer.</value></data>
   <data name="Settings_CheckNow"><value>Nu controleren</value></data>
   <data name="Update_Checking"><value>Updates controleren…</value></data>
@@ -75,7 +77,7 @@
   <data name="Main_Actions" xml:space="preserve"><value>Acties</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Vernieuwen</value></data>
   <data name="Main_DropHint" xml:space="preserve"><value>Sleep een vensteritem uit de kaart naar een andere monitor om het te verplaatsen</value></data>
-  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Getekend naar hoe groot elk scherm op je bureau oogt en waar het staat, niet naar pixels</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Grootte en positie volgens desktop-pixelcoördinaten</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Klik op een toetsvak om een sneltoets of muisgebaar op te nemen; Delete wist het</value></data>
 
   <data name="Badge_Cursor" xml:space="preserve"><value>Cursor</value></data>
@@ -95,4 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (volledigscherm-apps worden overgeslagen volgens de instelling)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Druk op Enter om dit venster naar voren te halen</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Er is iets misgegaan bij de laatste stap. De app draait nog; details zijn weggeschreven naar crash.log</value></data>
+  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Opstartinstelling mislukt. Verhoogd opstarten vereist een programmalocatie die gewone gebruikers niet kunnen wijzigen. Controleer het logboek en de taak of schakel verhoogd opstarten uit.</value></data>
 </root>

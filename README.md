@@ -13,8 +13,8 @@
 - **Flick, don't aim.** `Ctrl` + right button, throw the pointer at a screen, let go. You were already pointing at it, so there is no screen number to translate first. Misflicked? `Ctrl` + middle-click puts it back.
 - **One window or the whole screen, same tool.** Seven actions on one scale: send this one somewhere, trade two screens outright, or gather everything home after a monitor comes off. All of them from the keyboard, the mouse, the tray menu or the CLI.
 - **Geometry is recomputed, not copied.** Mixed DPI is the main case, not an edge case: sizes are rescaled for the destination, maximized stays maximized, minimized restores on the new screen, and a snapped window keeps its half or its quarter.
-- **The map is the control surface.** The panel at the top draws your monitors at the size and position they actually have on your desk — drag a window from one card to another and it moves. The map redraws after every move, so it always shows where the windows are now; hover a truncated chip to read its full title.
-- **Nothing to commit to.** One portable exe, no installer, no account. It stays offline unless you ask it to check for updates — that one box is the only thing that ever goes online. Windows only.
+- **The map is the control surface.** The panel at the top draws your monitors at the size and position they actually have on your desk — drag a window from one card to another and it moves. The map redraws after every move, so it always shows where the windows are now; hover a truncated chip to read its full title. The destination card highlights while you drag.
+- **Nothing to commit to.** One portable exe, no installer, no account. It stays offline unless you ask it to check for updates — you can run a check once or enable checks at launch. Windows only.
 
 ## Does it fit your setup
 
@@ -56,7 +56,7 @@ Below, "the window" means **whatever your hand is on**: a mouse gesture acts on 
 | Send to primary | *(unbound)* | *(unbound)* | Send that window to the primary monitor and raise it |
 | Send to next monitor | *(unbound)* | *(unbound)* | Send that window to the monitor on its right, wrapping to the leftmost, and raise it |
 | Send by direction | *(not applicable)* | **`Ctrl` + right, flick** | Flick toward a screen and the window under the cursor goes there. See [Mouse gestures](#mouse-gestures) |
-| Gather all | *(unbound)* | *(unbound)* | Gather every window sitting on a secondary screen back to the primary monitor. A window stranded completely off-screen after a display is unplugged is a different case — that is the automatic rescue, below |
+| Gather all | *(unbound)* | *(unbound)* | Gather secondary-screen and fully off-screen windows back to the primary; the automatic rescue below is also available |
 | Undo | `Ctrl+Alt+2` | `Ctrl` + middle-click | Restore the positions from before the last move |
 
 There is also one tool that moves nothing: **Identify screens**, the button next to *Refresh* above the map. Press it and each screen flashes its own number in the middle — that's how you check that the arrangement Windows believes in matches the one on your desk. It takes no shortcut or gesture slot (it isn't a window-moving action); the tray menu and the `identify` command trigger it too.
@@ -81,7 +81,7 @@ Two clues instead of four facts. **The button says how much**: right sits under 
 
 **The `Shift` row is left clear**, both for you and for Explorer and your browser: `Shift` + right-click (that extended menu) and `Shift` + middle-click (open a tab in the foreground) are things people use every day, so the defaults stay off them. When you want gestures of your own, that row is already free.
 
-**Send to primary, Gather all and Send to next monitor ship without a gesture** — not because they are weak, but because there is already a way: send-to-primary is a flick toward the primary; gather-all's main job (windows stranded off-screen after unplugging a display) is handled by the automatic rescue, with the manual one as a backstop; send-to-next is a flick to the right. All three are in the tray menu and the CLI, and recording a gesture for one is a single click. Binding one more cell costs another combination taken from other programs, and buys a path you already had.
+**Send to primary, Gather all and Send to next monitor ship without a gesture** — not because they are weak, but because there is already a way: send-to-primary is a flick toward the primary; gather-all's main job (windows stranded off-screen after unplugging a display) can be handled by the opt-in automatic rescue, with the manual one as a backstop; send-to-next is a flick to the right. All three are in the tray menu and the CLI, and recording a gesture for one is a single click. Binding one more cell costs another combination taken from other programs, and buys a path you already had.
 
 #### `Ctrl` + right, flick
 
@@ -104,7 +104,7 @@ Left alone on purpose: **bare buttons — none are used out of the box** (see th
 
 ## Settings
 
-The bar along the bottom of the main window, plus one box in the title bar. Defaults in brackets:
+The bar along the bottom of the main window, plus the Updates menu in the title bar. Use **Settings** to expand or collapse the bottom bar. At the minimum window height it starts collapsed so two action cards fit. Defaults in brackets:
 
 - **Skip fullscreen apps** *(on)* — a window that exactly fills a monitor with no title bar or thick border is left alone. This applies to every action.
 - **Rescue off-screen windows when a monitor disconnects** *(**off**)* — turn it on and, about two seconds after you unplug a display, any window left completely outside every remaining screen is pulled back to the primary.
@@ -113,11 +113,13 @@ The bar along the bottom of the main window, plus one box in the title bar. Defa
 
   It only touches windows with zero overlap with any monitor, so anything you can still see stays put, and it deliberately does **not** take the undo slot: undo still steps back the last move *you* made.
 - **Keep running in the tray when closed** *(on)* — the close button hides the window instead of exiting. Turn it off and closing the window quits.
-- **Check for updates** *(off; in the title bar, next to the GitHub link)* — the only thing in this program that ever goes online. Tick it and each launch asks GitHub once whether a newer release exists; if there is one, the standalone zip is downloaded, its SHA-256 is checked against the one published next to it, and the card says where the new program landed. It does **not** replace the running copy — Windows locks the exe that is executing, and overwriting it leaves a half-installed program behind. There is a *Check now* button next to the box for asking without waiting for the next start.
+- **Check for updates at startup** *(off, under Updates in the title bar)* — the only thing in this program that ever goes online. Tick it and each launch asks GitHub once whether a newer release exists; if there is one, the standalone zip is downloaded, its SHA-256 is checked against the one published next to it, and the card says where the new program landed. It does **not** replace the running copy — Windows locks the exe that is executing, and overwriting it leaves a half-installed program behind. Choose *Updates → Check now* for a one-time check, even when startup checks are off. Each check downloads and verifies the archive again; interrupted extraction never produces a ready update.
 - **Start with Windows** *(**on**)* — a tray-resident tool that doesn't start with the machine loses half its point. The plain tier is a `HKCU\...\Run` entry passing `--tray`, so the boot launch goes straight to the tray without putting a window in your face; launching the exe yourself opens the main window.
 - **As administrator** *(off; under Start with Windows)* — swaps the registry entry for a **Run-with-highest-privileges scheduled task**: one UAC prompt when you tick it, then every boot starts silently elevated.
 
-  This is the only complete fix for the two elevated-window limitations (their windows can't be moved, and gestures go dead while one holds the foreground — which in daily use looks like "my flick suddenly turned into a right-drag/copy"). Every bypass we measured, including handing the move to Windows' own `Win+Shift` keys, dies on UIPI. **The first launch does not ask for this** — it only turns on plain autostart. Elevation buys exactly those two things, and if you never hit them you never need it; the app speaks up when you do — the toast shown when a move is refused and the one shown when gestures go dead both offer to restart elevated, and *Restart as administrator* sits in the tray menu. Tick the box to make it permanent; unticking deletes the task (one more UAC). While resident elevated, the CLI from a non-elevated terminal keeps working (the message filter allows it).
+  This is the only complete fix for the two elevated-window limitations (their windows can't be moved, and gestures go dead while one holds the foreground — which in daily use looks like "my flick suddenly turned into a right-drag/copy"). Every bypass we measured, including handing the move to Windows' own `Win+Shift` keys, dies on UIPI. Elevation removes both walls together.
+
+  **The first launch does not ask for this** — it only turns on plain autostart. Elevation buys exactly those two things, and if you never hit them you never need it; the app speaks up when you do — the toast shown when a move is refused and the one shown when gestures go dead both offer to restart elevated, and *Restart as administrator* sits in the tray menu. Tick the box to make it permanent; unticking deletes the task (one more UAC). While resident elevated, the CLI from a non-elevated terminal keeps working (the message filter allows it).
 
 ## CLI
 
@@ -164,9 +166,14 @@ If WindowShuttle is already resident in the tray, running a CLI command relays i
   Neither path ever reaches past its target: if the window it points at can't be moved (WindowShuttle's own window, a skipped fullscreen or hung app), nothing happens and the toast says so — it will not quietly move whatever is behind it. Moving a window you never pointed at is worse than doing nothing.
 - **Modal dialogs owned by another window are not moved.** v1 only moves top-level windows (the ones you'd see in Alt+Tab); a dialog attached to a window that gets swapped stays behind on the old monitor.
 - **Undo is a single step.** WindowShuttle keeps exactly one snapshot: the positions from before the last move *you* made. Pressing undo twice returns you to where you were rather than stepping further back. The automatic off-screen rescue deliberately does not overwrite that snapshot, so unplugging a monitor never costs you the undo you were about to press.
+  New snapshots record the process lifetime and a random marker on each window. Undo checks both again before moving it, so a reused HWND is skipped. Older snapshots and recovery files remain readable; entries with no verifiable identity are preserved and skipped. Make a new move to create a verifiable snapshot. A window whose identity cannot be recorded or read has no safe undo target. Closing the original window or signing out ends that window identity.
 - **Fullscreen applications are skipped by default** (a window that exactly fills a monitor with no title bar or thick border — games, video players). Turn off "Skip fullscreen apps" at the bottom of the main window to include them.
 - **Windows that aren't responding are skipped, and the CLI says so** — the CLI result line reports a "skipped N not-responding window(s)" count, the same way it reports skipped fullscreen apps. The card stays quiet about a move that succeeded: the window moved, and that is the feedback.
 - **Windows on another virtual desktop are invisible to WindowShuttle, on purpose.** Windows marks a window as "cloaked" while its virtual desktop isn't the active one — the same flag used for suspended UWP apps — and WindowShuttle treats cloaked windows as not there, so they're excluded from every action, including `list`. This is deliberate, not a bug: `gather` reaching across desktops to yank a window onto your current screen would be more surprising than just leaving it where it is. Switch to that virtual desktop first if you want to move something on it.
+
+- **Desktop coordinates and recovery.** The map uses desktop pixel coordinates, including vertically stacked screens and gaps. Gather also brings fully off-screen windows back when only one screen remains. A failed move keeps the previous undo; a partially failed undo preserves the remaining targets. If saving the final snapshot fails, the next undo reads the recovery snapshot in `undo.json.pending`.
+- **Protected startup paths.** Elevated startup requires the executable and its parent directories to be protected from ordinary-user replacement. Existing unsafe tasks produce a warning and can be removed by turning off elevated startup. Startup changes report failures and leave unrelated startup entries intact.
+- **Update verification.** Each update check downloads and verifies the release package again. Download-body reads share the check's deadline, and verification and extraction run away from the UI thread. Checks in one process are serialized.
 
 ## Languages
 
@@ -198,7 +205,9 @@ dotnet publish src/WindowShuttle.App -c Release -p:PublishProfile=win-x64       
 dotnet publish src/WindowShuttle.App -c Release -p:PublishProfile=win-x64-needs-dotnet10  # small, needs the .NET 10 desktop runtime
 ```
 
-Every push runs the tests, the `--smoke` self-check and the CLI exit codes. The other self-check switch, `--shots`, renders the whole screenshot matrix — it is far too slow for CI, so it stays a local step, listed in [`docs/manual-checks.md`](docs/manual-checks.md). Pushing a `v*` tag additionally publishes both builds, writes `SHA256SUMS.txt` and attaches a build-provenance attestation, so a downloaded asset can be checked with `gh attestation verify <file> -R rockbenben/WindowShuttle` rather than trusting a checksum that sits on the same page as the file it vouches for.
+After publishing both profiles, run `pwsh ./tools/package-release.ps1 -Tag vX.Y.Z -OutputDirectory <directory>` locally to package them, verify both unpacked builds with `--smoke`, and generate checksums. CI uses the same script before uploading.
+
+Every push runs the tests, the `--smoke` self-check and the CLI exit codes. The other self-check switch, `--shots`, renders the whole screenshot matrix — it is far too slow for CI, so it is available as a local tool, documented in [`docs/manual-checks.md`](docs/manual-checks.md). Pushing a `v*` tag additionally publishes both builds, writes `SHA256SUMS.txt` and attaches a build-provenance attestation, so a downloaded asset can be checked with `gh attestation verify <file> -R rockbenben/WindowShuttle` rather than trusting a checksum that sits on the same page as the file it vouches for.
 
 What no runner can reach — a real UAC prompt, physically unplugging a display, gestures while an elevated window holds the foreground, a key press that synthetic input reports differently from a real finger, and anything judged by eye — is in [`docs/manual-checks.md`](docs/manual-checks.md), grouped by *why* each one needs hands. Walk it before tagging.
 

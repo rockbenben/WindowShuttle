@@ -20,7 +20,7 @@ public sealed class CommandRouter
     /// 认的是**焦点窗口**。完整理由写在 PlanRequest.Referent 上。</param>
     /// <param name="at">以哪一点当作"光标位置"来规划。只有方向手势会传：它必须锚在**按下点**上，
     /// 否则跨屏划动会拿松手点去找窗口，搬走目标屏上那扇毫不相干的。其余入口传 null＝读当前光标。</param>
-    /// <param name="referent">显式指定要搬的那扇窗，覆盖"当场读前台窗口"。只有托盘菜单会传：
+    /// <param name="referent">显式指定要搬的那扇窗，覆盖当场命中判断。手势在按下时捕获，托盘菜单也会传：
     /// 菜单一弹出来，前台就变成菜单自己了，当场读到的是它，不是用户刚才在用的那扇窗。</param>
     public ExecResult Execute(WindowShuttleAction action, int? toMonitor, bool fromMouseGesture = false,
         PointPx? at = null, nint? referent = null)
@@ -47,11 +47,14 @@ public sealed class CommandRouter
         {
             ExecResult result;
             try { result = run(); }
-            catch (Exception) { result = new ExecResult(3, MovePlan.NoOpPlan(NoOpReason.Error), null); }
+            catch (Exception ex) { App.Log("搬运", ex); result = new ExecResult(3, MovePlan.NoOpPlan(NoOpReason.Error), null); }
             // 通知/地图刷新是结果的旁路，不是搬运本身。任何订阅者抛异常都不能把已经完成的搬运
             // 反转成退出码 3，更不能从热键/托盘入口带走整个驻留进程。
-            try { Executed?.Invoke(result, action); }
-            catch (Exception ex) { App.Log("执行结果事件", ex); }
+            foreach (var subscriber in Executed?.GetInvocationList() ?? [])
+            {
+                try { ((Action<ExecResult, WindowShuttleAction>)subscriber)(result, action); }
+                catch (Exception ex) { App.Log("执行结果事件", ex); }
+            }
             return result;
         }
     }
@@ -63,12 +66,10 @@ public sealed class CommandRouter
         var windows = WindowProbe.GetWindows();
         var settings = App.Cfg;
         var cursor = at ?? WindowProbe.GetCursor();
-        // 认光标还是认焦点，就在这一行分开。手势不给 referent（它的指点设备是指针）；
-        // 其余入口给前台窗口，除非调用方已经自己快照过（托盘菜单——见 Execute 的参数说明）。
+        // 手势和托盘传入事先捕获的目标；键盘与 CLI 在执行时读取前台窗口。
         // 救援没有"用户指着谁"可言，它按几何筛全桌面，给了 referent 反而会把它变成单窗动作。
-        nint? subject = fromMouseGesture || action == WindowShuttleAction.Rescue
-            ? null
-            : referent ?? WindowProbe.GetForeground();
+        nint? subject = action == WindowShuttleAction.Rescue ? null
+            : referent ?? (fromMouseGesture ? null : WindowProbe.GetForeground());
         var plan = SwapPlanner.Plan(new PlanRequest(monitors, windows, action,
             cursor, toMonitor, LastSwapPartner, settings.SkipFullscreen, subject));
 
@@ -82,7 +83,7 @@ public sealed class CommandRouter
         var result = action == WindowShuttleAction.Rescue
             ? CommitOnly(plan)
             : CommitWithUndo(plan, windows);
-        if (plan.NewSwapPartner is int p) LastSwapPartner = p;
+        if (result.Commit is { Moved: > 0 } && plan.NewSwapPartner is int p) LastSwapPartner = p;
 
         // 「鼠标跟随窗口」那个设置项连同这里的坐标映射一起删了。它存在的唯一理由是"连按同一热键
         // 能继续操作同一扇窗"——而那是键盘路径当年认光标才自造出来的问题：窗口搬走了、指针留在原地，
@@ -106,36 +107,76 @@ public sealed class CommandRouter
         if (snap is null || snap.Entries.Count == 0)
             return new ExecResult(1, MovePlan.NoOpPlan(NoOpReason.NothingToDo), null);
 
-        // 一份窗口列表同时回答两个问题：句柄还活着吗、这扇窗现在允许搬吗。原来是先逐条 IsWindow()
-        // P/Invoke、再在 CommitWithUndo 里把整个桌面重新枚举一遍，两次问的是同一批窗口。
-        //
-        // 但这两个问题的答案不能混用，混用会丢数据：不可搬（无响应、在别的虚拟桌面上被 cloak、
-        // 或此刻正全屏）只是**这一次**搬不了，窗口还在、快照还有意义；而 CommitWithUndo 随后会拿
-        // 新计划的快照覆盖 undo.json，于是被滤掉的那几扇窗，它们搬运前的位置就此永久消失——
-        // 等那个应用缓过来再按一次撤销也回不去了。所以：不可搬的**原样留在新快照里**，
-        // 只有句柄真的没了才丢弃。
-        var movable = SwapPlanner.SelectMovable(windows, monitors, App.Cfg.SkipFullscreen)
+        return RestoreUndo(snap, windows, monitors, App.Cfg.SkipFullscreen);
+    }
+
+    internal static ExecResult RestoreUndo(UndoSnapshot snap, IReadOnlyList<WindowFacts> windows,
+        IReadOnlyList<MonitorInfo> monitors, bool skipFullscreen,
+        Func<UndoEntry, WindowIdentityStatus>? inspect = null, Func<MovePlan, CommitResult>? commit = null,
+        string? path = null)
+    {
+        inspect ??= entry => WindowIdentityProbe.Inspect((nint)entry.Hwnd, entry.Identity);
+        var movable = SwapPlanner.SelectMovable(windows, monitors, skipFullscreen)
             .Movable.Select(f => (long)f.Hwnd).ToHashSet();
-        var live = snap.Entries.Where(e => WindowProbe.IsAlive((nint)e.Hwnd)).ToList();
-        var (canMove, deferred) = (live.Where(e => movable.Contains(e.Hwnd)).ToList(),
-                                   live.Where(e => !movable.Contains(e.Hwnd)).ToList());
+        var retained = new List<UndoEntry>();
+        var canMove = new List<UndoEntry>();
+        foreach (var entry in snap.Entries)
+        {
+            // Missing legacy identity cannot be reconstructed from the current occupant of an HWND.
+            var status = entry.Identity is { IsComplete: true } ? inspect(entry) : WindowIdentityStatus.Unavailable;
+            if (status == WindowIdentityStatus.Different) continue;
+            retained.Add(entry);
+            if (status == WindowIdentityStatus.Match && movable.Contains(entry.Hwnd)) canMove.Add(entry);
+        }
         var plan = UndoStore.ToPlan(new UndoSnapshot(canMove), monitors);
         if (plan.NoOp is not null) return new ExecResult(1, plan, null);
 
-        // 撤销的撤销：搬动的那几扇存**当前**位置（连按两次回到原处），搬不动的那几扇把原条目
-        // 原样带过去，它们的目标位置一个字节都不能变。
-        var next = new UndoSnapshot([.. UndoStore.Capture(plan, windows).Entries, .. deferred]);
-        UndoStore.Save(SettingsStore.UndoPath, next);
-        return CommitOnly(plan);
+        // Unknown identity and temporarily unmovable windows keep their original targets for retry.
+        return CommitWithUndo(plan, windows, commit, new UndoSnapshot(retained), path);
     }
 
-    /// <summary>§8.1 先快照再动手、§11 快照永远落盘、§9 部分失败退出码 2——三条规矩绑在一起，
-    /// 三个提交点（规划动作、拖放直送、撤销/恢复）此前各抄了一遍。抄一遍就多一个漏掉存盘的机会。</summary>
-    private static ExecResult CommitWithUndo(MovePlan plan, IReadOnlyList<WindowFacts> windows)
+    /// <summary>先暂存搬运前位置，提交后按实际改变的窗口发布快照。最终落盘失败时保留恢复文件。</summary>
+    internal static ExecResult CommitWithUndo(MovePlan plan, IReadOnlyList<WindowFacts> windows,
+        Func<MovePlan, CommitResult>? commit = null, UndoSnapshot? original = null, string? path = null,
+        Func<nint, WindowIdentity?>? captureIdentity = null)
     {
-        UndoStore.Save(SettingsStore.UndoPath, UndoStore.Capture(plan, windows));
-        return CommitOnly(plan);
+        path ??= SettingsStore.UndoPath;
+        captureIdentity ??= WindowIdentityProbe.Capture;
+        plan = plan with { Moves = [.. plan.Moves.Select(m => m.RequireIdentity ? m : m with
+            { ExpectedIdentity = captureIdentity(m.Hwnd) })] };
+        var before = UndoStore.Capture(plan, windows);
+        string pending = path + ".pending";
+        if (System.IO.File.Exists(pending))
+        {
+            var recovery = UndoStore.Load(path);
+            if (recovery is not null) UndoStore.Save(path, recovery);
+            System.IO.File.Delete(pending);
+        }
+        UndoStore.Save(pending, new UndoSnapshot([.. before.Entries,
+            .. (original?.Entries ?? []).Where(e => before.Entries.All(b => b.Hwnd != e.Hwnd))]));
+        var result = (commit ?? WindowCommitter.Commit)(plan);
+        var next = MergeUndo(before, original, result.ChangedWindows);
+        try
+        {
+            if (result.ChangedWindows.Count > 0)
+            {
+                UndoStore.Save(pending, next);
+                UndoStore.Save(path, next);
+            }
+            System.IO.File.Delete(pending);
+        }
+        catch (Exception ex)
+        {
+            App.Log("撤销快照", ex);
+            return new ExecResult(3, plan, result with { OtherFailed = result.OtherFailed + 1 });
+        }
+        return new ExecResult(result.AccessDenied + result.OtherFailed > 0 ? 2 : 0, plan, result);
     }
+
+    internal static UndoSnapshot MergeUndo(UndoSnapshot before, UndoSnapshot? original,
+        IReadOnlySet<nint> changed)
+        => new([.. before.Entries.Where(e => changed.Contains((nint)e.Hwnd)),
+                .. (original?.Entries ?? []).Where(e => !changed.Contains((nint)e.Hwnd))]);
 
     /// <summary>提交但不动撤销栈。只给机器自己触发的搬运用（见 RunPlanned 里 Rescue 那一支）。</summary>
     private static ExecResult CommitOnly(MovePlan plan)

@@ -50,7 +50,9 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Mit Windows starten</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Als Administrator</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Start mit erhöhten Rechten über eine geplante Aufgabe: einmal UAC beim Ankreuzen, danach startet jeder Systemstart still als Administrator. Fenster erhöhter Programme lassen sich dann verschieben, und Gesten fallen nicht mehr aus, solange eines im Vordergrund ist</value></data>
-  <data name="Settings_CheckUpdates"><value>Nach Updates suchen</value></data>
+  <data name="Settings_Title"><value>Einstellungen</value></data>
+  <data name="Settings_Updates"><value>Updates</value></data>
+  <data name="Settings_CheckUpdates"><value>Beim Start nach Updates suchen</value></data>
   <data name="Settings_CheckUpdatesTip"><value>Wenn aktiv, fragt das Programm beim Start einmal GitHub ab, ob es eine neuere Version gibt — das ist die einzige Verbindung dieses Programms; alles andere passiert auf deinem Rechner.</value></data>
   <data name="Settings_CheckNow"><value>Jetzt prüfen</value></data>
   <data name="Update_Checking"><value>Suche nach Updates…</value></data>
@@ -75,7 +77,7 @@
   <data name="Main_Actions" xml:space="preserve"><value>Aktionen</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Aktualisieren</value></data>
   <data name="Main_DropHint" xml:space="preserve"><value>Fenster-Eintrag der Karte auf einen anderen Bildschirm ziehen, um ihn zu verschieben</value></data>
-  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Gezeichnet nach der gefühlten Größe und Lage jedes Bildschirms auf dem Schreibtisch, nicht nach Pixeln</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Größe und Position nach Desktop-Pixelkoordinaten</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Auf ein Tastenfeld klicken, um ein Kürzel oder eine Mausgeste aufzunehmen; Entf löscht es</value></data>
 
   <data name="Badge_Cursor" xml:space="preserve"><value>Cursor</value></data>
@@ -95,4 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (Vollbild-Apps werden laut Einstellung übersprungen)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Enter drücken, um dieses Fenster nach vorn zu holen</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Beim letzten Schritt ist ein Fehler aufgetreten. Die App läuft weiter; Details wurden in crash.log geschrieben</value></data>
+  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Autostart fehlgeschlagen. Erhöhter Autostart erfordert einen vor normalen Schreibzugriffen geschützten Programmpfad. Protokoll und Aufgabe prüfen oder erhöhten Autostart deaktivieren.</value></data>
 </root>

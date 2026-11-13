@@ -142,17 +142,14 @@ public partial class App : Application
         _mutex = new Mutex(true, @"Local\WindowShuttle.SingleInstance", out bool isFirst);
         if (!isFirst)
         {
-            var sink = FindWindowW(null, SinkTitle);
-            if (sink != 0)
+            var ready = AwaitInstance(_mutex, () => FindWindowW(null, SinkTitle), TimeSpan.FromSeconds(5));
+            if (ready.Sink != 0)
             {
-                // 带 --tray 的那次启动**什么都不要转发**：它的意图正是"别打扰"。原来这里把
-                // --tray 剥掉之后转发裸的 "show"，于是开机自启项在已有驻留实例时反而把主窗口
-                // 弹了出来——正是这个参数存在的目的的反面。
                 if (startHidden && args.Length == 0) { Shutdown(0); return; }
-                Shutdown(SendCommand(sink, args.Length > 0 ? string.Join(' ', args) : "show"));
+                Shutdown(SendCommand(ready.Sink, args.Length > 0 ? string.Join(' ', args) : "show"));
                 return;
             }
-            // 驻留标记在但窗口没了（正在退出的竞态）：一次性兜底继续走 ③
+            if (!ready.Acquired) { Shutdown(3); return; }
         }
 
         // ③ 有命令、无驻留：一次性执行后退出，不进托盘（§2.3）
@@ -166,7 +163,8 @@ public partial class App : Application
                     return;
                 }
                 var r = Router.Execute(cmd.Action, cmd.ToMonitor);
-                Console.WriteLine(Describe(r));
+                if (r.ExitCode == 3) Console.Error.WriteLine("error: command failed; see crash.log");
+                else Console.WriteLine(Describe(r));
                 Shutdown(r.ExitCode);
             }
             catch (Exception ex)
@@ -189,9 +187,9 @@ public partial class App : Application
         _hotkeys.Pressed += a => RunBound(a, fromMouseGesture: false);
         HotkeyStates = _hotkeys.Apply(Cfg);
         _mouseChords = new MouseChordService(Dispatcher);
-        _mouseChords.Triggered += (a, x, y) =>
-            { _lastGesture = DateTime.UtcNow; RunBound(a, fromMouseGesture: true, at: new PointPx(x, y)); };
-        _mouseChords.Stroked += (sx, sy, dx, dy) => { _lastGesture = DateTime.UtcNow; RunStroke(sx, sy, dx, dy); };
+        _mouseChords.Triggered += (a, x, y, target) =>
+            { _lastGesture = DateTime.UtcNow; RunBound(a, fromMouseGesture: true, at: new PointPx(x, y), referent: target); };
+        _mouseChords.Stroked += (sx, sy, dx, dy, target) => { _lastGesture = DateTime.UtcNow; RunStroke(sx, sy, dx, dy, target); };
         _mouseChords.Captured += (b, m) => _main?.OnChordCaptured(b, m);
         _mouseChords.Apply(Cfg);
         // 任何入口搬完窗，主窗口若开着都要跟着重画：手势/快捷键/托盘以前都不刷新，地图上那扇窗
@@ -222,6 +220,9 @@ public partial class App : Application
         };
         HookDisplayChange();
         _resident = true;                              // 到这里才算真的驻留起来了，见字段注释
+        _ = StartupRegistration.GetElevated();
+        if (StartupRegistration.ElevatedTargetUnsafe)
+            NotificationOverlay.Show(Strings.Get("Startup_ProtectedPath"), isError: true);
         if (!startHidden) ShowMain();                  // 手动启动就把窗口摆出来；开机自启走 --tray 不打扰
 
         // 开机检查更新：**默认关**，也是本程序唯一会联网的行为。开启后每次启动问一次 GitHub
@@ -242,9 +243,24 @@ public partial class App : Application
         // 界面才不会跟系统状态脱节。窗口没起来（手工跑 --tray 的全新安装）就整个跳过，连"来过了"的戳都不盖。
         if (firstRun && _main is not null)
         {
-            _main.EnableStartupOnFirstRun();
+            _ = _main.EnableStartupOnFirstRun();
             SettingsStore.Save(SettingsStore.DefaultPath, Cfg);     // 盖"来过了"的戳，下次启动不再是首启
         }
+    }
+
+    internal static (bool Acquired, nint Sink) AwaitInstance(Mutex mutex, Func<nint> findSink, TimeSpan timeout)
+    {
+        // A resident owns the mutex before its sink is ready. Only actual ownership permits fallback.
+        var deadline = Stopwatch.StartNew();
+        while (deadline.Elapsed < timeout)
+        {
+            nint sink = findSink();
+            if (sink != 0) return (false, sink);
+            try { if (mutex.WaitOne(0)) return (true, 0); }
+            catch (AbandonedMutexException) { return (true, 0); }
+            Thread.Sleep(25);
+        }
+        return (false, 0);
     }
 
     private System.Windows.Threading.DispatcherTimer? _rescueDebounce;
@@ -297,7 +313,7 @@ public partial class App : Application
     ///
     /// 所以这里回一句该怎么用——而且直接借这个动作自己的描述（Action_ToDirection_Desc，18 种语言
     /// 现成的），不另写一条只在出错时才见得到的文案：能说明白它怎么用的那句话，本来就已经写好了。</summary>
-    private static void RunStroke(int sx, int sy, int dx, int dy)
+    private static void RunStroke(int sx, int sy, int dx, int dy, nint referent)
     {
         if (Math.Abs(dx) < MouseChordService.MinStroke && Math.Abs(dy) < MouseChordService.MinStroke)
         {
@@ -327,7 +343,7 @@ public partial class App : Application
         // 分屏状态改由 MonitorMapper.MapRect 自己保：源矩形贴着源屏工作区的哪个贴边位，落地就贴目标屏
         // 的同一个贴边位。四个方向一致、不抢焦点、撤销和计数照旧。
         Router.Execute(WindowShuttleAction.ToNext,
-            SwapPlanner.PositionOf(target, monitors), fromMouseGesture: true, at: press);
+            SwapPlanner.PositionOf(target, monitors), fromMouseGesture: true, at: press, referent: referent);
     }
 
     /// <summary>键盘快捷键和鼠标手势共用的分发。两者绑定的动作集合完全相同，所以分流规则也必须相同。
@@ -340,10 +356,10 @@ public partial class App : Application
     /// <paramref name="fromMouseGesture"/> 就是那唯一的差别：手已经在鼠标上时不做光标跟随，
     /// 见 CommandRouter.Execute 的参数说明。</summary>
     /// <param name="at">鼠标手势传按下点；键盘/托盘传 null（它们认焦点窗口，光标无关）。</param>
-    private static void RunBound(WindowShuttleAction a, bool fromMouseGesture, PointPx? at = null)
+    private static void RunBound(WindowShuttleAction a, bool fromMouseGesture, PointPx? at = null, nint? referent = null)
     {
         if (a == WindowShuttleAction.Identify) OverlayWindow.ShowAll(shutdownAfter: false);
-        else Router.Execute(a, null, fromMouseGesture, at);
+        else Router.Execute(a, null, fromMouseGesture, at, referent);
     }
 
 

@@ -50,7 +50,9 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Start with Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>As administrator</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Starts elevated via a scheduled task: one UAC prompt when you tick this, then every boot starts silently as administrator. Windows of elevated programs become movable, and gestures stop going dead while one is in the foreground</value></data>
-  <data name="Settings_CheckUpdates"><value>Check for updates</value></data>
+  <data name="Settings_Title"><value>Settings</value></data>
+  <data name="Settings_Updates"><value>Updates</value></data>
+  <data name="Settings_CheckUpdates"><value>Check for updates at startup</value></data>
   <data name="Settings_CheckUpdatesTip"><value>When on, contacts GitHub once at startup to see whether a newer version exists — the only time this program goes online; everything else stays on your machine.</value></data>
   <data name="Settings_CheckNow"><value>Check now</value></data>
   <data name="Update_Checking"><value>Checking for updates…</value></data>
@@ -75,7 +77,7 @@
   <data name="Main_Actions" xml:space="preserve"><value>Actions</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Refresh</value></data>
   <data name="Main_DropHint" xml:space="preserve"><value>Drag a window chip onto another screen to move it</value></data>
-  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Drawn to how large each screen looks on your desk and where it sits, not to its pixel count</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Display sizes and positions use desktop pixel coordinates</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Click a key slot to record a shortcut or mouse gesture; Delete clears it</value></data>
 
   <data name="Badge_Cursor" xml:space="preserve"><value>Cursor</value></data>
@@ -95,4 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (fullscreen apps are skipped in Settings)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Press Enter to bring this window forward</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Something went wrong in the last step. The app is still running; details were written to crash.log</value></data>
+  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Startup settings failed. Elevated startup requires a program location protected from ordinary-user writes. Check the log and existing task, or turn off elevated startup.</value></data>
 </root>

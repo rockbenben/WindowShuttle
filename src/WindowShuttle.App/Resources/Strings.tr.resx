@@ -50,7 +50,9 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Windows ile başlat</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Yönetici olarak</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Zamanlanmış görevle yükseltilmiş başlatma: işaretlerken bir kez UAC sorar, sonra her açılış sessizce yönetici olarak başlar. Yönetici programların pencereleri taşınabilir olur ve biri ön plandayken hareketler artık ölmez</value></data>
-  <data name="Settings_CheckUpdates"><value>Güncellemeleri denetle</value></data>
+  <data name="Settings_Title"><value>Ayarlar</value></data>
+  <data name="Settings_Updates"><value>Güncellemeler</value></data>
+  <data name="Settings_CheckUpdates"><value>Başlangıçta güncellemeleri denetle</value></data>
   <data name="Settings_CheckUpdatesTip"><value>Açıkken, program her başlatıldığında daha yeni bir sürüm olup olmadığını görmek için GitHub'a bir kez bağlanır — bu, programın internete bağlandığı tek andır; geri kalan her şey sizin makinenizde kalır.</value></data>
   <data name="Settings_CheckNow"><value>Şimdi denetle</value></data>
   <data name="Update_Checking"><value>Güncellemeler denetleniyor…</value></data>
@@ -75,7 +77,7 @@
   <data name="Main_Actions" xml:space="preserve"><value>Eylemler</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Yenile</value></data>
   <data name="Main_DropHint" xml:space="preserve"><value>Taşımak için haritadaki pencere öğesini başka bir monitöre sürükleyin</value></data>
-  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Her ekranın masadaki görünen boyutuna ve konumuna göre çizilir, piksel sayısına göre değil</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Boyutlar ve konumlar masaüstü piksel koordinatlarıyla gösterilir</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Kısayol veya fare hareketi kaydetmek için tuş alanına tıklayın; Delete siler</value></data>
 
   <data name="Badge_Cursor" xml:space="preserve"><value>İmleç</value></data>
@@ -95,4 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (ayar gereği tam ekran uygulamalar atlanır)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Bu pencereyi öne getirmek için Enter'a basın</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Son adımda bir hata oluştu. Uygulama hâlâ çalışıyor; ayrıntılar crash.log dosyasına yazıldı</value></data>
+  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Başlangıç ayarı başarısız. Yükseltilmiş başlangıç, normal kullanıcıların yazamadığı bir program konumu gerektirir. Günlüğü ve mevcut görevi kontrol edin veya yükseltilmiş başlangıcı kapatın.</value></data>
 </root>

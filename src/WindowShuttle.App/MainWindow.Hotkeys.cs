@@ -112,8 +112,8 @@ public partial class MainWindow
 
             var row = new Border
             {
-                Padding = new Thickness(12, 8, 10, 9), CornerRadius = new CornerRadius(8),
-                BorderThickness = new Thickness(1), Child = grid, Margin = new Thickness(0, 0, 7, 7),
+                Padding = new Thickness(12, 6, 10, 6), CornerRadius = new CornerRadius(8),
+                BorderThickness = new Thickness(1), Child = grid, Margin = new Thickness(0, 0, 7, 5),
             };
             row.MouseEnter += (_, _) => { UpdateRowChrome(row); ShowActionPreview(key); };
             row.MouseLeave += (_, _) => { UpdateRowChrome(row); ShowActionPreview(null); };

@@ -47,7 +47,11 @@ public sealed record PlanRequest(
 /// <param name="DestWork">目标屏工作区。WindowCommitter 提交后拿它做第二遍测量纠偏——某些应用
 /// （典型是 WPF 默认 WM_DPICHANGED 处理）会在我们落位后自己按 DPI 比例再缩放一次。
 /// 只有 ShowState.Normal 的移动会用到它。</param>
-public sealed record PlannedMove(nint Hwnd, ShowState ShowState, RectPx Target, RectPx DestWork);
+public sealed record PlannedMove(nint Hwnd, ShowState ShowState, RectPx Target, RectPx DestWork)
+{
+    public WindowIdentity? ExpectedIdentity { get; init; }
+    public bool RequireIdentity { get; init; }
+}
 
 /// <param name="RaiseMoved">提交后把搬动的那扇窗提到最前。只给「你指着一扇窗，把它送过去」这类动作用
 /// （送去主屏 / 送去下一块屏 / 地图上拖放），批量动作绝不能开——§8 刻意保住相对层叠顺序。

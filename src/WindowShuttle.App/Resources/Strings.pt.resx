@@ -50,7 +50,9 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Iniciar com o Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Como administrador</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Início elevado por tarefa agendada: um aviso de UAC ao marcar e, depois, cada arranque inicia em silêncio como administrador. As janelas de programas elevados passam a poder ser movidas e os gestos deixam de morrer quando um deles está em primeiro plano</value></data>
-  <data name="Settings_CheckUpdates"><value>Procurar atualizações</value></data>
+  <data name="Settings_Title"><value>Definições</value></data>
+  <data name="Settings_Updates"><value>Atualizações</value></data>
+  <data name="Settings_CheckUpdates"><value>Procurar atualizações ao iniciar</value></data>
   <data name="Settings_CheckUpdatesTip"><value>Se estiver ativado, o programa liga-se uma vez ao arrancar ao GitHub para ver se existe uma versão mais recente — é a única ligação à internet deste programa; tudo o resto acontece no seu computador.</value></data>
   <data name="Settings_CheckNow"><value>Verificar agora</value></data>
   <data name="Update_Checking"><value>A procurar atualizações…</value></data>
@@ -75,7 +77,7 @@
   <data name="Main_Actions" xml:space="preserve"><value>Ações</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Atualizar</value></data>
   <data name="Main_DropHint" xml:space="preserve"><value>Arraste um item de janela no mapa para outro monitor para movê-la</value></data>
-  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Desenhado pelo tamanho aparente de cada tela na sua mesa e pela posição, não pelos pixels</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Tamanhos e posições em pixels da área de trabalho</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Clique em um espaço de tecla para gravar um atalho ou gesto do mouse; Delete apaga</value></data>
 
   <data name="Badge_Cursor" xml:space="preserve"><value>Cursor</value></data>
@@ -95,4 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (apps em tela cheia são puladas conforme a configuração)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Pressione Enter para trazer esta janela para a frente</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Ocorreu um erro na última etapa. O app continua em execução; os detalhes foram gravados em crash.log</value></data>
+  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Falha ao configurar a inicialização. A inicialização elevada exige um local protegido contra gravação por usuários comuns. Verifique o log e a tarefa ou desative a inicialização elevada.</value></data>
 </root>

@@ -84,6 +84,14 @@ public sealed class TrayService : IDisposable
             // shell 提示有 127 字符上限（Win10+），新语言的译文超了会被悄悄截尾——加语言时量一眼。
             ContextMenu = menu,
         };
+        // 同步载入图标。IconSource 走异步线程转换，而构造函数下方 ForceCreate 紧随其后；
+        // 若 Icon 为空句柄，Shell_NotifyIcon(NIM_ADD) 携带 NIF_ICON 会直接被系统拒绝抛出 TryCreate failed。
+        using (var stream = Application.GetResourceStream(new Uri("pack://application:,,,/WindowShuttle;component/assets/windowshuttle.ico"))?.Stream)
+        {
+            if (stream != null) _icon.Icon = new System.Drawing.Icon(stream);
+        }
+        // 自查模式下分配独立 GUID，避免与正在运行的驻留实例路径冲突导致 Shell_NotifyIcon 拒绝创建。
+        if (App.InSelfCheck) _icon.Id = Guid.NewGuid();
         _icon.TrayLeftMouseUp += (_, _) => openMain();
         // 菜单弹出**之前**把前台窗口记下来。晚一步都不行：菜单一显示，前台就变成它自己（H.NotifyIcon
         // 要靠这个才能让菜单在点击别处时正常消失），那时候再读只会读到菜单。
@@ -102,10 +110,25 @@ public sealed class TrayService : IDisposable
         // 参数不能省：官方签名是 ForceCreate(bool enablesEfficiencyMode = true)，裸调用会顺手把进程
         // 标成 Windows 效率模式（EcoQoS 降频）。这个工具常驻后台但靠热键和鼠标钩子抢响应，被降频
         // 正好打在它最要紧的地方。
-        if (!_icon.IsCreated) _icon.ForceCreate(enablesEfficiencyMode: false);
+        //
+        // 当前桌面若不存在任务栏（如隔离沙箱桌面、无头测试环境或系统初启 Explorer 尚未就绪），
+        // Shell_NotifyIcon 必然返回 E_FAIL；吞掉该异常以防止整个进程崩毁，后续 Explorer 启动广播
+        // TaskbarCreated 时 TaskbarIcon 内部会自行补创。
+        try
+        {
+            if (!_icon.IsCreated) _icon.ForceCreate(enablesEfficiencyMode: false);
+        }
+        catch (InvalidOperationException) when (!HasTaskbar())
+        {
+        }
 
         router.Executed += OnExecuted;
     }
+
+    [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "FindWindowW", CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+    private static extern nint FindWindow(string? lpClassName, string? lpWindowName);
+
+    internal static bool HasTaskbar() => FindWindow("Shell_TrayWnd", null) != 0;
 
     /// <summary>托盘图标到底建起来没有。给 --smoke 断言用——这是唯一能在自动化里区分
     /// 「有图标」和「进程活着但托盘是空的」的信号。</summary>

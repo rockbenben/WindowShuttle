@@ -50,7 +50,9 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Lancer avec Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>En administrateur</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Démarrage élevé via une tâche planifiée : une invite UAC au moment de cocher, puis chaque démarrage se fait silencieusement en administrateur. Les fenêtres des programmes élevés deviennent déplaçables et les gestes ne meurent plus quand l'un d'eux est au premier plan</value></data>
-  <data name="Settings_CheckUpdates"><value>Rechercher les mises à jour</value></data>
+  <data name="Settings_Title"><value>Paramètres</value></data>
+  <data name="Settings_Updates"><value>Mises à jour</value></data>
+  <data name="Settings_CheckUpdates"><value>Rechercher les mises à jour au démarrage</value></data>
   <data name="Settings_CheckUpdatesTip"><value>Activé, le programme se connecte une fois au démarrage à GitHub pour voir s'il existe une version plus récente : c'est la seule connexion de ce programme ; tout le reste se passe sur votre machine.</value></data>
   <data name="Settings_CheckNow"><value>Vérifier maintenant</value></data>
   <data name="Update_Checking"><value>Recherche de mises à jour…</value></data>
@@ -75,7 +77,7 @@
   <data name="Main_Actions" xml:space="preserve"><value>Actions</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Actualiser</value></data>
   <data name="Main_DropHint" xml:space="preserve"><value>Faites glisser une entrée de fenêtre de la carte vers un autre écran pour la déplacer</value></data>
-  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Dessiné selon la taille apparente de chaque écran sur votre bureau et sa position, pas selon ses pixels</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Tailles et positions selon les pixels du bureau</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Cliquez sur une case pour enregistrer un raccourci ou un geste de souris ; Suppr l'efface</value></data>
 
   <data name="Badge_Cursor" xml:space="preserve"><value>Curseur</value></data>
@@ -95,4 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (les applis plein écran sont ignorées selon le réglage)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Appuyez sur Entrée pour passer cette fenêtre au premier plan</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Une erreur s'est produite lors de la dernière étape. L'application continue de fonctionner ; les détails ont été écrits dans crash.log</value></data>
+  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Échec du démarrage automatique. Le programme doit être protégé contre les modifications par les utilisateurs ordinaires pour démarrer avec élévation. Vérifiez le journal et la tâche, ou désactivez cette option.</value></data>
 </root>

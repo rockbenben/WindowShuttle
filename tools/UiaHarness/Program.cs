@@ -73,13 +73,9 @@ internal static class Program
         // 烂掉的永远是没人跑的那一份。
         Console.WriteLine("[contrast] 见 AppThemeContrastTests / NotificationContrastTests（dotnet test 里跑，读的是 AppTheme 的实际画刷）");
 
-        // MainWindow.OnClosing() unconditionally calls SaveWindowBounds(), which writes
-        // App.Cfg straight to the REAL SettingsStore.DefaultPath (%APPDATA%\WindowShuttle\settings.json)
-        // regardless of which Settings object this harness constructed — window.Close() below would
-        // otherwise silently overwrite the owner's real settings file with this run's throwaway test
-        // bounds. Snapshot the real file now and restore it in `finally`, no matter how this run ends.
-        string realSettingsPath = global::WindowShuttle.App.SettingsStore.DefaultPath;
-        string? realSettingsBackup = File.Exists(realSettingsPath) ? File.ReadAllText(realSettingsPath) : null;
+        string? previousHome = global::WindowShuttle.App.SettingsStore.HomeOverride;
+        global::WindowShuttle.App.SettingsStore.HomeOverride = Path.Combine(
+            Path.GetTempPath(), "windowshuttle-uia-" + Guid.NewGuid().ToString("N"));
         try
         {
             var mode = args.Length > 0 ? args[0] : "all";
@@ -104,9 +100,7 @@ internal static class Program
         }
         finally
         {
-            if (realSettingsBackup is not null) File.WriteAllText(realSettingsPath, realSettingsBackup);
-            else if (File.Exists(realSettingsPath)) File.Delete(realSettingsPath);
-            Console.WriteLine($"[cleanup] restored real settings.json ({realSettingsPath})");
+            global::WindowShuttle.App.SettingsStore.HomeOverride = previousHome;
         }
     }
 

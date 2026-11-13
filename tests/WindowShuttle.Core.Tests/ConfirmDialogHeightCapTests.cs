@@ -63,6 +63,19 @@ public class ConfirmDialogHeightCapTests(WpfTestHost host)
                 // 真实高度必须落在上限之内：这才说明那个上限真的起了作用，而不只是被设了个值。
                 Assert.True(dlg.ActualHeight <= dlg.MaxHeight + 0.5,
                     $"实际高度 {dlg.ActualHeight:0} 超出了上限 {dlg.MaxHeight:0}");
+
+                dlg.MaxHeight = 240;
+                dlg.UpdateLayout();
+                Assert.True(dlg.MessageScroll.ScrollableHeight > 0);
+                dlg.MessageScroll.ScrollToEnd();
+                dlg.UpdateLayout();
+                Assert.Equal(dlg.MessageScroll.ScrollableHeight, dlg.MessageScroll.VerticalOffset, 1);
+                var content = (FrameworkElement)dlg.Content;
+                foreach (var button in new[] { dlg.CancelButton, dlg.ConfirmButton })
+                {
+                    double bottom = button.TranslatePoint(new Point(0, button.ActualHeight), content).Y;
+                    Assert.InRange(bottom, button.ActualHeight, content.ActualHeight);
+                }
             }
             finally { dlg.Close(); }
         });

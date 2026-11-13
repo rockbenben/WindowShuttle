@@ -12,6 +12,7 @@ namespace WindowShuttle.App;
 
 public partial class MainWindow
 {
+    private int? _dragSourceMonitor;
     private readonly Dictionary<int, UIElement> _cursorBadges = [];
 
     // 地图带的高度区间和它占窗口高度的上限。三个数都是量出来的，不是估的：下限 140 是卡片还能同时
@@ -97,7 +98,7 @@ public partial class MainWindow
         try
         {
             LayoutCanvas.Height = want;
-            LayoutCanvas.UpdateLayout();
+            UpdateLayout();
         }
         finally { _resizingCanvas = false; }
     }
@@ -112,32 +113,15 @@ public partial class MainWindow
         return first.ActualHeight + first.Margin.Top + first.Margin.Bottom;
     }
 
-    /// <summary>把每块屏换算成「桌面上看起来多大、摆在哪」的坐标系：尺寸按有效像素（物理 ÷ 缩放比），
-    /// 位置保留真实的上下错位、横向按物理 Left 顺序紧贴排列。
-    ///
-    /// 为什么不是纯物理坐标：这台机器上 4K@150% 的屏物理像素比 2560@125% 的宽 50%，可它俩摆在桌上
-    /// 一样宽——按物理像素画，地图会把一块屏画成它实际观感的 1.5 倍，标题旁那句"按实际观感大小绘制"
-    /// 就成了谎话。为什么横向要紧贴而不用真实 Left：有效尺寸配物理位置必然对不齐（各屏缩放比不同，
-    /// 同一段物理距离换算出的有效距离也不同），硬摆会出现凭空的缝隙和重叠。纵向没有这个问题——上下
-    /// 错位是各屏各自的偏移量，不需要跟邻居对缝，所以纵向保真、横向保序，两边各取能保住的那一半。
-    /// 上一版把纵向也压平成顶对齐，笔记本屏挂在外接屏下方这种最常见的摆法在图上完全看不出来。</summary>
-    private static List<(MonitorInfo M, double X, double Y, double W, double H)> EffectiveLayout(
+    /// <summary>用统一物理像素坐标保留屏幕的左右、上下和空隙关系；缩放交给画布统一处理。</summary>
+    internal static List<(MonitorInfo M, double X, double Y, double W, double H)> EffectiveLayout(
         IReadOnlyList<MonitorInfo> monitors)
     {
-        // 必须跟 SwapPlanner.ByPosition 用**同一套**排序（Left 再 Top）——卡片上印的号是
-        // PositionOf 给的，画序要是只按 Left，两块 Left 相同的屏（外接在上、笔记本在下这种
-        // 最常见的竖排）就会画成 2 | 1，跟自己印在上面的号对不上。
-        var ordered = SwapPlanner.ByPosition(monitors);
-        double vTop = monitors.Min(m => m.MonitorRect.Top / m.DpiScale);
-        var result = new List<(MonitorInfo, double, double, double, double)>();
-        double x = 0;
-        foreach (var m in ordered)
-        {
-            double w = m.MonitorRect.Width / m.DpiScale, h = m.MonitorRect.Height / m.DpiScale;
-            result.Add((m, x, m.MonitorRect.Top / m.DpiScale - vTop, w, h));
-            x += w;
-        }
-        return result;
+        int left = monitors.Min(m => m.MonitorRect.Left);
+        int top = monitors.Min(m => m.MonitorRect.Top);
+        return [.. SwapPlanner.ByPosition(monitors).Select(m => (
+            m, (double)(m.MonitorRect.Left - left), (double)(m.MonitorRect.Top - top),
+            (double)m.MonitorRect.Width, (double)m.MonitorRect.Height))];
     }
 
     /// <summary>定下地图带该多高，并让布局当场落定。三条约束依次收紧，每一条都是实测踩出来的：
@@ -180,22 +164,13 @@ public partial class MainWindow
         double one = OneActionCardHeight();
         for (int pass = 0; pass < 2; pass++)
         {
-            double available = LayoutCanvas.ActualHeight + ActionsScroller.ViewportHeight;
-            // 目标是**两**张卡，不是一张。一张只证明"这里有东西"，两张才传达"动作是一张可以往下翻的
-            // 列表"——而这正是主功能面要传达的第一件事。实测：1920×1080@150%（最常见的笔记本，启动
-            // 尺寸 1120×632）上，只留一张时非中文语言的视口是 133、一张卡 85，第二张从中间被切断；
-            // 中文卡只有 70 所以侥幸露得出两张，于是这条缺陷在中文下完全看不见。
-            //
-            // 第二张只在**地图仍不低于 MapMinHeight** 时才买：地图矮过那条线就开始画不清屏与屏的相对
-            // 大小，而它是拖放的落点参照，赔掉它去换一行文字不划算。买不起就退回一张卡的老规矩，
-            // 再买不起才压到 MapFloorWhenCrowded。
-            //
-            // 三支都只依赖 available（＝带高＋视口高，与怎么切无关），所以"解终值"的幂等性不变：
-            // 第二趟必然算出同一个值，不会自激。
-            double roomy = Math.Min(want, available - one * 2 - 2);
-            SetBandHeight(roomy >= MapMinHeight
-                ? roomy
-                : Math.Max(Math.Min(want, available - one - 2), MapFloorWhenCrowded));
+            double available = LayoutCanvas.ActualHeight + ActionsScroller.ActualHeight;
+            // 收起设置时优先露出两行完整动作；展开时给地图保留正常高度，必要时只露一行。
+            double twoRows = Math.Min(want, available - one * 2 - 2);
+            double target = SettingsToggle.IsChecked == true && twoRows < MapMinHeight
+                ? Math.Min(want, available - one - 2)
+                : twoRows;
+            SetBandHeight(Math.Max(MapFloorWhenCrowded, target));
         }
     }
 
@@ -371,7 +346,7 @@ public partial class MainWindow
         header.Children.Add(badge);
 
         var chips = new WrapPanel();
-        foreach (var win in wins) chips.Children.Add(BuildChip(win));
+        foreach (var win in wins) chips.Children.Add(BuildChip(win, m.Index));
         var chipsScroll = new ScrollViewer
         {
             VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
@@ -389,7 +364,15 @@ public partial class MainWindow
             BorderThickness = new Thickness(m.IsPrimary ? 1.5 : 1), CornerRadius = new CornerRadius(7),
             ClipToBounds = true, Tag = m.Index, AllowDrop = true, Child = body,
         };
-        card.Drop += OnCardDrop;
+        card.PreviewDragOver += (_, e) =>
+        {
+            bool accepts = _dragSourceMonitor is int source && source != m.Index;
+            card.Background = accepts ? AppTheme.HoverBrush : AppTheme.Panel;
+            e.Effects = accepts ? DragDropEffects.Move : DragDropEffects.None;
+            e.Handled = true;
+        };
+        card.PreviewDragLeave += (_, _) => card.Background = AppTheme.Panel;
+        card.PreviewDrop += OnCardDrop;
         // Border has no automation peer of its own by default; an AutomationId lets an external,
         // DPI-aware UIA harness find each card and read its real screen bounds for a layout check
         // (see docs/manual-checks.md) without adding any test-only UI or behaviour.
@@ -420,7 +403,7 @@ public partial class MainWindow
 
     internal static Func<nint, bool> RaiseWindow = SetForegroundWindow;
 
-    internal Border BuildChip(WindowFacts w)
+    internal Border BuildChip(WindowFacts w, int sourceMonitor)
     {
         var dot = new Ellipse
         {
@@ -453,7 +436,29 @@ public partial class MainWindow
         };
         // 读屏念得出是谁的窗口，而不只是"一个可拖的东西"。
         AutomationProperties.SetName(chip, w.Title);
-        chip.MouseMove += OnWindowItemDrag;
+        Point press = default;
+        chip.MouseLeftButtonDown += (_, e) =>
+        {
+            press = e.GetPosition(chip);
+            chip.CaptureMouse();
+        };
+        chip.MouseLeftButtonUp += (_, _) => chip.ReleaseMouseCapture();
+        chip.MouseMove += (_, e) =>
+        {
+            if (!chip.IsMouseCaptured || e.LeftButton != MouseButtonState.Pressed) return;
+            var delta = e.GetPosition(chip) - press;
+            if (Math.Abs(delta.X) < SystemParameters.MinimumHorizontalDragDistance &&
+                Math.Abs(delta.Y) < SystemParameters.MinimumVerticalDragDistance) return;
+
+            chip.ReleaseMouseCapture();
+            _dragSourceMonitor = sourceMonitor;
+            try { DragDrop.DoDragDrop(chip, new DataObject("windowshuttle-hwnd", w.Hwnd), DragDropEffects.Move); }
+            finally
+            {
+                _dragSourceMonitor = null;
+                foreach (var card in _cards.Values) card.Background = AppTheme.Panel;
+            }
+        };
         // 焦点光圈复用键位区录制态的词汇（Live 实描边 + 柔光）：Border 没有 Control 自带的
         // FocusVisualStyle，不自绘的话键盘焦点就完全不可见（实测）。用键盘焦点而不是逻辑焦点——
         // 鼠标点出来的焦点不该亮键盘的环。
@@ -477,19 +482,17 @@ public partial class MainWindow
         return chip;
     }
 
-    private void OnWindowItemDrag(object sender, MouseEventArgs e)
-    {
-        if (e.LeftButton != MouseButtonState.Pressed) return;
-        var chip = (Border)sender;
-        DragDrop.DoDragDrop(chip, new DataObject("windowshuttle-hwnd", (nint)chip.Tag), DragDropEffects.Move);
-    }
-
     private void OnCardDrop(object sender, DragEventArgs e)
     {
-        if (!e.Data.GetDataPresent("windowshuttle-hwnd")) return;
-        var hwnd = (nint)e.Data.GetData("windowshuttle-hwnd")!;
+        var card = (Border)sender;
+        card.Background = AppTheme.Panel;
+        e.Handled = true;
+        e.Effects = DragDropEffects.None;
+        if (_dragSourceMonitor is not int source || source == (int)card.Tag ||
+            e.Data.GetData("windowshuttle-hwnd") is not nint hwnd) return;
+        e.Effects = DragDropEffects.Move;
         // 带上自己的句柄：搬过去的窗该露出来，但不能盖住用户此刻还拖着的这张地图（MovePlan.KeepBelow）。
-        App.Router.MoveWindowTo(hwnd, (int)((Border)sender).Tag,
+        App.Router.MoveWindowTo(hwnd, (int)card.Tag,
             new System.Windows.Interop.WindowInteropHelper(this).Handle);
         // 搬运之后的地图重画由 App 订阅 Router.Executed 负责（见 App.OnStartup，只在真有窗口搬动时）；
         // 显示器增减那条由 OnDisplaySettingsChanged 负责。这里不再自己调 Refresh。

@@ -16,7 +16,8 @@ public partial class App
     [DllImport("user32.dll", CharSet = CharSet.Unicode)]
     private static extern nint FindWindowW(string? cls, string title);
     [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-    private static extern nint SendMessageW(nint hwnd, uint msg, nint wp, ref COPYDATASTRUCT lp);
+    private static extern nint SendMessageTimeoutW(nint hwnd, uint msg, nint wp, ref COPYDATASTRUCT lp,
+        uint flags, uint timeout, out nint result);
 
     // round4 Part 1: WPF-UI's own theme-change notification hooks a real Window (SystemThemeWatcher.
     // Watch requires one — see the comment on CreateSink below for why that doesn't fit this app's
@@ -58,10 +59,11 @@ public partial class App
         }
         if (msg != WM_COPYDATA) return 0;
         handled = true;
-        var cds = Marshal.PtrToStructure<COPYDATASTRUCT>(lp);
-        string text = Marshal.PtrToStringUni(cds.lpData, cds.cbData / 2) ?? "";
         try
         {
+            var cds = Marshal.PtrToStructure<COPYDATASTRUCT>(lp);
+            if (!ValidCommandData(cds.dwData, cds.cbData) || cds.lpData == 0) return 3;
+            string text = Marshal.PtrToStringUni(cds.lpData, cds.cbData / 2) ?? "";
             // 整段分发都在守卫内——ShowMain() 会建窗口/加载 XAML，CliParser.Parse 和 Router.Execute
             // 都能抛；这是原生 WndProc 钩子，逃出去的异常会直接带走整个驻留进程（比一次性模式重得多）。
             if (text == "show")
@@ -71,6 +73,8 @@ public partial class App
             }
             var cmd = CliParser.Parse(text.Split(' ', StringSplitOptions.RemoveEmptyEntries));
             if (cmd is null) return 3;
+            if (cmd.ToMonitor is int target &&
+                SwapPlanner.AtPosition(WindowShuttle.Core.Native.MonitorProbe.GetMonitors(), target) is null) return 3;
             if (cmd.Action == WindowShuttleAction.Identify) { OverlayWindow.ShowAll(shutdownAfter: false); return 0; }
             return Router.Execute(cmd.Action, cmd.ToMonitor).ExitCode;   // SendMessage 返回值 = 退出码（§2.3）
         }
@@ -79,6 +83,9 @@ public partial class App
             return 3;
         }
     }
+
+    internal static bool ValidCommandData(nint protocol, int bytes)
+        => protocol == 1 && bytes is > 0 and <= 512 && bytes % 2 == 0;
 
     private static int SendCommand(nint sink, string text)
     {
@@ -90,7 +97,9 @@ public partial class App
         {
             var cds = new COPYDATASTRUCT
                 { dwData = 1, cbData = bytes.Length * 2, lpData = handle.AddrOfPinnedObject() };
-            return (int)SendMessageW(sink, WM_COPYDATA, 0, ref cds);
+            // A timeout leaves execution uncertain. Never replay a move automatically.
+            return SendMessageTimeoutW(sink, WM_COPYDATA, 0, ref cds, 0x0002, 5000, out var result) != 0
+                ? (int)result : 3;
         }
         finally { handle.Free(); }
     }

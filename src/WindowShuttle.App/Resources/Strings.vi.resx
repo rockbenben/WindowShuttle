@@ -50,7 +50,9 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Khởi động cùng Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Với quyền quản trị</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Tự khởi động với quyền quản trị qua tác vụ đã lập lịch: một lần UAC khi đánh dấu, sau đó mỗi lần khởi động máy sẽ chạy êm với quyền quản trị. Cửa sổ của chương trình quản trị sẽ di chuyển được, và cử chỉ không còn chết khi một trong số đó ở tiền cảnh</value></data>
-  <data name="Settings_CheckUpdates"><value>Kiểm tra cập nhật</value></data>
+  <data name="Settings_Title"><value>Cài đặt</value></data>
+  <data name="Settings_Updates"><value>Bản cập nhật</value></data>
+  <data name="Settings_CheckUpdates"><value>Kiểm tra cập nhật khi khởi động</value></data>
   <data name="Settings_CheckUpdatesTip"><value>Khi được bật, chương trình sẽ kết nối GitHub một lần lúc khởi động để xem có bản mới hơn không — đó là lần duy nhất chương trình kết nối ra ngoài; mọi thứ khác đều diễn ra ngay trên máy của bạn.</value></data>
   <data name="Settings_CheckNow"><value>Kiểm tra ngay</value></data>
   <data name="Update_Checking"><value>Đang kiểm tra cập nhật…</value></data>
@@ -75,7 +77,7 @@
   <data name="Main_Actions" xml:space="preserve"><value>Thao tác</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Làm mới</value></data>
   <data name="Main_DropHint" xml:space="preserve"><value>Kéo mục cửa sổ trong bản đồ sang màn hình khác để di chuyển</value></data>
-  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Vẽ theo kích thước cảm nhận thực tế và vị trí tương đối của từng màn hình trên bàn, không theo số điểm ảnh</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Kích thước và vị trí theo tọa độ điểm ảnh màn hình</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Bấm vào ô phím để ghi phím tắt hoặc thao tác chuột; Delete để xóa</value></data>
 
   <data name="Badge_Cursor" xml:space="preserve"><value>Con trỏ</value></data>
@@ -95,4 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (ứng dụng toàn màn hình được bỏ qua theo cài đặt)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Nhấn Enter để đưa cửa sổ này lên trước</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Đã xảy ra lỗi ở bước vừa rồi. Ứng dụng vẫn đang chạy; chi tiết đã được ghi vào crash.log</value></data>
+  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Không thể đặt khởi động. Khởi động nâng quyền cần vị trí chương trình được bảo vệ khỏi ghi bởi người dùng thường. Kiểm tra nhật ký và tác vụ hiện có hoặc tắt khởi động nâng quyền.</value></data>
 </root>

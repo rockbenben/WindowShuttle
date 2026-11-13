@@ -94,9 +94,14 @@ public partial class MainWindow : FluentWindow
     /// 无条件改 MaxHeight 会再抬一次同一个事件。</summary>
     private void CapFooter()
     {
+        if (!_settingsToggled) SettingsToggle.IsChecked = ActualHeight > MinHeightDip;
         double cap = Math.Max(FooterMinHeightDip, ActualHeight * FooterMaxShare);
         if (Math.Abs(FooterBorder.MaxHeight - cap) > 0.5) FooterBorder.MaxHeight = cap;
     }
+
+    // An explicit choice takes precedence over the automatic compact layout on later resizes.
+    private bool _settingsToggled;
+    private void OnSettingsToggle(object sender, RoutedEventArgs e) => _settingsToggled = true;
 
     private List<MonitorInfo> _monitors = [];
     private readonly DispatcherTimer _cursorTimer = new() { Interval = TimeSpan.FromMilliseconds(250) };
@@ -110,6 +115,7 @@ public partial class MainWindow : FluentWindow
         // 排版方向逐窗口设：不能用 OverrideMetadata 一次性覆盖 typeof(Window)，
         // 那会撞坏 WPF 自己的 Window 静态构造函数（见 App.OnStartup 的注释）。
         FlowDirection = Strings.Flow;
+        UpdatesMenu.ContextMenu.FlowDirection = FlowDirection;
         BuildActionRows();
         LoadToggles();
         ApplyTheme();
@@ -145,8 +151,6 @@ public partial class MainWindow : FluentWindow
         // 带高停在 110、动作卡的描述那行被切掉）。视口尺寸落定时再算一次，读到的才是真值。
         // 同样走 _resizingCanvas 闸：我们自己改带高必然会改视口，不挡就是自激。
         ActionsScroller.SizeChanged += (_, _) => { if (!_resizingCanvas) DrawMonitors(); };
-        SizeChanged += (_, _) => SyncHeaderHint();
-        Loaded += (_, _) => SyncHeaderHint();
         IsVisibleChanged += (_, _) => { if (IsVisible) { Refresh(); _cursorTimer.Start(); } else _cursorTimer.Stop(); };
         // 手势录制态挂住的代价是全系统的（见 MainWindow.MouseChords.cs 的说明），所以除了键位区
         // 自己的进出，窗口一级的每一次"不再在前台"也要去重算一遍：切走、藏进托盘、被最小化。
@@ -154,23 +158,6 @@ public partial class MainWindow : FluentWindow
         Activated += (_, _) => SyncChordCapture();
         IsVisibleChanged += (_, _) => SyncChordCapture();
     }
-
-    // round4 Part 1: pushes AppTheme's current values into everything this window set at construction
-    // time (WPF-UI's own controls restyle themselves via DynamicResource — this is only for the
-    // hand-drawn parts and the handful of named XAML elements that used to carry hardcoded hex).
-    // Called once up front and again every time AppTheme.Changed fires (system theme flip while this
-    // window is open, shown or hidden-to-tray).
-    /// <summary>窄到一定程度就把地图那行说明整句收起来。
-    ///
-    /// 它跟标题、以及右边三个按钮（GitHub / 屏幕序号 / 刷新）挤在同一行。760 宽的德语下位置根本不够，
-    /// TextTrimming 只会留下一截切在词中间的残句——"Gezeichnet nach der gefühlten Größe und Lag…"
-    /// 读不出任何意思，还占着位置。说明文字是补充，按钮是功能：地方不够时该让路的是前者，
-    /// 而且要整句让路，不是留个残句充数。</summary>
-    private const double HeaderHintMinWidth = 900;
-
-    private void SyncHeaderHint()
-        => MonitorsHint.Visibility = ActualWidth >= HeaderHintMinWidth
-            ? Visibility.Visible : Visibility.Collapsed;
 
     private void ApplyTheme()
     {
@@ -186,15 +173,11 @@ public partial class MainWindow : FluentWindow
         ActionsTitle.Foreground = AppTheme.Ink;
         ActionsDivider.Background = AppTheme.Rule;      // 标题旁的装饰线，不是组件边界，走 Rule 不走 Edge
         StartupTie.Background = AppTheme.Rule;         // 「以管理员身份」从属于「开机自启」的那条竖线，同一档
-        MonitorsHint.Foreground = AppTheme.Dim;
         ActionsHint.Foreground = AppTheme.Dim;
         LangLabel.Foreground = AppTheme.Dim;
         FooterBorder.BorderBrush = AppTheme.Rule;
         MouseChordCaution.Foreground = AppTheme.Faint;
-        // 标题栏那一行的底色偏暗，而它的字色（应用名）是淡的——复选框和按钮若跟着走，
-        // 在这行里几乎读不出来。单独给一个正常的字色。
-        UpdateChk.Foreground = AppTheme.Dim;
-        CheckUpdateBtn.Foreground = AppTheme.Dim;
+        UpdatesMenu.Foreground = AppTheme.Dim;
         MouseCautionGlyph.Content = MakeMouseGlyph(AppTheme.Faint, 12);
         DropHint.Foreground = AppTheme.Faint;
         RepoButton.Content = MakeGitHubGlyph(AppTheme.Faint); // 自绘图形，翻主题得重画；
@@ -203,7 +186,12 @@ public partial class MainWindow : FluentWindow
         DrawMonitors();       // 重建地图卡片——它们的颜色是 BuildCard 建的时候当场从 AppTheme 读的，不是绑定
         // 动作卡的底色/描边同样是建的时候读死的，翻主题得重新刷一遍——上一版卡片常态全透明，
         // 没有这一步也看不出来；现在它们有了自己的面，漏刷就会留着上一个主题的底色。
-        foreach (var row in ActionList.Items.OfType<Border>()) UpdateRowChrome(row);
+        foreach (var row in ActionList.Items.OfType<Border>())
+        {
+            UpdateRowChrome(row);
+            foreach (var label in ((Grid)row.Child).Children.OfType<System.Windows.Controls.TextBlock>())
+                label.Foreground = Grid.GetRow(label) == 0 ? AppTheme.Ink : AppTheme.Dim;
+        }
         RefreshAllCaps();
         RefreshAllMouseCaps();
     }
@@ -280,8 +268,8 @@ public partial class MainWindow : FluentWindow
         }
 
         int marginPx = (int)Math.Round(MarginDip * target.DpiScale);
-        int minWPx = (int)Math.Round(minWidthDip * target.DpiScale);
-        int minHPx = (int)Math.Round(minHeightDip * target.DpiScale);
+        int minWPx = Math.Min((int)Math.Round(minWidthDip * target.DpiScale), target.WorkArea.Width);
+        int minHPx = Math.Min((int)Math.Round(minHeightDip * target.DpiScale), target.WorkArea.Height);
         int maxW = Math.Max(target.WorkArea.Width - marginPx * 2, minWPx);
         int maxH = Math.Max(target.WorkArea.Height - marginPx * 2, minHPx);
         w = Math.Clamp(w, minWPx, maxW);
@@ -314,6 +302,9 @@ public partial class MainWindow : FluentWindow
         var monitors = MonitorProbe.GetMonitors();
         if (monitors.Count == 0) return;               // 不该发生，但别在起手这一步崩掉整个启动
         var (x, y, w, hgt) = ComputeStartupBounds(monitors, App.Cfg, Width, Height, MinWidth, MinHeight);
+        var target = SwapPlanner.MonitorAt(new PointPx(x + w / 2, y + hgt / 2), monitors);
+        MinWidth = Math.Min(MinWidthDip, target.WorkArea.Width / target.DpiScale);
+        MinHeight = Math.Min(MinHeightDip, target.WorkArea.Height / target.DpiScale);
         SetWindowPos(h, 0, x, y, w, hgt, SWP_NOZORDER | SWP_NOACTIVATE);
     }
 
@@ -397,17 +388,31 @@ public partial class MainWindow : FluentWindow
         _lastLangIndex = LangBox.SelectedIndex;   // 反悔时回退到这里（见 ApplyLangChoice）
     }
 
-    private void OnToggle(object sender, RoutedEventArgs e)
+    private async void OnToggle(object sender, RoutedEventArgs e)
     {
         if (!_loaded) return;
-        // 不 await：这个处理器是 UI 事件，而 ApplyStartupMode 里可能要等用户答 UAC。下面几行
-        // 跟自启无关，不该被那个对话框挡住。_applyingStartup 挡住了这期间的重入。
-        _ = ApplyStartupMode();                                  // 注册表/任务计划器才是唯一事实来源，Settings 不镜像
+        if (sender == StartupBox || sender == ElevatedStartupBox)
+        {
+            try { await ApplyStartupMode(); }
+            catch (Exception ex)
+            {
+                App.Log("自启设置", ex);
+                NotificationOverlay.Show(Strings.Get("Startup_ProtectedPath"), isError: true);
+            }
+        }
         App.Cfg.SkipFullscreen = SkipFsBox.IsChecked == true;
         App.Cfg.RescueOnDisplayChange = RescueBox.IsChecked == true;
         App.Cfg.CloseToTray = TrayBox.IsChecked == true;
         App.Cfg.CheckUpdates = UpdateChk.IsChecked == true;
         SettingsStore.Save(SettingsStore.DefaultPath, App.Cfg);
+    }
+
+    private void OnOpenUpdates(object sender, RoutedEventArgs e)
+    {
+        var menu = UpdatesMenu.ContextMenu;
+        menu.PlacementTarget = UpdatesMenu;
+        menu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+        menu.IsOpen = true;
     }
 
     /// <summary>手动检查更新：拉 GitHub 的最新 Release，比版本，有新版就下载、核对校验值、
@@ -419,8 +424,8 @@ public partial class MainWindow : FluentWindow
     private async void OnCheckUpdateNow(object sender, RoutedEventArgs e)
     {
         CheckUpdateBtn.IsEnabled = false;
-        var busy = CheckUpdateBtn.Content;
-        CheckUpdateBtn.Content = Strings.Get("Update_Checking");
+        var busy = CheckUpdateBtn.Header;
+        CheckUpdateBtn.Header = Strings.Get("Update_Checking");
         try
         {
             var outcome = await UpdateService.RunAsync(AppVersion());
@@ -451,7 +456,7 @@ public partial class MainWindow : FluentWindow
         }
         finally
         {
-            CheckUpdateBtn.Content = busy;
+            CheckUpdateBtn.Header = busy;
             CheckUpdateBtn.IsEnabled = true;
         }
     }
@@ -482,6 +487,9 @@ public partial class MainWindow : FluentWindow
     /// _applyingStartup 挡重入：拨回复选框会再触发 OnToggle。</summary>
     private bool _applyingStartup;
 
+    // Keep UAC outside regression tests while exercising the actual state transition below.
+    internal Func<bool, Task<bool>> ChangeElevatedStartup = SetElevatedOffUiThread;
+
     /// <summary>把 SetElevated 挪出 UI 线程跑，并等它的结果。
     ///
     /// 它内部是 <c>WaitForExit(30000)</c>——UAC 同意框弹着的这段时间**全在这一句里**。放在 UI 线程上
@@ -504,24 +512,28 @@ public partial class MainWindow : FluentWindow
         return done.Task;
     }
 
-    private async Task ApplyStartupMode()
+    internal async Task ApplyStartupMode()
     {
         if (_applyingStartup) return;
         _applyingStartup = true;
+        StartupBox.IsEnabled = false;
+        ElevatedStartupBox.IsEnabled = false;
         try
         {
             bool wantStartup = StartupBox.IsChecked == true;
             bool wantElevated = wantStartup && ElevatedStartupBox.IsChecked == true;
-            bool haveElevated = StartupRegistration.GetElevated();
+            var state = StartupRegistration.QueryElevated();
+            if (!state.Definite) throw new IOException("Cannot determine startup task state.");
+            bool haveElevated = state.Ok;
 
             if (wantElevated && !haveElevated)
             {
-                if (!await SetElevatedOffUiThread(true))             // UAC 被拒：拨回去
+                if (!await ChangeElevatedStartup(true))             // UAC 被拒：拨回去
                     ElevatedStartupBox.IsChecked = false;
             }
             else if (!wantElevated && haveElevated)
             {
-                if (await SetElevatedOffUiThread(false))
+                if (await ChangeElevatedStartup(false))
                     // 任务真的删掉了，复选框也得跟上。原来这里什么都不做——取消「开机自启」会连带
                     // 删掉提权任务，而「以管理员身份」那一格仍然勾着（只是变灰）。用户接着重新勾上
                     // 「开机自启」、只想要普通自启，wantElevated 却从那个陈旧的勾算出 true，于是**冒出
@@ -536,11 +548,25 @@ public partial class MainWindow : FluentWindow
             }
 
             // 普通 Run 值：只在"要自启且不是提权那种"时存在（两种方式互斥，否则开机起两个实例）。
-            bool elevatedNow = StartupRegistration.GetElevated();
+            var after = StartupRegistration.QueryElevated();
+            if (!after.Definite) throw new IOException("Cannot determine startup task state after switching.");
+            bool elevatedNow = after.Ok;
             StartupRegistration.Set(StartupBox.IsChecked == true && !elevatedNow);
             ElevatedStartupBox.IsEnabled = StartupBox.IsChecked == true;
         }
-        finally { _applyingStartup = false; }
+        catch
+        {
+            var actual = StartupRegistration.QueryElevated();
+            StartupBox.IsChecked = StartupRegistration.Get() || actual.Ok;
+            ElevatedStartupBox.IsChecked = actual.Ok;
+            throw;
+        }
+        finally
+        {
+            _applyingStartup = false;
+            StartupBox.IsEnabled = true;
+            ElevatedStartupBox.IsEnabled = StartupBox.IsChecked == true;
+        }
     }
 
     /// <summary>首次运行的出厂动作：**只**打开普通的开机自启，不碰提权那一档。
@@ -558,10 +584,11 @@ public partial class MainWindow : FluentWindow
     /// 仍然走 ApplyStartupMode 而不是直接写注册表：互斥（Run 值与提权任务只能存一个）和 UAC 被拒回滚
     /// 的规矩都在那里，这条路只是不去触发需要 UAC 的那个分支。已经有提权任务的机器（用户自己开过）
     /// 也不会被这一句改回去——ElevatedStartupBox 由 LoadToggles 按系统真实状态填好，这里不动它。</summary>
-    internal void EnableStartupOnFirstRun()
+    internal async Task EnableStartupOnFirstRun()
     {
         StartupBox.IsChecked = true;
-        _ = ApplyStartupMode();     // _loaded 还没置位时 OnToggle 会早退，这一句保证动作照样发生
+        try { await ApplyStartupMode(); }
+        catch (Exception ex) { App.Log("首次自启设置", ex); }
     }
 
     /// <summary>确认框与重启的注入缝：测试替身用（同 <see cref="ApplyStartupMode"/> 把 UAC 结果

@@ -37,7 +37,9 @@ These are the rules the product is built on. Changing one is a product decision,
 
 - **One screen numbering: position, left to right (then top to bottom within a column), 1-based.** It is what the map prints, what *Identify screens* flashes, what `--to <n>` takes and what `list` reports as `position`. It is **not** the Windows display-device number, which has no relation to where a screen sits and can be reshuffled by ports, docks and driver reinstalls. The Windows number survives as `index` / `device` and as the `system N` line on each map card.
 - **Pointer for the mouse, focus for the keyboard — one rule with two anchors.** A mouse gesture acts on the window under the cursor *as of the press*; hotkeys, the tray menu and the CLI act on the focused window. Do not "unify" these.
-- **Undo is exactly one step**, and the automatic off-screen rescue deliberately does **not** take that slot. The rescue is machine-initiated; letting it overwrite the snapshot would destroy the move the user was about to undo.
+- **Undo is exactly one step**, and the automatic off-screen rescue deliberately does **not** take that slot. The rescue is machine-initiated; letting it overwrite the snapshot would destroy the move the user was about to undo. Snapshots record process lifetime and an HWND instance token (`WindowShuttle.UndoIdentity.v1`); undo verifies identity before moving the target to prevent moving recycled window handles.
+- **Atomic undo snapshot storage.** Snapshots are staged through `.pending` files to prevent truncation on disk full or crashes, allowing safe recovery on subsequent runs.
+- **Elevated autostart requires protected paths.** The target executable and its parent directories must be protected against ordinary-user replacement (trusted owner, no non-admin write grants). Unsafe targets are rejected.
 - **A side failure never changes the move.** Notifications and the map redraw are downstream of the result. A throwing subscriber is caught and logged to `crash.log`; it must never turn a completed move into exit code 3, nor take the resident process down.
 - **The app is offline unless the user asks otherwise.** The opt-in update check is the only network path. Do not add telemetry, cloud calls or silent background traffic.
 - **RTL is set per window, never through `FlowDirectionProperty.OverrideMetadata(typeof(Window), …)`.** That form collides with WPF's own `Window` static constructor and makes the process unable to create *any* window — the app then fails to start at all, including `list` and `--smoke`. See the comment in `App.OnStartup`.
@@ -62,7 +64,7 @@ These are the rules the product is built on. Changing one is a product decision,
 
 ## 6. User data and safety
 
-- Configuration and state live under `%APPDATA%\WindowShuttle` (`settings.json`, `undo.json`, `crash.log`, and the `chord-debug.on` / `chord-debug.log` pair). Tests must not edit the user's real settings, startup entries or running instance — `SettingsStore.HomeOverride` exists for exactly that.
+- Configuration and state live under `%APPDATA%\WindowShuttle` (`settings.json`, `undo.json`, `undo.json.pending`, `crash.log`, and the `chord-debug.on` / `chord-debug.log` pair). Tests must not edit the user's real settings, startup entries or running instance — `SettingsStore.HomeOverride` and temporary registry keys exist for exactly that.
 - The elevated autostart path is a **scheduled task named `WindowShuttle`**, and it is mutually exclusive with the plain `HKCU\…\Run` value. Ticking *As administrator* swaps one for the other; unticking *Start with Windows* must clear **both**. A task left behind points every logon at a file that no longer exists.
 - Destructive actions keep their existing confirmation and honest failure reporting. Do not silently swallow an error in a user-triggered flow.
 - Do not add a confirmation dialog, extra step or notification unless it removes a demonstrated confusion or risk.
@@ -71,7 +73,7 @@ These are the rules the product is built on. Changing one is a product decision,
 
 - The version comes from the git tag. The release workflow injects it into the build; do not maintain a second version number.
 - The **SDK** version has exactly one source: `global.json`. CI reads it through `setup-dotnet`'s `global-json-file` — never add a second `dotnet-version`, or local and CI drift apart. Because `global.json` carries a `rollForward`, its `version` must be a **full** version (`10.0.100`, not `10.0` / `10.0.0`): `setup-dotnet` validates it against `/^\d+\.\d+\.[1-9]\d{2,}$/` and fails the job otherwise.
-- The release path is: test + `--smoke` + exit codes → publish both profiles → `SHA256SUMS.txt` → build-provenance attestation → publish with `make_latest` → assert `releases/latest` points at the new tag. The checksum file must use **LF** line endings, and every downloadable asset must be covered by it.
+- The release path is: test + `--smoke` + exit codes → validate release intent (`tools/release-policy.ps1`) → publish both profiles → package and smoke check (`tools/package-release.ps1`) producing `SHA256SUMS.txt` → build-provenance attestation → publish with `make_latest` → assert `releases/latest` points at the new tag. The checksum file must use **LF** line endings, and every downloadable asset must be covered by it.
 - `SHA256SUMS.txt` and the file it vouches for sitting on the same page is why the attestation exists — they are not alternatives.
 - The publish job runs under the **`release` environment**, which GitHub creates on the first tagged run. It carries **no protection rules**: a pushed tag publishes immediately and **nothing waits for a human**. To add that gate, configure required reviewers on that environment — the workflow does not need to change. Check the environment's actual settings before claiming the gate is active.
 - The exe is **not code-signed**; the README and the release body both say so (SmartScreen: *More info → Run anyway*). This is a recorded deviation, not an oversight — see `.desktop-policy.json`.
@@ -90,7 +92,7 @@ These are the rules the product is built on. Changing one is a product decision,
 Before reporting a change as complete:
 
 1. Build and the relevant tests pass, with no new warnings.
-2. `--smoke` passes. `--shots` passes when layout, copy or theming changed.
+2. `--smoke` passes.
 3. New or changed strings exist in all 18 resx files, and `StringsCoverageTests` passes.
 4. Every comment you touched still describes the code it sits in — including file names, constants and thresholds.
 5. The docs that the change contradicts have been updated in the same commit, and the two READMEs still mirror each other.

@@ -51,7 +51,7 @@ public static class SwapPlanner
             // 执行时，换的是第 1 块，用户点了名却搬了别的屏，还报成功。没点名（默认换主屏）时那条
             // 回退才成立：那时"目标"本来就是隐含的，换回上次那块正是同键两按的撤销手感（§2.2）。
             if (named) return MovePlan.NoOpPlan(NoOpReason.AlreadyOnTarget);
-            dst = (req.LastSwapPartner is int p ? ms.FirstOrDefault(m => m.Index == p) : null)
+            dst = (req.LastSwapPartner is int p ? ms.FirstOrDefault(m => m.Index == p && m.Index != src.Index) : null)
                   ?? NextMonitor(src, ms);
         }
 
@@ -80,7 +80,7 @@ public static class SwapPlanner
         var src = SourceMonitor(req);
         var dst = ms.First(m => m.IsPrimary);
         if (src.Index == dst.Index)
-            dst = (req.LastSwapPartner is int p ? ms.FirstOrDefault(m => m.Index == p) : null)
+            dst = (req.LastSwapPartner is int p ? ms.FirstOrDefault(m => m.Index == p && m.Index != src.Index) : null)
                   ?? NextMonitor(src, ms);
 
         var (movable, fs, hung) = SelectMovable(req);
@@ -188,7 +188,8 @@ public static class SwapPlanner
         var primary = ms.First(m => m.IsPrimary);
         var (movable, fs, hung) = SelectMovable(req);
         var moves = movable
-            .Where(f => OwnerIndex(f, ms) != primary.Index)
+            .Where(f => OwnerIndex(f, ms) != primary.Index
+                || ms.All(m => RectPx.OverlapArea(f.EffectiveRect, m.MonitorRect) == 0))
             .OrderByDescending(f => f.ZOrder)
             .Select(f => Map(f, ms.First(m => m.Index == OwnerIndex(f, ms)), primary))
             .ToList();

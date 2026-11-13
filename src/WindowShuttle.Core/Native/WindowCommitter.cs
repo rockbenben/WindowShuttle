@@ -2,7 +2,10 @@ using System.Runtime.InteropServices;
 
 namespace WindowShuttle.Core.Native;
 
-public sealed record CommitResult(int Moved, int AccessDenied, int OtherFailed, int Corrected);
+public sealed record CommitResult(int Moved, int AccessDenied, int OtherFailed, int Corrected)
+{
+    public IReadOnlySet<nint> ChangedWindows { get; init; } = new HashSet<nint>();
+}
 
 /// <summary>唯一调用 SetWindowPos/SetWindowPlacement 的地方（§7/§8/§9）。</summary>
 public static class WindowCommitter
@@ -10,10 +13,11 @@ public static class WindowCommitter
     public static CommitResult Commit(MovePlan plan)
     {
         var fg = Win32.GetForegroundWindow();
+        var changed = new HashSet<nint>();
         int moved = 0, denied = 0, failed = 0;
 
-        // 普通窗口批量走 DeferWindowPos（§8.2）；最大化/最小化不能进批，随后逐个。
-        var normals = plan.Moves.Where(m => m.ShowState == ShowState.Normal).ToList();
+        // Undo revalidates immediately before each native write instead of queuing a delayed batch.
+        var normals = plan.Moves.Where(m => m.ShowState == ShowState.Normal && !m.RequireIdentity).ToList();
         var committedNormals = new List<PlannedMove>();   // 第二遍纠偏只测真正落位成功的
         if (normals.Count > 0)
         {
@@ -27,19 +31,34 @@ public static class WindowCommitter
                     Win32.SWP_NOZORDER | Win32.SWP_NOACTIVATE);
             }
             batchOk = batchOk && hdwp != 0 && Win32.EndDeferWindowPos(hdwp);
-            if (batchOk) { moved += normals.Count; committedNormals.AddRange(normals); }
+            if (batchOk) { moved += normals.Count; committedNormals.AddRange(normals); changed.UnionWith(normals.Select(m => m.Hwnd)); }
             else
                 // 批失败（个别句柄失效即整批失效）→ 退化为逐个 SetWindowPos，拿到每个的错误码
                 foreach (var m in normals)
                 {
                     int err = SetPos(m);
                     Tally(err, ref moved, ref denied, ref failed);
-                    if (err == 0) committedNormals.Add(m);
+                    if (err == 0) { committedNormals.Add(m); changed.Add(m.Hwnd); }
                 }
         }
 
+        foreach (var m in plan.Moves.Where(m => m.ShowState == ShowState.Normal && m.RequireIdentity))
+        {
+            int err = SetPos(m);
+            Tally(err, ref moved, ref denied, ref failed);
+            if (err == 0) { committedNormals.Add(m); changed.Add(m.Hwnd); }
+        }
+
         foreach (var m in plan.Moves.Where(m => m.ShowState != ShowState.Normal))
-            Tally(SetPlacement(m), ref moved, ref denied, ref failed);
+        {
+            int err = SetPlacement(m, out bool altered);
+            if (altered)
+            {
+                changed.Add(m.Hwnd);
+                if (err != 0) moved++; // A failed second placement step still moved the window.
+            }
+            Tally(err, ref moved, ref denied, ref failed);
+        }
 
         // 第二遍：测量后纠偏。实测确认部分应用（典型是 WPF 默认的
         // WM_DPICHANGED 处理）会在我们上面的 SetWindowPos/DeferWindowPos 落位*之后*、在同一个消息
@@ -51,10 +70,12 @@ public static class WindowCommitter
         int corrected = 0;
         foreach (var m in committedNormals)
         {
+            if (!IdentityMatches(m)) { failed++; continue; }
             if (!Win32.GetWindowRect(m.Hwnd, out var r)) continue;    // 量的时候窗口没了，不算纠偏失败
             var measured = Win32.ToRect(r);
             if (!MonitorMapper.NeedsCorrection(m.DestWork, measured)) continue;   // 没超，别多按一次
             var fixedRect = MonitorMapper.ClampInto(m.DestWork, measured);
+            if (!IdentityMatches(m)) { failed++; continue; }
             if (Win32.SetWindowPos(m.Hwnd, 0, fixedRect.Left, fixedRect.Top,
                     fixedRect.Width, fixedRect.Height, Win32.SWP_NOZORDER | Win32.SWP_NOACTIVATE))
                 corrected++;
@@ -81,10 +102,11 @@ public static class WindowCommitter
         // 这里曾经写着"2) 顺带防住了地图拖放盖住主窗口"，那是错的：拖放时 fg 是主窗口、Moves[0] 是被
         // 拖的那扇，两者本来就不相等，条件恒真，什么都没防住。而抬升偏偏是**会**压过前台窗口的
         // （见 Raise 的两步法），于是刚放下的窗正好盖在用户还拖着的地图上。
-        if (plan.RaiseMoved && plan.Moves.Count > 0 && moved > 0 && plan.Moves[0].Hwnd != fg)
+        if (plan.RaiseMoved && plan.Moves.Count > 0 && moved > 0 && plan.Moves[0].Hwnd != fg
+            && IdentityMatches(plan.Moves[0]))
             Raise(plan.Moves[0].Hwnd, plan.KeepBelow);
 
-        return new CommitResult(moved, denied, failed, corrected);
+        return new CommitResult(moved, denied, failed, corrected) { ChangedWindows = changed };
     }
 
     /// <summary>把一扇窗提到最前，且**不抢焦点**。
@@ -122,21 +144,28 @@ public static class WindowCommitter
 
     private static int SetPos(PlannedMove m)
     {
+        if (!IdentityMatches(m)) return 1400; // ERROR_INVALID_WINDOW_HANDLE
         if (Win32.SetWindowPos(m.Hwnd, 0, m.Target.Left, m.Target.Top,
                 m.Target.Width, m.Target.Height, Win32.SWP_NOZORDER | Win32.SWP_NOACTIVATE))
             return 0;
         return Marshal.GetLastWin32Error();
     }
 
-    private static int SetPlacement(PlannedMove m)
+    private static int SetPlacement(PlannedMove m, out bool altered)
     {
+        altered = false;
         foreach (var step in BuildPlacementSteps(m))
         {
+            if (!IdentityMatches(m)) return 1400;
             var wp = step;   // 结构体传值；ref 要求可写的局部变量，不能直接 ref 一个只读枚举项
             if (!Win32.SetWindowPlacement(m.Hwnd, ref wp)) return Marshal.GetLastWin32Error();
+            altered = true;
         }
         return 0;
     }
+
+    private static bool IdentityMatches(PlannedMove move)
+        => !move.RequireIdentity || WindowIdentityProbe.Inspect(move.Hwnd, move.ExpectedIdentity) == WindowIdentityStatus.Match;
 
     /// <summary>纯函数：一个 Minimized/Maximized 移动要依次发给 SetWindowPlacement 的 WINDOWPLACEMENT
     /// 序列。ponytail: rcNormalPosition 按屏幕坐标写。文档口径是 workspace 坐标，但 Win11 任务栏锁死

@@ -188,14 +188,27 @@ public sealed class MouseChordService : IDisposable
     /// "我按下去那一刻指着谁"。中间隔着钩子返回、消息队列排空、以及一次 10~30ms 的窗口枚举——
     /// 手在这段时间里完全来得及动，而这个 chord 把按下吞掉了、底下的程序没有任何点击反馈，
     /// 手不停下来才是自然的。按下点本来就在钩子手里，只是以前没往下传。</summary>
-    public event Action<WindowShuttleAction, int, int>? Triggered;
+    public event Action<WindowShuttleAction, int, int, nint>? Triggered;
 
     /// <summary>方向手势划完了：**按下点** (X, Y) 加上到抬起点的位移 (Dx, Dy)，都是屏幕像素。
     ///
     /// 按下点必须一起报。跨屏划动时松手点已经在另一块屏上了，拿它去找"光标下的窗口"会找到目标屏
     /// 上的另一扇窗——用户指的始终是他**按下去时**指着的那一扇。方向换算成哪块屏是 App 层的事，
     /// 钩子只报"从哪儿开始、往哪儿划了多远"。</summary>
-    public event Action<int, int, int, int>? Stroked;
+    public event Action<int, int, int, int, nint>? Stroked;
+    private PressTarget _strokeTarget;
+    private readonly record struct PressTarget(nint Hwnd, uint ProcessId);
+    [DllImport("user32.dll")] private static extern nint WindowFromPoint(POINT point);
+    [DllImport("user32.dll")] private static extern nint GetAncestor(nint hwnd, uint flags);
+    [DllImport("user32.dll")] private static extern uint GetWindowThreadProcessId(nint hwnd, out uint pid);
+    private static PressTarget TargetAt(POINT point)
+    {
+        nint hwnd = GetAncestor(WindowFromPoint(point), 2);
+        GetWindowThreadProcessId(hwnd, out uint pid);
+        return new(hwnd, pid);
+    }
+    internal static nint ValidateTarget(nint hwnd, uint expectedPid)
+        => expectedPid != 0 && GetWindowThreadProcessId(hwnd, out uint pid) != 0 && pid == expectedPid ? hwnd : 0;
 
     /// <summary>录制态下捕到的一次手势：按钮 + 那一瞬按住的修饰键。</summary>
     public event Action<MouseChordButton, uint>? Captured;
@@ -427,7 +440,10 @@ public sealed class MouseChordService : IDisposable
                             // 在回调里重入是自找麻烦。
                             _hookThread?.BeginInvoke(() => Replay(u, sx, sy));
                         else
-                            _dispatcher.BeginInvoke(() => Stroked?.Invoke(sx, sy, ddx, ddy));
+                        {
+                            var target = _strokeTarget;
+                            _dispatcher.BeginInvoke(() => Stroked?.Invoke(sx, sy, ddx, ddy, ValidateTarget(target.Hwnd, target.ProcessId)));
+                        }
                     }
                     (bool swallow, _swallowedButtons) = TakeUp(_swallowedButtons, u);
                     if (swallow) return 1;
@@ -511,6 +527,7 @@ public sealed class MouseChordService : IDisposable
                 if (action == WindowShuttleAction.ToDirection)
                 {
                     var p = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam).Pt;
+                    _strokeTarget = TargetAt(p);
                     _strokeFrom = (p.X, p.Y);
                     _strokeButton = b;
                     _strokeBare = mods == 0;
@@ -524,7 +541,8 @@ public sealed class MouseChordService : IDisposable
                     // 吞事件路径：chord 真的命中了。真正执行丢给 UI 线程异步做（BeginInvoke 不等待），
                     // 钩子这一帧只做到"确认命中、记账、转发、返回"，不被下游动作的快慢拖住。
                     var tp = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam).Pt;
-                    _dispatcher.BeginInvoke(() => Triggered?.Invoke(a, tp.X, tp.Y));
+                    var target = TargetAt(tp);
+                    _dispatcher.BeginInvoke(() => Triggered?.Invoke(a, tp.X, tp.Y, ValidateTarget(target.Hwnd, target.ProcessId)));
                     return 1;
                 }
             }

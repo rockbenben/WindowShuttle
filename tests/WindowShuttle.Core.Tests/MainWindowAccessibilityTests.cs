@@ -105,7 +105,7 @@ public class MainWindowAccessibilityTests(WpfTestHost host)
                 WindowShuttle.Core.ShowState.Normal,
                 new WindowShuttle.Core.RectPx(0, 0, 800, 600),
                 new WindowShuttle.Core.RectPx(0, 0, 800, 600), 0);
-            var chip = w.BuildChip(facts);
+            var chip = w.BuildChip(facts, sourceMonitor: 1);
 
             Assert.True(chip.Focusable, "条目不可聚焦——Tab 走不到它");
             Assert.Equal("报告.docx", System.Windows.Automation.AutomationProperties.GetName(chip));

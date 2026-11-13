@@ -50,7 +50,9 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Windows के साथ शुरू करें</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>व्यवस्थापक के रूप में</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>शेड्यूल्ड टास्क से व्यवस्थापक ऑटो-स्टार्ट: टिक करते समय एक बार UAC आता है, फिर हर बूट चुपचाप व्यवस्थापक के रूप में शुरू होता है। व्यवस्थापक प्रोग्रामों की विंडो हिलाई जा सकेंगी और उनके सामने रहते जेस्चर बंद नहीं होंगे</value></data>
-  <data name="Settings_CheckUpdates"><value>अपडेट देखें</value></data>
+  <data name="Settings_Title"><value>सेटिंग्स</value></data>
+  <data name="Settings_Updates"><value>अपडेट</value></data>
+  <data name="Settings_CheckUpdates"><value>ऐप शुरू होने पर अपडेट देखें</value></data>
   <data name="Settings_CheckUpdatesTip"><value>चालू होने पर यह प्रोग्राम हर बार शुरू होते समय GitHub से एक बार जुड़कर देखता है कि नया संस्करण है या नहीं — यह कार्यक्रम का इंटरनेट से जुड़ना एकमात्र बार है; बाकी सब आपके कंप्यूटर पर ही होता है।</value></data>
   <data name="Settings_CheckNow"><value>अभी देखें</value></data>
   <data name="Update_Checking"><value>अपडेट देख रहे हैं…</value></data>
@@ -75,7 +77,7 @@
   <data name="Main_Actions" xml:space="preserve"><value>क्रियाएँ</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>ताज़ा करें</value></data>
   <data name="Main_DropHint" xml:space="preserve"><value>मानचित्र में विंडो आइटम को दूसरे मॉनिटर पर खींचकर ले जाएँ</value></data>
-  <data name="Main_Monitors_Hint" xml:space="preserve"><value>हर स्क्रीन के वास्तविक दिखने वाले आकार और आपसी स्थिति के अनुसार बनाया गया है, पिक्सेल के अनुसार नहीं</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>डेस्कटॉप पिक्सेल निर्देशांकों में आकार और स्थान</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>शॉर्टकट या माउस जेस्चर रिकॉर्ड करने के लिए कुंजी खाने पर क्लिक करें; Delete से हटाएँ</value></data>
 
   <data name="Badge_Cursor" xml:space="preserve"><value>कर्सर</value></data>
@@ -95,4 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (सेटिंग के अनुसार फुल-स्क्रीन ऐप छोड़े जाते हैं)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>इस विंडो को सामने लाने के लिए Enter दबाएँ</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>पिछले चरण में कुछ गड़बड़ हुई। ऐप अभी भी चल रहा है; विवरण crash.log में लिखा गया है</value></data>
+  <data name="Startup_ProtectedPath" xml:space="preserve"><value>स्टार्टअप सेटिंग विफल रही। उन्नत स्टार्टअप के लिए प्रोग्राम का स्थान सामान्य उपयोगकर्ताओं के लेखन से सुरक्षित होना चाहिए। लॉग और मौजूदा कार्य जाँचें या उन्नत स्टार्टअप बंद करें।</value></data>
 </root>

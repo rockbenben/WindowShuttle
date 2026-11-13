@@ -67,11 +67,6 @@
                          所以自己造一条同高的带子、在里面居中——写的是"跟它们同一条带子"这个意图，
                          而不是一个来路不明的偏移量。 -->
                     <Grid Height="32" VerticalAlignment="Top">
-                        <!-- ⚠️ **必须有列定义**：这个 Grid 里原本没有列，于是 GitHub 按钮和检查更新
-                             那一栈落进**同一个格子**——格子宽度取两者较大值（后者），GitHub 按钮按左对齐
-                             贴在格子最左边，正好压住 UpdateChk 的勾框方块（真机实拍：方块整个不见了，
-                             只剩 GitHub 图标和"检查更新"四个字挤在一起）。
-                             两列 Auto 之后：0 列是按钮（24+7 边距），1 列是检查更新那一栈，各归各位。 -->
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
@@ -84,21 +79,18 @@
                                 Margin="0,0,7,0" Background="Transparent" BorderThickness="0"
                                 Cursor="Hand" VerticalAlignment="Center" Focusable="True"
                                 AutomationProperties.Name="GitHub"/>
-                        <!-- 检查更新：**默认关**，而且是本程序唯一会联网的行为。
-                             它待在标题栏而不是设置条里，理由是量出来的，不是偏好：设置条已经满了——
-                             五个复选框在德语/俄语下要占两到三行，中文下也排满一整行（实测占用 855/927），
-                             再加一格就必然多出一行，而那一行是从**动作区**里挖的：矮窗口下动作区
-                             只放得下两张卡，多一行设置就少一张（MainWindowCompactLayoutTests 盯着
-                             这件事，见那边的注释）。标题栏这一行右侧空着，宽裕得很；把开关放在
-                             GitHub 链接旁边也是对的——两者问的是同一件事：这个程序自己的仓库。 -->
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
-                            <CheckBox x:Name="UpdateChk" Content="{loc:Loc Settings_CheckUpdates}"
-                                      ToolTip="{loc:Loc Settings_CheckUpdatesTip}" VerticalAlignment="Center"
-                                      Margin="0,0,10,0" Checked="OnToggle" Unchecked="OnToggle"/>
-                            <ui:Button x:Name="CheckUpdateBtn" Content="{loc:Loc Settings_CheckNow}"
-                                       Appearance="Transparent" FontSize="12" Padding="8,2"
-                                       VerticalAlignment="Center" Click="OnCheckUpdateNow"/>
-                        </StackPanel>
+                        <ui:Button x:Name="UpdatesMenu" Grid.Column="1" Content="{loc:Loc Settings_Updates}"
+                                   Icon="{ui:SymbolIcon ChevronDown16}" Appearance="Secondary" Padding="8,2"
+                                   VerticalAlignment="Center" Click="OnOpenUpdates">
+                            <ui:Button.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem x:Name="CheckUpdateBtn" Header="{loc:Loc Settings_CheckNow}" Click="OnCheckUpdateNow"/>
+                                    <Separator/>
+                                    <MenuItem x:Name="UpdateChk" Header="{loc:Loc Settings_CheckUpdates}" IsCheckable="True"
+                                              ToolTip="{loc:Loc Settings_CheckUpdatesTip}" Click="OnToggle"/>
+                                </ContextMenu>
+                            </ui:Button.ContextMenu>
+                        </ui:Button>
                     </Grid>
                 </ui:TitleBar.TrailingContent>
             </ui:TitleBar>
@@ -108,7 +100,7 @@
                 <!-- ══ 显示器布局 ══════════════════════════════════════════════════ -->
                 <DockPanel DockPanel.Dock="Top" Margin="0,0,0,12">
                     <TextBlock x:Name="MonitorsTitle" Text="{loc:Loc Main_Monitors}" FontSize="18" FontWeight="SemiBold"
-                               VerticalAlignment="Center"/>
+                               ToolTip="{loc:Loc Main_Monitors_Hint}" VerticalAlignment="Center"/>
                     <ui:Button Content="{loc:Loc Main_Refresh}" Appearance="Secondary" Click="OnRefresh" DockPanel.Dock="Right"
                             FontSize="12" Padding="12,4" VerticalAlignment="Center"/>
                     <!-- 「屏幕序号」不是搬窗动作（SwapPlanner.Plan 对它直接抛），它是这张图的校验工具：
@@ -117,8 +109,8 @@
                     <ui:Button x:Name="IdentifyButton" Content="{loc:Loc Action_Identify}" Appearance="Secondary"
                             Click="OnIdentify" DockPanel.Dock="Right" FontSize="12" Padding="12,4"
                             Margin="0,0,8,0" VerticalAlignment="Center"/>
-                    <TextBlock x:Name="MonitorsHint" Text="{loc:Loc Main_Monitors_Hint}" FontSize="12"
-                               Margin="12,2,16,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock x:Name="DropHint" Text="{loc:Loc Main_DropHint}" FontSize="12"
+                               Margin="12,0,16,0" VerticalAlignment="Center" TextWrapping="Wrap"/>
                 </DockPanel>
 
                 <!-- 地图带：高度由 DrawMonitors 按真实桌面长宽比算出来写进 Height。MinHeight 不是装饰，
@@ -144,89 +136,113 @@
                         FlowDirection="LeftToRight"
                         SizeChanged="OnCanvasSized" ClipToBounds="True"/>
 
-                <TextBlock x:Name="DropHint" DockPanel.Dock="Top" Margin="1,8,1,0" Text="{loc:Loc Main_DropHint}"
-                           FontSize="11.5"/>
-
                 <!-- ══ 设置条 ══════════════════════════════════════════════════════
                      Dock=Bottom 但源码顺序在填充元素之前——DockPanel 的 fill 规则要求"填满剩余空间"的
                      子元素是集合里最后一个且不设 Dock，那个位置留给下面的动作表。Dock 方向和源码顺序
                      是两回事，视觉上这条仍然钉在最底部。 -->
-                <Border x:Name="FooterBorder" DockPanel.Dock="Bottom" Margin="-24,14,-24,0" Padding="24,11,24,12"
+                <Border x:Name="FooterBorder" DockPanel.Dock="Bottom" Margin="-24,8,-24,0" Padding="24,6,24,8"
                         BorderThickness="0,1,0,0">
                     <!-- 内部可滚，配合代码里那条 MaxHeight（FooterMaxShare）。矮窗口下五个复选框在
                          德语/俄语这类长文案里要排四行，设置栏能吃掉窗口高度的 40%，而它是次要的配置面：
                          翻一两行是正常交互，动作区一张卡都露不出来才是主功能面直接消失。窗口够高时
                          MaxHeight 不生效，Auto 也就不会画出滚动条。 -->
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <StackPanel>
-                        <DockPanel>
-                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock x:Name="LangLabel" Text="{loc:Loc Settings_Language}" FontSize="12"
-                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                <ComboBox x:Name="LangBox" SelectionChanged="OnLangChanged" MinWidth="124" FontSize="12"/>
-                            </StackPanel>
-                            <!-- ui:Card 包着语言下拉那一版被拆掉了：一个卡片框住一个下拉框，等于给三个
-                                 复选框里最不常改的那一项加了一圈额外的视觉重量，读起来像它更重要。
-
-                                 WrapPanel 不是 StackPanel：横排 StackPanel 不认它被分到多少宽度，放不下
-                                 就直接溢出去压在右边的语言选择上——英文比中文长得多，实测就是"Start with
-                                 Windows"被"Language"压掉半截。WrapPanel 在同样的宽度里换行。 -->
-                            <!-- 负左边距是对齐用的，不是手感调整：WPF-UI 的 CheckBox 在方框左边还有一段
-                                 自带内边距，于是这一排方框的左边缘落在 x=35，而同一栏里的动作卡和下面那句
-                                 说明都在 x=24（页面边距）——三块内容里唯独这一排往里缩了 11px。实测量出来
-                                 的就是这 11。它只让**可点区域**多探进边距 11px，那片本来就是空白。 -->
-                            <WrapPanel VerticalAlignment="Center" Margin="-11,0,0,0">
-                                <CheckBox x:Name="SkipFsBox" Content="{loc:Loc Settings_SkipFullscreen}" Margin="0,2,22,2"
-                                          Checked="OnToggle" Unchecked="OnToggle"/>
-                                <CheckBox x:Name="RescueBox" Content="{loc:Loc Settings_RescueOnDisplayChange}" Margin="0,2,22,2"
-                                          Checked="OnToggle" Unchecked="OnToggle"/>
-                                <CheckBox x:Name="TrayBox" Content="{loc:Loc Settings_CloseToTray}" Margin="0,2,22,2"
-                                          Checked="OnToggle" Unchecked="OnToggle"/>
-                                <!-- 这两格是**一组**，所以在布局上也必须是一个整体：外面那个 WrapPanel
-                                     把每个子元素当成可独立换行的单位，把三样东西平铺进去的话，换行会正好
-                                     断在中间——实测 760 宽的德语下就是这样：竖线孤零零挂在上一行末尾，
-                                     「以管理员身份」掉到下一行，那条线于是从"分组"变成了"分隔"，比不画还糟。
-                                     裹一层横向 StackPanel，它们要换一起换。
-
-                                     **代价要记住**：水平 StackPanel 给子元素的可用宽度是无限，所以这一对
-                                     放不下时不会换行，会被上层裁掉——WrapPanel 的「放不下就换行」保护在这
-                                     两格上换成了「放不下就切掉」。目前安全是量出来的，不是想当然：18 种语言里
-                                     这两个标签合计最长的是印尼语和俄语，而俄语在最窄的 760 宽下渲染出来仍留
-                                     约 75px 余量（16%），印尼语只比它多 2%。**改这两个标签、或新增更长的语言
-                                     时要回头量一次**（docs/manual-checks.md 里有对应的验收项）。
-                                     竖线本身的用意：「以管理员身份」是「开机自启」的一种**方式**，不是第五个
-                                     并列开关——"以管理员身份"后面根本没有宾语，只有挂在上一格下面才成句。
-                                     运行时的从属（父项没勾就置灰）要等用户动手才看得见，第一眼看不出来。 -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,22,0">
-                                    <CheckBox x:Name="StartupBox" Content="{loc:Loc Settings_Startup}" Margin="0,2,10,2"
-                                              Checked="OnToggle" Unchecked="OnToggle"/>
-                                    <Border x:Name="StartupTie" Width="1" Margin="0,4,10,4"/>
-                                <!-- 提权自启（计划任务，一次 UAC）。跟在「开机自启」后面且只在它勾上时
-                                     可用：它是自启的一种**方式**，不是一个独立的功能——没有自启却"以
-                                     管理员身份自启"讲不通。真正的开/关逻辑在 OnToggle：UAC 被拒时要把
-                                     这一格拨回真实状态，不能假装成功。 -->
-                                    <CheckBox x:Name="ElevatedStartupBox" Content="{loc:Loc Settings_StartupElevated}"
-                                              Margin="0,2,0,2" ToolTip="{loc:Loc Settings_StartupElevated_Tip}"
-                                              Checked="OnToggle" Unchecked="OnToggle"/>
+                    <DockPanel>
+                        <DockPanel DockPanel.Dock="Top">
+                            <ToggleButton x:Name="SettingsToggle" DockPanel.Dock="Left" IsChecked="True"
+                                          Padding="6,2" MinHeight="24" VerticalAlignment="Center"
+                                          AutomationProperties.Name="{loc:Loc Settings_Title}" Click="OnSettingsToggle">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{loc:Loc Settings_Title}"/>
+                                    <TextBlock Margin="6,0,0,0" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="10">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="&#xE70E;"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsChecked, ElementName=SettingsToggle}" Value="True">
+                                                        <Setter Property="Text" Value="&#xE70D;"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                 </StackPanel>
-                            </WrapPanel>
+                            </ToggleButton>
+                            <DockPanel Margin="12,0,0,0" VerticalAlignment="Center">
+                                <ContentControl x:Name="MouseCautionGlyph" Margin="1,2,7,0" VerticalAlignment="Top"/>
+                                <TextBlock x:Name="MouseChordCaution" Text="{loc:Loc Settings_MouseChord_Caution}"
+                                           FontSize="11.5" TextWrapping="Wrap"/>
+                            </DockPanel>
                         </DockPanel>
+                        <ScrollViewer x:Name="SettingsBody" Margin="0,4,0,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <ScrollViewer.Style>
+                                <Style TargetType="ScrollViewer" BasedOn="{StaticResource {x:Type ScrollViewer}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=SettingsToggle}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ScrollViewer.Style>
+                            <DockPanel>
+                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Top">
+                                    <TextBlock x:Name="LangLabel" Text="{loc:Loc Settings_Language}" FontSize="12"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <ComboBox x:Name="LangBox" AutomationProperties.LabeledBy="{Binding ElementName=LangLabel}" SelectionChanged="OnLangChanged" MinWidth="124" FontSize="12"/>
+                                </StackPanel>
+                                <!-- ui:Card 包着语言下拉那一版被拆掉了：一个卡片框住一个下拉框，等于给三个
+                                     复选框里最不常改的那一项加了一圈额外的视觉重量，读起来像它更重要。
 
-                        <!-- 鼠标手势的代价常驻可见，不等到绑上了才提醒——低级鼠标钩子没有 RegisterHotKey
-                             那种注册期冲突信号（§own-decision，见 docs/design-notes.md），事后提醒等于没提醒。
-                             前面那个鼠标字形跟每张动作卡右侧的手势位是同一个记号，一眼能对上这段话在说谁。 -->
-                        <DockPanel Margin="0,8,0,0">
-                            <ContentControl x:Name="MouseCautionGlyph" Margin="1,2,7,0" VerticalAlignment="Top"/>
-                            <TextBlock x:Name="MouseChordCaution" Text="{loc:Loc Settings_MouseChord_Caution}"
-                                       FontSize="11.5" TextWrapping="Wrap"/>
-                        </DockPanel>
-                    </StackPanel>
-                    </ScrollViewer>
+                                     WrapPanel 不是 StackPanel：横排 StackPanel 不认它被分到多少宽度，放不下
+                                     就直接溢出去压在右边的语言选择上——英文比中文长得多，实测就是"Start with
+                                     Windows"被"Language"压掉半截。WrapPanel 在同样的宽度里换行。 -->
+                                <!-- 负左边距是对齐用的，不是手感调整：WPF-UI 的 CheckBox 在方框左边还有一段
+                                     自带内边距，于是这一排方框的左边缘落在 x=35，而同一栏里的动作卡和下面那句
+                                     说明都在 x=24（页面边距）——三块内容里唯独这一排往里缩了 11px。实测量出来
+                                     的就是这 11。它只让**可点区域**多探进边距 11px，那片本来就是空白。 -->
+                                <WrapPanel VerticalAlignment="Center" Margin="-11,0,0,0">
+                                    <CheckBox x:Name="SkipFsBox" Content="{loc:Loc Settings_SkipFullscreen}" Margin="0,0,14,0"
+                                              Checked="OnToggle" Unchecked="OnToggle"/>
+                                    <CheckBox x:Name="RescueBox" Content="{loc:Loc Settings_RescueOnDisplayChange}" Margin="0,0,14,0"
+                                              Checked="OnToggle" Unchecked="OnToggle"/>
+                                    <CheckBox x:Name="TrayBox" Content="{loc:Loc Settings_CloseToTray}" Margin="0,0,14,0"
+                                              Checked="OnToggle" Unchecked="OnToggle"/>
+                                    <!-- 这两格是**一组**，所以在布局上也必须是一个整体：外面那个 WrapPanel
+                                         把每个子元素当成可独立换行的单位，把三样东西平铺进去的话，换行会正好
+                                         断在中间——实测 760 宽的德语下就是这样：竖线孤零零挂在上一行末尾，
+                                         「以管理员身份」掉到下一行，那条线于是从"分组"变成了"分隔"，比不画还糟。
+                                         裹一层横向 StackPanel，它们要换一起换。
+
+                                         **代价要记住**：水平 StackPanel 给子元素的可用宽度是无限，所以这一对
+                                         放不下时不会换行，会被上层裁掉——WrapPanel 的「放不下就换行」保护在这
+                                         两格上换成了「放不下就切掉」。目前安全是量出来的，不是想当然：18 种语言里
+                                         这两个标签合计最长的是印尼语和俄语，而俄语在最窄的 760 宽下渲染出来仍留
+                                         约 75px 余量（16%），印尼语只比它多 2%。**改这两个标签、或新增更长的语言
+                                         时要回头量一次**（docs/manual-checks.md 里有对应的验收项）。
+                                         竖线本身的用意：「以管理员身份」是「开机自启」的一种**方式**，不是第五个
+                                         并列开关——"以管理员身份"后面根本没有宾语，只有挂在上一格下面才成句。
+                                         运行时的从属（父项没勾就置灰）要等用户动手才看得见，第一眼看不出来。 -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,22,0">
+                                        <CheckBox x:Name="StartupBox" Content="{loc:Loc Settings_Startup}" Margin="0,2,10,2"
+                                                  Checked="OnToggle" Unchecked="OnToggle"/>
+                                        <Border x:Name="StartupTie" Width="1" Margin="0,4,10,4"/>
+                                    <!-- 提权自启（计划任务，一次 UAC）。跟在「开机自启」后面且只在它勾上时
+                                         可用：它是自启的一种**方式**，不是一个独立的功能——没有自启却"以
+                                         管理员身份自启"讲不通。真正的开/关逻辑在 OnToggle：UAC 被拒时要把
+                                         这一格拨回真实状态，不能假装成功。 -->
+                                        <CheckBox x:Name="ElevatedStartupBox" Content="{loc:Loc Settings_StartupElevated}"
+                                                  Margin="0,2,0,2" ToolTip="{loc:Loc Settings_StartupElevated_Tip}"
+                                                  Checked="OnToggle" Unchecked="OnToggle"/>
+                                    </StackPanel>
+                                </WrapPanel>
+                            </DockPanel>
+
+                        </ScrollViewer>
+                    </DockPanel>
                 </Border>
 
                 <!-- ══ 动作 ════════════════════════════════════════════════════════
                      DockPanel 的填充元素：吃掉地图带和设置条之外的全部高度。 -->
-                <DockPanel Margin="0,14,0,0">
+                <DockPanel Margin="0,10,0,0">
                     <DockPanel DockPanel.Dock="Top" Margin="0,0,0,10">
                         <TextBlock x:Name="ActionsTitle" Text="{loc:Loc Main_Actions}" FontSize="18" FontWeight="SemiBold"
                                    VerticalAlignment="Center"/>

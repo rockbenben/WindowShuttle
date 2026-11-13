@@ -50,7 +50,9 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Запускать вместе с Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>От имени администратора</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Запуск с правами администратора через планировщик: один запрос UAC при включении, дальше каждая загрузка стартует тихо от имени администратора. Окна программ с правами администратора становятся перемещаемыми, а жесты перестают отключаться, пока такое окно на переднем плане</value></data>
-  <data name="Settings_CheckUpdates"><value>Проверять обновления</value></data>
+  <data name="Settings_Title"><value>Настройки</value></data>
+  <data name="Settings_Updates"><value>Обновления</value></data>
+  <data name="Settings_CheckUpdates"><value>Проверять обновления при запуске</value></data>
   <data name="Settings_CheckUpdatesTip"><value>Если включено, программа один раз при запуске обращается к GitHub, чтобы узнать, не вышла ли новая версия, — это единственное сетевое действие программы; всё остальное происходит на вашем компьютере.</value></data>
   <data name="Settings_CheckNow"><value>Проверить сейчас</value></data>
   <data name="Update_Checking"><value>Проверка обновлений…</value></data>
@@ -75,7 +77,7 @@
   <data name="Main_Actions" xml:space="preserve"><value>Действия</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Обновить</value></data>
   <data name="Main_DropHint" xml:space="preserve"><value>Перетащите карточку окна на карте на другой монитор, чтобы перенести её</value></data>
-  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Нарисовано по видимому размеру и взаимному расположению экранов на столе, а не по пикселям</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Размеры и положение в пикселях рабочего стола</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Щёлкните по ячейке, чтобы записать сочетание клавиш или жест мыши; Delete очищает</value></data>
 
   <data name="Badge_Cursor" xml:space="preserve"><value>Курсор</value></data>
@@ -95,4 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (полноэкранные приложения пропускаются по настройке)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Нажмите Enter, чтобы вывести это окно на передний план</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>При последнем шаге произошла ошибка. Приложение продолжает работать; подробности записаны в crash.log</value></data>
+  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Ошибка настройки автозапуска. Для запуска с повышенными правами программа должна находиться в папке, защищённой от записи обычными пользователями. Проверьте журнал и задачу или отключите повышенный автозапуск.</value></data>
 </root>

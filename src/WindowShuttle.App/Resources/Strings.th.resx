@@ -50,7 +50,9 @@
   <data name="Settings_Startup" xml:space="preserve"><value>เริ่มพร้อม Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>ในฐานะผู้ดูแลระบบ</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>เริ่มแบบยกระดับผ่าน Task Scheduler: ติ๊กแล้วมี UAC ครั้งเดียว จากนั้นทุกครั้งที่เปิดเครื่องจะเริ่มเป็นผู้ดูแลระบบเงียบ ๆ หน้าต่างของโปรแกรมสิทธิ์ผู้ดูแลจะย้ายได้ และท่าทางจะไม่ตายอีกเมื่อโปรแกรมพวกนั้นอยู่หน้าสุด</value></data>
-  <data name="Settings_CheckUpdates"><value>ตรวจหาการอัปเดต</value></data>
+  <data name="Settings_Title"><value>การตั้งค่า</value></data>
+  <data name="Settings_Updates"><value>การอัปเดต</value></data>
+  <data name="Settings_CheckUpdates"><value>ตรวจหาการอัปเดตเมื่อเริ่มแอป</value></data>
   <data name="Settings_CheckUpdatesTip"><value>เมื่อเปิด โปรแกรมจะเชื่อมต่อ GitHub หนึ่งครั้งตอนเริ่มทำงานเพื่อดูว่ามีเวอร์ชันใหม่หรือไม่ — นั่นคือการเชื่อมต่ออินเทอร์เน็ตเพียงครั้งเดียวของโปรแกรม ส่วนอื่นทำงานบนเครื่องของคุณทั้งหมด</value></data>
   <data name="Settings_CheckNow"><value>ตรวจตอนนี้</value></data>
   <data name="Update_Checking"><value>กำลังตรวจหาการอัปเดต…</value></data>
@@ -75,7 +77,7 @@
   <data name="Main_Actions" xml:space="preserve"><value>การดำเนินการ</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>รีเฟรช</value></data>
   <data name="Main_DropHint" xml:space="preserve"><value>ลากรายการหน้าต่างในผังจอไปยังอีกจอเพื่อย้าย</value></data>
-  <data name="Main_Monitors_Hint" xml:space="preserve"><value>วาดตามขนาดที่ตาเห็นจริงและตำแหน่งของแต่ละจอบนโต๊ะ ไม่ใช่ตามจำนวนพิกเซล</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>ขนาดและตำแหน่งตามพิกัดพิกเซลเดสก์ท็อป</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>คลิกช่องปุ่มเพื่อบันทึกปุ่มลัดหรือท่าทางเมาส์ กด Delete เพื่อล้าง</value></data>
 
   <data name="Badge_Cursor" xml:space="preserve"><value>เคอร์เซอร์</value></data>
@@ -95,4 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (ข้ามแอปเต็มจอตามการตั้งค่า)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>กด Enter เพื่อย้ายหน้าต่างนี้ขึ้นมาข้างหน้า</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>เกิดข้อผิดพลาดในขั้นตอนล่าสุด แอปยังทำงานต่อ รายละเอียดถูกบันทึกไว้ใน crash.log</value></data>
+  <data name="Startup_ProtectedPath" xml:space="preserve"><value>ตั้งค่าการเริ่มต้นไม่สำเร็จ การเริ่มด้วยสิทธิ์ผู้ดูแลต้องใช้ตำแหน่งโปรแกรมที่ผู้ใช้ทั่วไปเขียนทับไม่ได้ ตรวจสอบบันทึกและงานที่มีอยู่ หรือปิดการเริ่มด้วยสิทธิ์ผู้ดูแล</value></data>
 </root>

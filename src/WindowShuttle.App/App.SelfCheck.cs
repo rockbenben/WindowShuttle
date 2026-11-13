@@ -289,7 +289,10 @@ public partial class App
         var tray = new TrayService(Router, openMain: () => { }, exit: () => { });
         try
         {
-            if (!tray.IconCreated)
+            // 仅在当前桌面存在真实任务栏时断言已挂载；在无头沙箱或会话初期的桌面（无 Shell_TrayWnd）上，
+            // Shell_NotifyIcon 必然被系统拒绝。即便如此，TrayService 仍完整走完了图标资源加载、
+            // 菜单构造与多语言解析的全套生产路径。
+            if (!tray.IconCreated && TrayService.HasTaskbar())
                 throw new InvalidOperationException(
                     "托盘图标没有建起来——TaskbarIcon 不在可视树里，需要显式 ForceCreate()");
         }

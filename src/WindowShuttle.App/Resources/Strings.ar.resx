@@ -50,7 +50,9 @@
   <data name="Settings_Startup" xml:space="preserve"><value>التشغيل مع بدء Windows</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>كمسؤول</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>تشغيل مرتفع الصلاحية عبر مهمة مجدولة: مطالبة UAC واحدة عند التحديد، ثم يبدأ كل إقلاع بصمت كمسؤول. تصبح نوافذ البرامج المرتفعة قابلة للنقل، ولا تتعطل الإيماءات بعد الآن عندما تكون إحداها في المقدمة</value></data>
-  <data name="Settings_CheckUpdates"><value>البحث عن تحديثات</value></data>
+  <data name="Settings_Title"><value>الإعدادات</value></data>
+  <data name="Settings_Updates"><value>التحديثات</value></data>
+  <data name="Settings_CheckUpdates"><value>البحث عن تحديثات عند بدء التشغيل</value></data>
   <data name="Settings_CheckUpdatesTip"><value>عند التفعيل يتصل البرنامج مرة واحدة عند بدء التشغيل بـ GitHub للتحقق من وجود إصدار أحدث — وهو اتصاله الوحيد بالإنترنت؛ وكل ما عداه يجري على جهازك.</value></data>
   <data name="Settings_CheckNow"><value>تحقّق الآن</value></data>
   <data name="Update_Checking"><value>جارٍ البحث عن تحديثات…</value></data>
@@ -75,7 +77,7 @@
   <data name="Main_Actions" xml:space="preserve"><value>الإجراءات</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>تحديث</value></data>
   <data name="Main_DropHint" xml:space="preserve"><value>اسحب عنصر النافذة في الخريطة إلى شاشة أخرى لنقلها</value></data>
-  <data name="Main_Monitors_Hint" xml:space="preserve"><value>مرسوم حسب الحجم الظاهري لكل شاشة على مكتبك وموضعها، لا حسب عدد البكسلات</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>الأحجام والمواضع بإحداثيات بكسل سطح المكتب</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>انقر خانة المفاتيح لتسجيل اختصار أو إيماءة فأرة، وDelete للمسح</value></data>
 
   <data name="Badge_Cursor" xml:space="preserve"><value>المؤشر</value></data>
@@ -95,4 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (يتم تخطي تطبيقات ملء الشاشة حسب الإعداد)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>اضغط Enter لجلب هذه النافذة إلى المقدمة</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>حدث خطأ في الخطوة الأخيرة. ما زال التطبيق يعمل؛ كُتبت التفاصيل في crash.log</value></data>
+  <data name="Startup_ProtectedPath" xml:space="preserve"><value>فشل إعداد بدء التشغيل. يتطلب التشغيل بصلاحيات مرتفعة موقعًا محميًا من كتابة المستخدمين العاديين. افحص السجل والمهمة الحالية أو أوقف التشغيل المرتفع.</value></data>
 </root>

@@ -124,7 +124,7 @@ public static class SettingsStore
     /// 这一行是现成的干净格子。
     ///
     /// **送去主屏 / 全部收拢 / 送去下一块屏 出厂不给手势**——不是它们不好用，是**已经有别的路**：
-    /// 送去主屏 ＝ 往主屏那个方向划一下；全部收拢 的主战场（拔屏之后窗口流落到屏外）默认由自动救援
+    /// 送去主屏 ＝ 往主屏那个方向划一下；全部收拢 的主战场（拔屏之后窗口流落到屏外）可由开启后的自动救援
     /// 接管，手动那次是兜底；送去下一块屏 ＝ 往右划。三个都在托盘菜单和命令行里，想要手势自己录一格，
     /// 一次点击的事。多绑一格的代价是从别的程序手里再拿走一个组合，而收益是一条已经有的路。
     ///
@@ -290,6 +290,7 @@ public static class SettingsStore
         try
         {
             using var doc = JsonDocument.Parse(raw);
+            if (doc.RootElement.ValueKind != JsonValueKind.Object) return;
             if (doc.RootElement.TryGetProperty("MouseChordToPrimary", out var ctrl)
                 && ctrl.ValueKind == JsonValueKind.True)
                 chords.TryAdd("ToPrimary", "Ctrl+Right");
@@ -324,7 +325,7 @@ public static class SettingsStore
 /// 状态不进 settings.json——注册表和任务计划器本身就是唯一事实来源，镜像一份只会有一天对不上。</summary>
 public static class StartupRegistration
 {
-    private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
+    internal static string RunKey { get; set; } = @"Software\Microsoft\Windows\CurrentVersion\Run";
     private const string RunValueName = "WindowShuttle";
     private const string TaskName = "WindowShuttle";
 
@@ -347,6 +348,15 @@ public static class StartupRegistration
         using var key = Registry.CurrentUser.CreateSubKey(RunKey);
         if (on) key.SetValue(RunValueName, RunCommand);
         else key.DeleteValue(RunValueName, throwOnMissingValue: false);
+    }
+
+    internal static bool IsDirectCommand(string command, string exe)
+    {
+        string value = command.Trim();
+        string path = value.StartsWith('"')
+            ? value.Split('"').ElementAtOrDefault(1) ?? ""
+            : value.Split(' ', 2)[0];
+        return exe.Length > 0 && string.Equals(path, exe, StringComparison.OrdinalIgnoreCase);
     }
 
     public static bool Get()
@@ -372,38 +382,22 @@ public static class StartupRegistration
         {
             using var key = Registry.CurrentUser.OpenSubKey(RunKey, writable: true);
             if (key is null) return;
-            // **不只看我们自己那个值名**。同一个 exe 可能被人用别的名字登记过（换过版本、从别的机器
-            // 同步过注册表、或者干脆手工加的）。那种项一样没有 --tray，一样会在每次开机把主窗口糊到
-            // 脸上，而只认 RunValueName 的话永远够不着它。按"这一行指向的是不是我们这个 exe"来认，
-            // 比按名字认可靠。
-            //
-            // 够不着的仍然有：shell:startup 里的快捷方式、组策略登录脚本、第三方启动器——那些不在
-            // 注册表里，也没有可靠的"这次是不是开机自启"信号可查（父进程跟手动双击一样都是 explorer）。
-            // 那条留给文档，不拿启发式去猜：猜错的代价是"我双击了它却什么都没出现"。
+            // 仅迁移直接执行本程序的别名。启动器参数中的路径不代表该自启项归我们所有。
             string exe = Environment.ProcessPath ?? "";
             foreach (var name in key.GetValueNames())
             {
                 if (key.GetValue(name) is not string current) continue;
                 bool mine = name == RunValueName
-                    || (exe.Length > 0 && current.Contains(exe, StringComparison.OrdinalIgnoreCase));
-                if (mine && current != RunCommand) key.SetValue(name, RunCommand);
+                    || IsDirectCommand(current, exe);
+                if (!mine) continue;
+                key.SetValue(RunValueName, RunCommand);
+                if (name != RunValueName) key.DeleteValue(name, false);
             }
         }
         catch (UnauthorizedAccessException) { /* 注册表被策略锁了：自启不可用，但不该拦住启动 */ }
     }
 
-    /// <summary>提权自启任务在不在。<see cref="Get"/> 是一次注册表读取，这个却要**开一个进程**
-    /// （schtasks.exe，实测约 45ms，最坏等到 5s 超时），所以答案缓存在进程内。
-    ///
-    /// 缓存不是性能洁癖，是修一个卡顿：调用点在 MainWindow 的构造函数（LoadToggles）和
-    /// ApplyStartupMode 里，而后者每次勾任何一个复选框都要问两遍——包括「跳过全屏」这种跟自启毫无
-    /// 关系的开关。于是"点开窗口"和"勾一下设置"都会在 UI 线程上同步等一个外部进程，界面当场卡住；
-    /// 机器负载高、或者 Defender 正好要扫这次新起的 schtasks.exe 时尤其明显。测试也一样受益：
-    /// 每个建 MainWindow 的 WPF 测试原来都会真的去起一个 schtasks 进程。
-    ///
-    /// 缓存能成立是因为这个状态**只有我们自己会改**（<see cref="SetElevated"/> 成功时同步更新它）。
-    /// 用户绕过应用、自己去任务计划程序里删掉那条任务，界面会显示到下次启动为止的旧状态——代价可以
-    /// 接受，换来的是每次开窗口和每次勾选都不再卡。</summary>
+    /// <summary>缓存已确定的任务状态；查询失败不能授权新增普通自启项。</summary>
     private static bool? _elevatedCache;
 
     public static bool GetElevated()
@@ -418,36 +412,77 @@ public static class StartupRegistration
         return ok;
     }
 
+    internal static bool ElevatedTargetUnsafe { get; private set; }
+
+    internal static Func<(bool Ok, bool Definite)>? QueryOverride { get; set; }
+
     /// <summary>问一次系统。返回 (答案, 这答案算不算数)。</summary>
-    private static (bool Ok, bool Definite) QueryElevated()
+    internal static (bool Ok, bool Definite) QueryElevated()
     {
-        System.Diagnostics.Process? p = null;
+        if (QueryOverride is { } query) return query();
+        object? service = null, folder = null, task = null, definition = null, actions = null;
         try
         {
-            p = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-            {
-                FileName = "schtasks.exe",
-                Arguments = $"/Query /TN \"{TaskName}\"",
-                UseShellExecute = false, CreateNoWindow = true,
-                RedirectStandardOutput = true, RedirectStandardError = true,
-            });
-            if (p is null) return (false, false);
-            // **先把两个流读干净再等退出**。两个流都重定向了却不读，输出一旦填满管道缓冲区，
-            // schtasks 就会阻塞在写上、永远等不到退出——经典的 Process 管道死锁。中文/详细模式下
-            // 的 /Query 输出本来就比英文长，这不是理论风险。异步读避免了"先读哪一个"的次级死锁。
-            var stdout = p.StandardOutput.ReadToEndAsync();
-            var stderr = p.StandardError.ReadToEndAsync();
-            if (!p.WaitForExit(5000))
-            {
-                // 超时：这个进程还挂在那儿，得亲手收掉，否则每查一次就漏一个 schtasks。
-                try { p.Kill(entireProcessTree: true); } catch { /* 已经自己退了 */ }
-                return (false, Definite: false);
-            }
-            Task.WaitAll([stdout, stderr], 1000);
-            return (p.ExitCode == 0, Definite: true);
+            service = Activator.CreateInstance(Type.GetTypeFromProgID("Schedule.Service")!);
+            dynamic scheduler = service!;
+            scheduler.Connect();
+            folder = scheduler.GetFolder(@"\");
+            try { task = ((dynamic)folder).GetTask(TaskName); }
+            catch (System.Runtime.InteropServices.COMException ex) when (ex.HResult == unchecked((int)0x80070002))
+            { ElevatedTargetUnsafe = false; return (false, true); }
+            definition = ((dynamic)task!).Definition;
+            actions = ((dynamic)definition).Actions;
+            ElevatedTargetUnsafe = ((dynamic)actions).Count != 1 ||
+                !IsProtectedExecutable((string)((dynamic)actions).Item(1).Path);
+            return (true, true);
         }
-        catch { return (false, Definite: false); }
-        finally { p?.Dispose(); }
+        catch { return (false, false); }
+        finally
+        {
+            foreach (var value in new[] { actions, definition, task, folder, service })
+                if (value is not null && System.Runtime.InteropServices.Marshal.IsComObject(value))
+                    System.Runtime.InteropServices.Marshal.FinalReleaseComObject(value);
+        }
+    }
+
+    internal static bool IsProtectedExecutable(string path)
+    {
+        try
+        {
+            FileSystemInfo? item = new FileInfo(Path.GetFullPath(path));
+            while (item is not null)
+            {
+                if (!item.Exists || (item.Attributes & FileAttributes.ReparsePoint) != 0) return false;
+                var acl = item is DirectoryInfo directory
+                    ? (System.Security.AccessControl.FileSystemSecurity)directory.GetAccessControl()
+                    : ((FileInfo)item).GetAccessControl();
+                if (!HasProtectedAcl(acl, item is DirectoryInfo)) return false;
+                item = item is DirectoryInfo parent ? parent.Parent : ((FileInfo)item).Directory;
+            }
+            return true;
+        }
+        catch { return false; }
+    }
+
+    internal static bool HasProtectedAcl(System.Security.AccessControl.FileSystemSecurity acl, bool directory = false)
+    {
+        // Owners can rewrite the DACL. Only system administrators and Windows servicing own trusted paths.
+        string[] trusted = ["S-1-5-18", "S-1-5-32-544",
+            "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464"];
+        var sidType = typeof(System.Security.Principal.SecurityIdentifier);
+        if (!trusted.Contains(acl.GetOwner(sidType)?.Value)) return false;
+        System.Security.AccessControl.FileSystemRights writes =
+            (directory ? 0 : System.Security.AccessControl.FileSystemRights.Write) |
+            System.Security.AccessControl.FileSystemRights.Delete |
+            System.Security.AccessControl.FileSystemRights.DeleteSubdirectoriesAndFiles |
+            System.Security.AccessControl.FileSystemRights.ChangePermissions |
+            System.Security.AccessControl.FileSystemRights.TakeOwnership;
+        foreach (System.Security.AccessControl.FileSystemAccessRule rule in acl.GetAccessRules(true, true, sidType))
+            if ((rule.PropagationFlags & System.Security.AccessControl.PropagationFlags.InheritOnly) == 0
+                && rule.AccessControlType == System.Security.AccessControl.AccessControlType.Allow
+                && (rule.FileSystemRights & writes) != 0 && !trusted.Contains(rule.IdentityReference.Value))
+                return false;
+        return true;
     }
 
     /// <summary>建/删提权自启任务。两个方向都要过一次 UAC（建带 /RL HIGHEST 的任务、删它都要管理员），
@@ -458,6 +493,8 @@ public static class StartupRegistration
     /// 上显示的也是 schtasks 这个可信名字。</summary>
     public static bool SetElevated(bool on)
     {
+        if (on && !IsProtectedExecutable(Environment.ProcessPath!))
+            throw new IOException("Elevated startup requires an executable and parent directories protected from ordinary-user writes.");
         string args = on
             ? $"/Create /F /TN \"{TaskName}\" /SC ONLOGON /RL HIGHEST /TR \"\\\"{Environment.ProcessPath}\\\" --tray\""
             : $"/Delete /F /TN \"{TaskName}\"";
@@ -465,12 +502,17 @@ public static class StartupRegistration
         {
             using var p = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
             {
-                FileName = "schtasks.exe", Arguments = args,
+                FileName = Path.Combine(Environment.SystemDirectory, "schtasks.exe"), Arguments = args,
                 UseShellExecute = true, Verb = "runas",
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
             });
-            p!.WaitForExit(30000);      // UAC 给用户留足时间
-            bool ok = p.HasExited && p.ExitCode == 0;
+            if (!p!.WaitForExit(30000))
+            {
+                try { p.Kill(true); } catch (InvalidOperationException) { }
+                throw new IOException("Startup task operation timed out.");
+            }
+            bool ok = p.ExitCode == 0;
+            if (!ok) throw new IOException($"Startup task operation failed with exit code {p.ExitCode}.");
             // 缓存必须跟着真实结果走：成功就是新状态，失败（UAC 被拒）时**作废**而不是写回旧值——
             // schtasks 可能已经改了一半，下次问就老老实实再查一次。
             _elevatedCache = ok ? on : null;
@@ -480,7 +522,8 @@ public static class StartupRegistration
         }
         // UAC 上点了「否」（1223）：任务肯定没建成，但缓存一律作废——这两条路都不该让一个可能过期的
         // 答案留在进程里，下次问就重新查。
-        catch (System.ComponentModel.Win32Exception) { _elevatedCache = null; return false; }
-        catch { _elevatedCache = null; return false; }
+        catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223)
+        { _elevatedCache = null; return false; }
+        catch { _elevatedCache = null; throw; }
     }
 }

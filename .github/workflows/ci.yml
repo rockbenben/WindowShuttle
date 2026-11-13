@@ -130,6 +130,9 @@ jobs:
     # 发布这一步记成一次 deployment：仓库设置里有一个同名 environment。
     # ⚠️ 它**没有配 required reviewers**——推 tag 仍然直接发布，没有人工闸。
     # 要加闸就到这个 environment 的保护规则里加 reviewers，那时 tag 推送会停下来等人批。
+    concurrency:
+      group: release-publication
+      cancel-in-progress: false
     environment: release
     permissions:
       contents: write
@@ -147,42 +150,38 @@ jobs:
           # setup-dotnet 会拿 /^\d+\.\d+\.[1-9]\d{2,}$/ 校验它，"10.0.0" 这种写法会直接抛错，
           # 不是"能跑但不好看"。所以改这一行之前 global.json 必须先改成完整版本号。
           global-json-file: global.json
-      - name: Publish (self-contained + framework-dependent, win-x64)
+      - name: Validate release intent
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
         run: |
-          $v = "${{ github.ref_name }}" -replace '^v', ''   # tag v1.0.0 -> assembly version 1.0.0
+          $ErrorActionPreference = 'Stop'
+          if ($env:RELEASE_TAG -cnotmatch '^v\d+\.\d+\.\d+$') { throw 'Invalid release tag' }
+          $json = gh api "repos/$env:GITHUB_REPOSITORY/releases?per_page=100" --paginate --slurp
+          if ($LASTEXITCODE) { throw 'Cannot inspect releases' }
+          $pages = $json | ConvertFrom-Json -NoEnumerate
+          $releases = @($pages | ForEach-Object { $_ })
+          ./tools/release-policy.ps1 -Tag $env:RELEASE_TAG -Releases $releases
+      - name: Publish (self-contained + framework-dependent, win-x64)
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: pwsh
+        run: |
+          if ($env:RELEASE_TAG -cnotmatch '^v\d+\.\d+\.\d+$') { throw 'Invalid release tag' }
+          $v = $env:RELEASE_TAG.Substring(1)
           # 原生命令的非零退出不会中断 pwsh，runner 只看最后一行之后的 $LASTEXITCODE：不显式判一次，
           # 「第一个 publish 失败 + 第二个成功」会以绿灯收场，Release 里少一个资产。
           dotnet publish src/WindowShuttle.App -c Release -p:PublishProfile=win-x64 -p:Version=$v --nologo
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           dotnet publish src/WindowShuttle.App -c Release -p:PublishProfile=win-x64-needs-dotnet10 -p:Version=$v --nologo
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
-      - name: Package
+      - name: Package and verify unpacked builds
+        id: package
         shell: pwsh
-        run: |
-          # Two zips — the variant lives in the ZIP name, so unpacking either always leaves a clean
-          # WindowShuttle.exe instead of a name a portable install would keep forever.
-          Compress-Archive -Path src/WindowShuttle.App/bin/Release/publish/WindowShuttle.exe -DestinationPath "WindowShuttle-${{ github.ref_name }}-win-x64.zip"
-          Compress-Archive -Path src/WindowShuttle.App/bin/Release/publish-needs-dotnet10/WindowShuttle.exe -DestinationPath "WindowShuttle-${{ github.ref_name }}-win-x64-needs-dotnet10.zip"
-          # 每一个能被下载的东西都要有一行——两个 zip 加那个裸 exe，正好是 files: 里的三个资产。
-          # 只给其中一个出校验值，另一拨用户手里就是个没法验的文件。这份清单同时也是下一步
-          # attestation 的输入：加资产只改这一句，签名自动跟着覆盖到，不会「漏签一个还不报错」。
-          # 格式是 shasum 那套「摘要 + 空格 + 模式标志 + 文件名」，下面两个空格 = 分隔空格 + 文本模式。
-          # 编码写死 ascii：内容本来全是 ASCII，写死就不吃两代 PowerShell 默认编码（BOM）的差异。
-          $lines = Get-FileHash *.zip, src/WindowShuttle.App/bin/Release/publish-needs-dotnet10/WindowShuttle.exe -Algorithm SHA256 |
-            ForEach-Object { "{0}  {1}" -f $_.Hash.ToLower(), (Split-Path $_.Path -Leaf) }
-          # ⚠️ **行尾必须是 LF，不能用 Set-Content。** 它在 Windows 上写 CRLF，而 sha256sum
-          # 把那个 `\r` 当成文件名的一部分：Linux / macOS / WSL / Git Bash 里
-          # `sha256sum -c SHA256SUMS.txt` 逐条报
-          #   sha256sum: 'WindowShuttle-…-win-x64.zip'$'\r': No such file or directory → FAILED
-          # **摘要是对的**（把 `\r` 去掉两条都 OK），坏的是这个文件存在的目的——它被下载去
-          # 就是为了让人一条命令验完，而那条命令在非 Windows 上必然报错，看起来像包被改过。
-          # v1.0.1 发出去的那份就是 CRLF（已发布资产实测：3 行全是 CRLF）。
-          # WriteAllText 不写 BOM（内容是纯 ASCII，字节与 ascii 编码一致），`n` 显式写 LF。
-          [System.IO.File]::WriteAllText(
-            (Join-Path (Get-Location).Path 'SHA256SUMS.txt'),
-            (($lines -join "`n") + "`n"))
-          Get-Content SHA256SUMS.txt
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: ./tools/package-release.ps1 -Tag $env:RELEASE_TAG
       # 比 SHA256SUMS 强一档：sums 和它校验的文件挂在同一个 release 页上，能换资产的人也能换 sums。
       # 来源证明存在 GitHub 那边，用户 `gh attestation verify <文件> -R rockbenben/WindowShuttle`
       # 验的是「这个文件确实由本仓库这条 workflow 构建」。两者串起来用，不是二选一。
@@ -194,17 +193,11 @@ jobs:
         # anyone bumping anything.
         uses: softprops/action-gh-release@v3
         with:
-          # The third asset is the framework-dependent build attached raw, straight from its publish
-          # directory so it lands under its plain name: one click to download and run, and it drops
-          # straight over an existing WindowShuttle.exe to update. Only the small build gets that — the
-          # bundled-runtime exe is the one browsers and SmartScreen fight hardest, and a plain,
-          # version-less name can only belong to one of the two. Names are spelled out rather than
-          # globbed so nothing looks missing and nothing can be uploaded twice.
-          files: |
-            WindowShuttle-${{ github.ref_name }}-win-x64.zip
-            WindowShuttle-${{ github.ref_name }}-win-x64-needs-dotnet10.zip
-            src/WindowShuttle.App/bin/Release/publish-needs-dotnet10/WindowShuttle.exe
-            SHA256SUMS.txt
+          draft: false
+          overwrite_files: false
+          make_latest: false
+          fail_on_unmatched_files: true
+          files: ${{ steps.package.outputs.files }}
           # Picking a package happens on the download page, not in the README, so the note has to
           # ride along with the release. GitHub appends the generated changelog after this body.
           # No sizes in the copy — the download page prints each asset's real size next to it, and a

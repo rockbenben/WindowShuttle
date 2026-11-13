@@ -50,7 +50,9 @@
   <data name="Settings_Startup" xml:space="preserve"><value>Jalankan saat Windows menyala</value></data>
   <data name="Settings_StartupElevated" xml:space="preserve"><value>Sebagai administrator</value></data>
   <data name="Settings_StartupElevated_Tip" xml:space="preserve"><value>Mulai dengan hak administrator lewat tugas terjadwal: satu kali UAC saat dicentang, lalu setiap boot mulai diam-diam sebagai administrator. Jendela program administrator jadi bisa dipindah, dan gerakan tidak lagi mati saat salah satunya di depan</value></data>
-  <data name="Settings_CheckUpdates"><value>Periksa pembaruan</value></data>
+  <data name="Settings_Title"><value>Pengaturan</value></data>
+  <data name="Settings_Updates"><value>Pembaruan</value></data>
+  <data name="Settings_CheckUpdates"><value>Periksa pembaruan saat aplikasi dimulai</value></data>
   <data name="Settings_CheckUpdatesTip"><value>Jika diaktifkan, program ini menghubungi GitHub sekali saat mulai untuk melihat apakah ada versi yang lebih baru — itulah satu-satunya koneksi ke internet; semua hal lain berjalan di komputer Anda.</value></data>
   <data name="Settings_CheckNow"><value>Periksa sekarang</value></data>
   <data name="Update_Checking"><value>Mencari pembaruan…</value></data>
@@ -75,7 +77,7 @@
   <data name="Main_Actions" xml:space="preserve"><value>Aksi</value></data>
   <data name="Main_Refresh" xml:space="preserve"><value>Segarkan</value></data>
   <data name="Main_DropHint" xml:space="preserve"><value>Seret entri jendela di peta ke monitor lain untuk memindahkannya</value></data>
-  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Digambar sesuai ukuran tampak tiap layar di meja dan posisinya, bukan jumlah pikselnya</value></data>
+  <data name="Main_Monitors_Hint" xml:space="preserve"><value>Ukuran dan posisi dalam koordinat piksel desktop</value></data>
   <data name="Main_Actions_Hint" xml:space="preserve"><value>Klik kolom tombol untuk merekam pintasan atau gestur mouse; Delete menghapusnya</value></data>
 
   <data name="Badge_Cursor" xml:space="preserve"><value>Kursor</value></data>
@@ -95,4 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (aplikasi layar penuh dilewati sesuai pengaturan)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Tekan Enter untuk membawa jendela ini ke depan</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Terjadi kesalahan pada langkah terakhir. Aplikasi tetap berjalan; detailnya ditulis ke crash.log</value></data>
+  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Pengaturan mulai otomatis gagal. Mulai dengan hak administrator memerlukan lokasi program yang tidak dapat ditulis pengguna biasa. Periksa log dan tugas yang ada, atau nonaktifkan mulai sebagai administrator.</value></data>
 </root>

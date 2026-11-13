@@ -59,12 +59,27 @@ public static class UpdateService
     private static readonly HttpClient Api = new() { Timeout = TimeSpan.FromSeconds(15) };
     private static readonly HttpClient Downloads = new() { Timeout = TimeSpan.FromMinutes(10) };
 
+    private static readonly SemaphoreSlim RunGate = new(1, 1);
+
     /// <summary>
     /// Check for a newer release and, if there is one, fetch it. Never throws: every failure comes
     /// back as <see cref="UpdateStatus.Failed"/>, because a check that cannot reach the network is
     /// an ordinary outcome, not a reason to take the app down.
     /// </summary>
     public static async Task<UpdateOutcome> RunAsync(string currentVersion, CancellationToken ct = default)
+    {
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(ct);
+        deadline.CancelAfter(TimeSpan.FromMinutes(10));
+        try
+        {
+            await RunGate.WaitAsync(deadline.Token).ConfigureAwait(false);
+            try { return await RunCoreAsync(currentVersion, deadline.Token).ConfigureAwait(false); }
+            finally { RunGate.Release(); }
+        }
+        catch (Exception ex) { return new(UpdateStatus.Failed, null, null, null, ex.Message); }
+    }
+
+    private static async Task<UpdateOutcome> RunCoreAsync(string currentVersion, CancellationToken ct)
     {
         string? releaseUrl = null;
         string tempDir = "";
@@ -73,7 +88,7 @@ public static class UpdateService
             using var req = new HttpRequestMessage(HttpMethod.Get, ApiUrl);
             req.Headers.UserAgent.ParseAdd("WindowShuttle-update-check");   // GitHub API rejects a missing UA
             req.Headers.Accept.ParseAdd("application/vnd.github+json");
-            using var resp = await Api.SendAsync(req, ct);
+            using var resp = await Api.SendAsync(req, ct).ConfigureAwait(false);
             resp.EnsureSuccessStatusCode();
             using var doc = JsonDocument.Parse(await resp.Content.ReadAsStringAsync(ct));
             var root = doc.RootElement;
@@ -101,14 +116,9 @@ public static class UpdateService
                 return new(UpdateStatus.Failed, null, null, releaseUrl, "the release has no " + ChecksumsAsset);
 
             string version = UpdateCheck.NormalizeVersion(tag);
+            if (!System.Text.RegularExpressions.Regex.IsMatch(version, @"^\d+\.\d+\.\d+$"))
+                return new(UpdateStatus.Failed, null, null, releaseUrl, "invalid release version");
             string destDir = Path.Combine(UpdatesRoot, version);
-
-            // Already fetched before: the folder is only ever written after the checksum matched,
-            // so the program in it is a verified one. Fetching it again would re-download tens of
-            // megabytes on every single start.
-            string? already = FindExecutable(destDir);
-            if (already is not null)
-                return new(UpdateStatus.Ready, version, already, releaseUrl, null);
 
             tempDir = Path.Combine(Path.GetTempPath(), "WindowShuttle-update-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(tempDir);
@@ -122,11 +132,7 @@ public static class UpdateService
             if (!UpdateCheck.MatchesChecksum(expected, UpdateCheck.ComputeSha256Hex(zipPath)))
                 return new(UpdateStatus.VerifyFailed, version, null, releaseUrl, "the download did not match " + expected);
 
-            Directory.CreateDirectory(destDir);
-            ZipFile.ExtractToDirectory(zipPath, destDir, overwriteFiles: true);
-            string? exe = FindExecutable(destDir);
-            if (exe is null)
-                return new(UpdateStatus.Failed, version, null, releaseUrl, "the downloaded archive holds no program");
+            string exe = ExtractVerifiedArchive(zipPath, destDir);
             return new(UpdateStatus.Ready, version, exe, releaseUrl, null);
         }
         catch (Exception ex)
@@ -157,9 +163,9 @@ public static class UpdateService
         return assets;
     }
 
-    private static async Task DownloadFileAsync(string url, string path, CancellationToken ct)
+    internal static async Task DownloadFileAsync(string url, string path, CancellationToken ct, HttpClient? client = null)
     {
-        using var resp = await Downloads.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, ct);
+        using var resp = await (client ?? Downloads).GetAsync(url, HttpCompletionOption.ResponseHeadersRead, ct);
         resp.EnsureSuccessStatusCode();
         await using var src = await resp.Content.ReadAsStreamAsync(ct);
         await using var dst = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
@@ -173,10 +179,32 @@ public static class UpdateService
         return await resp.Content.ReadAsStringAsync(ct);
     }
 
-    /// <summary>The program inside an unpacked update, or null when there is none.</summary>
-    private static string? FindExecutable(string dir)
+    private const string CompletionMarker = ".complete-sha256";
+
+    /// <summary>Inspect extraction completeness; online checks separately verify a fresh archive.</summary>
+    internal static string? CachedExecutable(string dir)
     {
-        if (!Directory.Exists(dir)) return null;
-        return Directory.EnumerateFiles(dir, "*.exe", SearchOption.AllDirectories).FirstOrDefault();
+        string exe = Path.Combine(dir, "WindowShuttle.exe");
+        string marker = Path.Combine(dir, CompletionMarker);
+        if (!File.Exists(exe) || !File.Exists(marker)) return null;
+        return UpdateCheck.MatchesChecksum(File.ReadAllText(marker), UpdateCheck.ComputeSha256Hex(exe))
+            ? exe : null;
+    }
+
+    /// <summary>Unpack a checksum-verified archive; publish completion only after extraction succeeds.</summary>
+    internal static string ExtractVerifiedArchive(string zipPath, string dir)
+    {
+        Directory.CreateDirectory(dir);
+        string marker = Path.Combine(dir, CompletionMarker);
+        File.Delete(marker);
+        // Releases promise one root-level executable. Do not bless a leftover from an earlier
+        // attempt if this archive has no program, or mistake a helper executable for the app.
+        using var archive = ZipFile.OpenRead(zipPath);
+        if (archive.GetEntry("WindowShuttle.exe") is null)
+            throw new InvalidDataException("the downloaded archive holds no WindowShuttle.exe");
+        archive.ExtractToDirectory(dir, overwriteFiles: true);
+        string exe = Path.Combine(dir, "WindowShuttle.exe");
+        File.WriteAllText(marker, UpdateCheck.ComputeSha256Hex(exe));
+        return exe;
     }
 }
