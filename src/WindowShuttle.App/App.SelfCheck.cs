@@ -58,7 +58,7 @@ public partial class App
         }
     }
 
-    /// <summary>窗口类型 × 深浅主题 × 中英 × 三档工作区高度，离屏渲染成 PNG。
+    /// <summary>按窗口类型、主题、语言和工作区尺寸组合，离屏渲染成 PNG。
     /// 用法：<c>WindowShuttle.exe --shots &lt;输出目录&gt;</c></summary>
     private void RunShots(string[] args)
     {

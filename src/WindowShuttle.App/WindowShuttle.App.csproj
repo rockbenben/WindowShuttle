@@ -25,8 +25,7 @@
 
     <!-- 版本号不手动维护：本地构建从最近的 git tag 取（见文件末尾的 VersionFromGitTag），
          正式发版由 CI 用 -p:Version=<tag 去 v> 覆盖。下面这个值只在两者都不适用时兜底
-         ——从源码 zip 构建、目录里没有 .git，或者仓库还没打过任何 tag。
-         按房规跟最近一次发布对齐（见 020-Clockwork）：打了 v1.0.0 之后这里就该是 1.0.0。 -->
+         ——从源码 zip 构建、目录里没有 .git，或者仓库还没打过任何 tag。 -->
     <VersionFallback>1.0.0</VersionFallback>
     <Version>$(VersionFallback)</Version>
     <Product>WindowShuttle</Product>
@@ -45,9 +44,8 @@
     让自建版本号自己跟上，不依赖任何人记得改字面量。exe 的文件属性、以及将来任何读程序集版本
     的地方，都会报当前工作树所基于的那次发布，而不是一个越来越旧的常量。
 
-    Condition 是承重件，不是保险：target 内部的 PropertyGroup 会覆盖命令行传入的全局属性
-    （020-Clockwork 实测过），少了这道判断，CI 的 -p:Version=<tag> 反而会被顶掉，打 v1.0.0
-    的 tag 却发出标着兜底号码的 exe。Version 只有在没人从外部传值时才等于 VersionFallback。
+    Condition 让非兜底版本跳过 git 查询；CI 通过 -p:Version 传入的全局属性由 MSBuild 保持优先。
+    若外部传值恰好等于 VersionFallback，查询仍会执行，但不会覆盖这个全局属性。
     git describe 失败（无 git、无 tag、源码 zip）就保留兜底值——版本号是门面，不该让构建失败。
 
     IgnoreExitCode 而非 ContinueOnError：后者只是把失败降级成警告，仍会留下 MSB3073。

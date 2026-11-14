@@ -22,7 +22,7 @@
     <windowsSettings>
       <longPathAware xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">true</longPathAware>
       <!-- Per-monitor v2 DPI awareness: WPF rescales on WM_DPICHANGED instead of one global scale
-           being applied across every monitor (see WindowTheming.cs). Both keys are set so an older
+           being applied across every monitor. Both keys are set so an older
            Windows that only understands the legacy key still honours per-monitor ("true/pm"). -->
       <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true/pm</dpiAware>
       <dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">permonitorv2,permonitor</dpiAwareness>
