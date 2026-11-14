@@ -1,8 +1,6 @@
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using WindowShuttle.App;
 using WindowShuttle.Core;
 using WindowShuttle.Core.Native;
@@ -201,20 +199,6 @@ public class ReliabilityRegressionTests(WpfTestHost host)
         var merged = CommandRouter.MergeUndo(before, original, new HashSet<nint> { 1 });
         Assert.Equal(before.Entries[0], merged.Entries.Single(e => e.Hwnd == 1));
         Assert.Equal(original.Entries[1], merged.Entries.Single(e => e.Hwnd == 2));
-    }
-
-    [Fact]
-    public void Elevated_startup_rejects_untrusted_owners_and_write_grants()
-    {
-        var acl = new FileSecurity();
-        acl.SetOwner(new SecurityIdentifier("S-1-5-32-544"));
-        Assert.True(StartupRegistration.HasProtectedAcl(acl));
-        acl.AddAccessRule(new(new SecurityIdentifier("S-1-5-11"), FileSystemRights.Modify, AccessControlType.Allow));
-        Assert.False(StartupRegistration.HasProtectedAcl(acl));
-        var owned = new FileSecurity();
-        owned.SetOwner(WindowsIdentity.GetCurrent().User!);
-        if (!WindowsIdentity.GetCurrent().User!.IsWellKnown(WellKnownSidType.LocalSystemSid))
-            Assert.False(StartupRegistration.HasProtectedAcl(owned));
     }
 
     [Fact]

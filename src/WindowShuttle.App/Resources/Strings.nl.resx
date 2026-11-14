@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (volledigscherm-apps worden overgeslagen volgens de instelling)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Druk op Enter om dit venster naar voren te halen</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Er is iets misgegaan bij de laatste stap. De app draait nog; details zijn weggeschreven naar crash.log</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Opstartinstelling mislukt. Verhoogd opstarten vereist een programmalocatie die gewone gebruikers niet kunnen wijzigen. Controleer het logboek en de taak of schakel verhoogd opstarten uit.</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>Opstartinstellingen konden niet worden gewijzigd: {0}. Details: %APPDATA%\WindowShuttle\crash.log.</value></data>
 </root>

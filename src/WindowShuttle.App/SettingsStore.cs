@@ -356,7 +356,8 @@ public static class StartupRegistration
         string path = value.StartsWith('"')
             ? value.Split('"').ElementAtOrDefault(1) ?? ""
             : value.Split(' ', 2)[0];
-        return exe.Length > 0 && string.Equals(path, exe, StringComparison.OrdinalIgnoreCase);
+        try { return string.Equals(NormalizeExecutablePath(path), NormalizeExecutablePath(exe), StringComparison.OrdinalIgnoreCase); }
+        catch { return false; }
     }
 
     public static bool Get()
@@ -412,15 +413,36 @@ public static class StartupRegistration
         return ok;
     }
 
-    internal static bool ElevatedTargetUnsafe { get; private set; }
-
     internal static Func<(bool Ok, bool Definite)>? QueryOverride { get; set; }
+
+    internal readonly record struct StartupTask(bool Exists, bool Definite, string? Path = null,
+        string? Arguments = null, bool Highest = false, bool Interactive = false, bool Enabled = false,
+        string? UserId = null);
+    internal static Func<StartupTask>? ReadTaskOverride { get; set; }
+    internal static Func<string, bool>? RunTaskOverride { get; set; }
+
+    // Task Scheduler accepts legacy action paths with outer quotes; file APIs do not.
+    internal static string NormalizeExecutablePath(string path)
+    {
+        string value = path.Trim();
+        if (value.Length >= 2 && value[0] == '"' && value[^1] == '"') value = value[1..^1];
+        if (value.Contains('"') || !Path.IsPathFullyQualified(value))
+            throw new IOException($"Invalid startup executable path: {path}");
+        return Path.GetFullPath(value);
+    }
 
     /// <summary>问一次系统。返回 (答案, 这答案算不算数)。</summary>
     internal static (bool Ok, bool Definite) QueryElevated()
     {
         if (QueryOverride is { } query) return query();
-        object? service = null, folder = null, task = null, definition = null, actions = null;
+        var state = ReadElevatedTask();
+        return (state.Exists, state.Definite);
+    }
+
+    private static StartupTask ReadElevatedTask()
+    {
+        if (ReadTaskOverride is { } read) return read();
+        object? service = null, folder = null, task = null, definition = null, actions = null, action = null, principal = null;
         try
         {
             service = Activator.CreateInstance(Type.GetTypeFromProgID("Schedule.Service")!);
@@ -429,60 +451,50 @@ public static class StartupRegistration
             folder = scheduler.GetFolder(@"\");
             try { task = ((dynamic)folder).GetTask(TaskName); }
             catch (System.Runtime.InteropServices.COMException ex) when (ex.HResult == unchecked((int)0x80070002))
-            { ElevatedTargetUnsafe = false; return (false, true); }
+            { return new(false, true); }
             definition = ((dynamic)task!).Definition;
             actions = ((dynamic)definition).Actions;
-            ElevatedTargetUnsafe = ((dynamic)actions).Count != 1 ||
-                !IsProtectedExecutable((string)((dynamic)actions).Item(1).Path);
-            return (true, true);
+            if (((dynamic)actions).Count != 1) return new(true, true);
+            action = ((dynamic)actions).Item(1);
+            principal = ((dynamic)definition).Principal;
+            return new(true, true, (string)((dynamic)action).Path, (string)((dynamic)action).Arguments,
+                (int)((dynamic)principal).RunLevel == 1, (int)((dynamic)principal).LogonType == 3,
+                (bool)((dynamic)task).Enabled, (string)((dynamic)principal).UserId);
         }
-        catch { return (false, false); }
+        catch (Exception ex)
+        {
+            App.Log("Query startup task WindowShuttle", ex);
+            return new(false, false);
+        }
         finally
         {
-            foreach (var value in new[] { actions, definition, task, folder, service })
+            foreach (var value in new[] { principal, action, actions, definition, task, folder, service })
                 if (value is not null && System.Runtime.InteropServices.Marshal.IsComObject(value))
                     System.Runtime.InteropServices.Marshal.FinalReleaseComObject(value);
         }
     }
 
-    internal static bool IsProtectedExecutable(string path)
+    internal static bool MatchesElevatedTask(StartupTask task, string executable)
     {
         try
         {
-            FileSystemInfo? item = new FileInfo(Path.GetFullPath(path));
-            while (item is not null)
-            {
-                if (!item.Exists || (item.Attributes & FileAttributes.ReparsePoint) != 0) return false;
-                var acl = item is DirectoryInfo directory
-                    ? (System.Security.AccessControl.FileSystemSecurity)directory.GetAccessControl()
-                    : ((FileInfo)item).GetAccessControl();
-                if (!HasProtectedAcl(acl, item is DirectoryInfo)) return false;
-                item = item is DirectoryInfo parent ? parent.Parent : ((FileInfo)item).Directory;
-            }
-            return true;
+            return task.Exists && task.Definite && task.Highest && task.Interactive && task.Enabled &&
+                IsCurrentUser(task.UserId) &&
+                string.Equals(NormalizeExecutablePath(task.Path ?? ""), NormalizeExecutablePath(executable), StringComparison.OrdinalIgnoreCase) &&
+                task.Arguments?.Trim() == "--tray";
         }
         catch { return false; }
     }
 
-    internal static bool HasProtectedAcl(System.Security.AccessControl.FileSystemSecurity acl, bool directory = false)
+    private static bool IsCurrentUser(string? user)
     {
-        // Owners can rewrite the DACL. Only system administrators and Windows servicing own trusted paths.
-        string[] trusted = ["S-1-5-18", "S-1-5-32-544",
-            "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464"];
-        var sidType = typeof(System.Security.Principal.SecurityIdentifier);
-        if (!trusted.Contains(acl.GetOwner(sidType)?.Value)) return false;
-        System.Security.AccessControl.FileSystemRights writes =
-            (directory ? 0 : System.Security.AccessControl.FileSystemRights.Write) |
-            System.Security.AccessControl.FileSystemRights.Delete |
-            System.Security.AccessControl.FileSystemRights.DeleteSubdirectoriesAndFiles |
-            System.Security.AccessControl.FileSystemRights.ChangePermissions |
-            System.Security.AccessControl.FileSystemRights.TakeOwnership;
-        foreach (System.Security.AccessControl.FileSystemAccessRule rule in acl.GetAccessRules(true, true, sidType))
-            if ((rule.PropagationFlags & System.Security.AccessControl.PropagationFlags.InheritOnly) == 0
-                && rule.AccessControlType == System.Security.AccessControl.AccessControlType.Allow
-                && (rule.FileSystemRights & writes) != 0 && !trusted.Contains(rule.IdentityReference.Value))
-                return false;
-        return true;
+        if (string.IsNullOrEmpty(user)) return false;
+        var sid = user.StartsWith("S-1-", StringComparison.OrdinalIgnoreCase)
+            ? new System.Security.Principal.SecurityIdentifier(user)
+            : (System.Security.Principal.SecurityIdentifier)new System.Security.Principal.NTAccount(user)
+                .Translate(typeof(System.Security.Principal.SecurityIdentifier));
+        using var identity = System.Security.Principal.WindowsIdentity.GetCurrent();
+        return identity.User is { } current && sid.Equals(current);
     }
 
     /// <summary>建/删提权自启任务。两个方向都要过一次 UAC（建带 /RL HIGHEST 的任务、删它都要管理员），
@@ -493,11 +505,32 @@ public static class StartupRegistration
     /// 上显示的也是 schtasks 这个可信名字。</summary>
     public static bool SetElevated(bool on)
     {
-        if (on && !IsProtectedExecutable(Environment.ProcessPath!))
-            throw new IOException("Elevated startup requires an executable and parent directories protected from ordinary-user writes.");
+        string executable = NormalizeExecutablePath(Environment.ProcessPath ?? "");
+        if (on && (!File.Exists(executable) || !executable.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(Path.GetFileName(executable), "dotnet.exe", StringComparison.OrdinalIgnoreCase)))
+            throw new IOException($"Startup task {TaskName}: not a published application executable: {executable}");
+        using var identity = System.Security.Principal.WindowsIdentity.GetCurrent();
+        string user = identity.Name;
         string args = on
-            ? $"/Create /F /TN \"{TaskName}\" /SC ONLOGON /RL HIGHEST /TR \"\\\"{Environment.ProcessPath}\\\" --tray\""
+            ? $"/Create /F /TN \"{TaskName}\" /SC ONLOGON /RU \"{user}\" /IT /RL HIGHEST /TR \"\\\"{executable}\\\" --tray\""
             : $"/Delete /F /TN \"{TaskName}\"";
+        try
+        {
+            bool ok = RunTaskOverride is { } run ? run(args) : RunTaskOperation(args);
+            if (!ok) { _elevatedCache = null; return false; }
+            var observed = ReadElevatedTask();
+            if (!observed.Definite || (on ? !MatchesElevatedTask(observed, executable) : observed.Exists))
+                throw new IOException($"Startup task {TaskName}: verification failed after {(on ? "registration" : "removal")}; executable: {executable}");
+            _elevatedCache = on;
+            // Keep the old Run entry until the elevated task has been read back successfully.
+            if (on) Set(false);
+            return true;
+        }
+        catch { _elevatedCache = null; throw; }
+    }
+
+    private static bool RunTaskOperation(string args)
+    {
         try
         {
             using var p = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
@@ -509,15 +542,12 @@ public static class StartupRegistration
             if (!p!.WaitForExit(30000))
             {
                 try { p.Kill(true); } catch (InvalidOperationException) { }
-                throw new IOException("Startup task operation timed out.");
+                throw new IOException($"Startup task {TaskName}: operation timed out.");
             }
             bool ok = p.ExitCode == 0;
-            if (!ok) throw new IOException($"Startup task operation failed with exit code {p.ExitCode}.");
+            if (!ok) throw new IOException($"Startup task {TaskName}: operation failed with exit code {p.ExitCode}.");
             // 缓存必须跟着真实结果走：成功就是新状态，失败（UAC 被拒）时**作废**而不是写回旧值——
             // schtasks 可能已经改了一半，下次问就老老实实再查一次。
-            _elevatedCache = ok ? on : null;
-            // 互斥：提权任务建成了就收掉普通 Run 值，否则开机会起两个实例。
-            if (ok && on) Set(false);
             return ok;
         }
         // UAC 上点了「否」（1223）：任务肯定没建成，但缓存一律作废——这两条路都不该让一个可能过期的

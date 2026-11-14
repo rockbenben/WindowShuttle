@@ -397,7 +397,7 @@ public partial class MainWindow : FluentWindow
             catch (Exception ex)
             {
                 App.Log("自启设置", ex);
-                NotificationOverlay.Show(Strings.Get("Startup_ProtectedPath"), isError: true);
+                NotificationOverlay.Show(Strings.Lf("Startup_Failed", ex.Message), isError: true);
             }
         }
         App.Cfg.SkipFullscreen = SkipFsBox.IsChecked == true;
@@ -523,7 +523,7 @@ public partial class MainWindow : FluentWindow
             bool wantStartup = StartupBox.IsChecked == true;
             bool wantElevated = wantStartup && ElevatedStartupBox.IsChecked == true;
             var state = StartupRegistration.QueryElevated();
-            if (!state.Definite) throw new IOException("Cannot determine startup task state.");
+            if (!state.Definite) throw new IOException("Startup task WindowShuttle: cannot read its state; see crash.log for the system error.");
             bool haveElevated = state.Ok;
 
             if (wantElevated && !haveElevated)
@@ -549,7 +549,7 @@ public partial class MainWindow : FluentWindow
 
             // 普通 Run 值：只在"要自启且不是提权那种"时存在（两种方式互斥，否则开机起两个实例）。
             var after = StartupRegistration.QueryElevated();
-            if (!after.Definite) throw new IOException("Cannot determine startup task state after switching.");
+            if (!after.Definite) throw new IOException("Startup task WindowShuttle: cannot read its state after switching; see crash.log for the system error.");
             bool elevatedNow = after.Ok;
             StartupRegistration.Set(StartupBox.IsChecked == true && !elevatedNow);
             ElevatedStartupBox.IsEnabled = StartupBox.IsChecked == true;

@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (ayar gereği tam ekran uygulamalar atlanır)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Bu pencereyi öne getirmek için Enter'a basın</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Son adımda bir hata oluştu. Uygulama hâlâ çalışıyor; ayrıntılar crash.log dosyasına yazıldı</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Başlangıç ayarı başarısız. Yükseltilmiş başlangıç, normal kullanıcıların yazamadığı bir program konumu gerektirir. Günlüğü ve mevcut görevi kontrol edin veya yükseltilmiş başlangıcı kapatın.</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>Başlangıç ayarları değiştirilemedi: {0}. Ayrıntılar: %APPDATA%\WindowShuttle\crash.log.</value></data>
 </root>

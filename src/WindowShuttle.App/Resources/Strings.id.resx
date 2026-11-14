@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (aplikasi layar penuh dilewati sesuai pengaturan)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Tekan Enter untuk membawa jendela ini ke depan</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Terjadi kesalahan pada langkah terakhir. Aplikasi tetap berjalan; detailnya ditulis ke crash.log</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Pengaturan mulai otomatis gagal. Mulai dengan hak administrator memerlukan lokasi program yang tidak dapat ditulis pengguna biasa. Periksa log dan tugas yang ada, atau nonaktifkan mulai sebagai administrator.</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>Tidak dapat mengubah pengaturan mulai otomatis: {0}. Rincian: %APPDATA%\WindowShuttle\crash.log.</value></data>
 </root>

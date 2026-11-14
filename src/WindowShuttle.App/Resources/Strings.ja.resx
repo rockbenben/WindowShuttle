@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value>（設定によりフルスクリーンアプリは対象外）</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Enter でこのウィンドウを手前に出します</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>直前の操作でエラーが発生しました。アプリは動作を続けています。詳細は crash.log に記録しました</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>自動起動の設定に失敗しました。管理者権限での自動起動には、一般ユーザーが書き換えられない場所が必要です。ログと既存のタスクを確認するか、管理者権限での自動起動を無効にしてください。</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>自動起動の設定を変更できませんでした：{0}。詳細：%APPDATA%\WindowShuttle\crash.log。</value></data>
 </root>

@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value>(설정에 따라 전체 화면 앱은 건너뜀)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Enter를 눌러 이 창을 앞으로 가져오기</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>방금 단계에서 오류가 발생했습니다. 앱은 계속 실행 중이며 세부 정보는 crash.log에 기록되었습니다</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>자동 시작 설정에 실패했습니다. 관리자 자동 시작에는 일반 사용자가 수정할 수 없는 프로그램 위치가 필요합니다. 로그와 기존 작업을 확인하거나 관리자 자동 시작을 끄세요.</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>자동 시작 설정을 변경하지 못했습니다: {0}. 자세한 내용: %APPDATA%\WindowShuttle\crash.log.</value></data>
 </root>

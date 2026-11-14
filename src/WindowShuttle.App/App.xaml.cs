@@ -220,9 +220,6 @@ public partial class App : Application
         };
         HookDisplayChange();
         _resident = true;                              // 到这里才算真的驻留起来了，见字段注释
-        _ = StartupRegistration.GetElevated();
-        if (StartupRegistration.ElevatedTargetUnsafe)
-            NotificationOverlay.Show(Strings.Get("Startup_ProtectedPath"), isError: true);
         if (!startHidden) ShowMain();                  // 手动启动就把窗口摆出来；开机自启走 --tray 不打扰
 
         // 开机检查更新：**默认关**，也是本程序唯一会联网的行为。开启后每次启动问一次 GitHub

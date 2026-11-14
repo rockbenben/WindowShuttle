@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (Vollbild-Apps werden laut Einstellung übersprungen)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Enter drücken, um dieses Fenster nach vorn zu holen</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Beim letzten Schritt ist ein Fehler aufgetreten. Die App läuft weiter; Details wurden in crash.log geschrieben</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Autostart fehlgeschlagen. Erhöhter Autostart erfordert einen vor normalen Schreibzugriffen geschützten Programmpfad. Protokoll und Aufgabe prüfen oder erhöhten Autostart deaktivieren.</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>Autostart konnte nicht geändert werden: {0}. Details: %APPDATA%\WindowShuttle\crash.log.</value></data>
 </root>

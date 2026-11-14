@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (apps em tela cheia são puladas conforme a configuração)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Pressione Enter para trazer esta janela para a frente</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Ocorreu um erro na última etapa. O app continua em execução; os detalhes foram gravados em crash.log</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Falha ao configurar a inicialização. A inicialização elevada exige um local protegido contra gravação por usuários comuns. Verifique o log e a tarefa ou desative a inicialização elevada.</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>Não foi possível alterar a inicialização: {0}. Detalhes: %APPDATA%\WindowShuttle\crash.log.</value></data>
 </root>

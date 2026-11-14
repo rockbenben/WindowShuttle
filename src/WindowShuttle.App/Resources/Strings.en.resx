@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (fullscreen apps are skipped in Settings)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Press Enter to bring this window forward</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Something went wrong in the last step. The app is still running; details were written to crash.log</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Startup settings failed. Elevated startup requires a program location protected from ordinary-user writes. Check the log and existing task, or turn off elevated startup.</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>Could not change startup settings: {0}. Details: %APPDATA%\WindowShuttle\crash.log.</value></data>
 </root>

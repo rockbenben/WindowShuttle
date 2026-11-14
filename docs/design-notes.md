@@ -146,11 +146,17 @@ truncating the active snapshot; a pending snapshot survives final-save failure f
 Single-instance initialization waits for either a command sink or actual mutex ownership.
 An IPC timeout reports uncertainty without replaying the operation.
 
-## Protected startup paths and isolated verification
+## Portable elevated startup and isolated verification
 
-Elevated tasks must point at a file and ancestor chain protected against ordinary-user
-replacement. ACL checks conservatively reject untrusted owners and applicable write grants.
-Existing tasks remain available for explicit removal and cause a warning if unsafe.
+Portable single-file builds can register elevated logon tasks from user-writable locations.
+The application no longer enforces protected ownership and ACLs as a prerequisite. Protected
+deployment remains recommended: replacing a writable executable also replaces the code the
+task runs with elevation. The application does not change directory permissions automatically.
+Registration uses Environment.ProcessPath, the requesting user's account and interactive highest
+privileges. Readback verifies the requesting user, executable, --tray argument, enabled state and privilege mode
+before removing the old Run value. Legacy task paths with surrounding quotes are normalized.
+UAC refusal retains the old startup mode; registration, removal and readback failures report
+their actual stage and details in the notification and crash.log rather than a path-policy error.
 Task Scheduler COM distinguishes missing tasks from unknown service or permission failures.
 Registry tests use temporary HKCU keys; the UIA harness uses SettingsStore.HomeOverride.
 Release tags enter scripts through environment variables. The shared release policy rejects
@@ -160,7 +166,8 @@ cannot be hidden behind recent drafts or prereleases. An offline regression exec
 workflow's actual preflight against a simulated paginated response.
 Startup transition tests drive the real settings method with a simulated UAC result and a
 temporary registry key. Acceptance, refusal and task-operation failure cover both directions;
-actual Task Scheduler writes and consent remain manual checks.
+Registration/readback regressions use substituted task operations and a temporary registry key;
+actual Task Scheduler writes, consent and a real logon remain manual checks.
 
 ## Desktop topology and update checks
 

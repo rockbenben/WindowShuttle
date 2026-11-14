@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (ứng dụng toàn màn hình được bỏ qua theo cài đặt)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Nhấn Enter để đưa cửa sổ này lên trước</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Đã xảy ra lỗi ở bước vừa rồi. Ứng dụng vẫn đang chạy; chi tiết đã được ghi vào crash.log</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Không thể đặt khởi động. Khởi động nâng quyền cần vị trí chương trình được bảo vệ khỏi ghi bởi người dùng thường. Kiểm tra nhật ký và tác vụ hiện có hoặc tắt khởi động nâng quyền.</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>Không thể thay đổi cài đặt khởi động: {0}. Chi tiết: %APPDATA%\WindowShuttle\crash.log.</value></data>
 </root>

@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (полноэкранные приложения пропускаются по настройке)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Нажмите Enter, чтобы вывести это окно на передний план</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>При последнем шаге произошла ошибка. Приложение продолжает работать; подробности записаны в crash.log</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Ошибка настройки автозапуска. Для запуска с повышенными правами программа должна находиться в папке, защищённой от записи обычными пользователями. Проверьте журнал и задачу или отключите повышенный автозапуск.</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>Не удалось изменить автозапуск: {0}. Подробности: %APPDATA%\WindowShuttle\crash.log.</value></data>
 </root>

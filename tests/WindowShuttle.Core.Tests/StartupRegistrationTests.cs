@@ -21,9 +21,86 @@ public class StartupRegistrationTests(WpfTestHost host) : IDisposable
     public void Dispose()
     {
         StartupRegistration.QueryOverride = null;
+        StartupRegistration.ReadTaskOverride = null;
+        StartupRegistration.RunTaskOverride = null;
         StartupRegistration.RunKey = _previous;
         Registry.CurrentUser.DeleteSubKeyTree(RunKey, false);
     }
+    [Fact]
+    public void Portable_startup_registration_is_verified_before_removing_the_Run_entry()
+    {
+        StartupRegistration.Set(true);
+        string executable = Environment.ProcessPath!;
+        StartupRegistration.RunTaskOverride = args =>
+        {
+            Assert.Contains("/IT /RL HIGHEST", args);
+            Assert.Contains("/RU \"" + System.Security.Principal.WindowsIdentity.GetCurrent().Name + "\"", args);
+            Assert.Contains("\\\"" + executable + "\\\" --tray", args);
+            Assert.True(StartupRegistration.Get());
+            return true;
+        };
+        StartupRegistration.ReadTaskOverride = () => new(true, true, "\"" + executable + "\"", "--tray", true, true, true,
+            System.Security.Principal.WindowsIdentity.GetCurrent().User!.Value);
+        Assert.True(StartupRegistration.SetElevated(true));
+        Assert.False(StartupRegistration.Get());
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Failed_registration_or_readback_preserves_the_old_Run_entry(bool readbackFails)
+    {
+        StartupRegistration.Set(true);
+        StartupRegistration.RunTaskOverride = _ => readbackFails
+            ? true : throw new System.IO.IOException("task registration: access denied (0x80070005)");
+        StartupRegistration.ReadTaskOverride = () => new(false, false);
+        var error = Assert.Throws<System.IO.IOException>(() => StartupRegistration.SetElevated(true));
+        Assert.Contains(readbackFails ? "verification" : "access denied", error.Message);
+        Assert.True(StartupRegistration.Get());
+    }
+
+    [Fact]
+    public void Uac_refusal_preserves_the_old_Run_entry()
+    {
+        StartupRegistration.Set(true);
+        StartupRegistration.RunTaskOverride = _ => false;
+        StartupRegistration.ReadTaskOverride = () => throw new InvalidOperationException("Cancelled operations must not be verified.");
+        Assert.False(StartupRegistration.SetElevated(true));
+        Assert.True(StartupRegistration.Get());
+    }
+
+    [Fact]
+    public void Removing_the_task_is_verified_without_registering_a_new_one()
+    {
+        StartupRegistration.RunTaskOverride = args =>
+        {
+            Assert.Equal("/Delete /F /TN \"WindowShuttle\"", args);
+            return true;
+        };
+        StartupRegistration.ReadTaskOverride = () => new(false, true);
+        Assert.True(StartupRegistration.SetElevated(false));
+        StartupRegistration.ReadTaskOverride = () => new(true, true);
+        Assert.Throws<System.IO.IOException>(() => StartupRegistration.SetElevated(false));
+    }
+
+    [Theory]
+    [InlineData(@"D:\便携 程序\WindowShuttle.exe")]
+    [InlineData(@"\\server\便携 程序\WindowShuttle.exe")]
+    public void Task_paths_with_outer_quotes_match_without_accepting_extra_arguments(string executable)
+    {
+        var state = new StartupRegistration.StartupTask(true, true, "\"" + executable + "\"", "--tray", true, true, true,
+            System.Security.Principal.WindowsIdentity.GetCurrent().User!.Value);
+        Assert.True(StartupRegistration.MatchesElevatedTask(state, executable));
+        Assert.False(StartupRegistration.MatchesElevatedTask(state with { Path = state.Path + " --tray" }, executable));
+        Assert.False(StartupRegistration.MatchesElevatedTask(state with { Path = @"D:\Other.exe" }, executable));
+        Assert.False(StartupRegistration.MatchesElevatedTask(state with { Arguments = "--help" }, executable));
+        Assert.False(StartupRegistration.MatchesElevatedTask(state with { Highest = false }, executable));
+        Assert.False(StartupRegistration.MatchesElevatedTask(state with { Interactive = false }, executable));
+        Assert.False(StartupRegistration.MatchesElevatedTask(state with { Enabled = false }, executable));
+        Assert.False(StartupRegistration.MatchesElevatedTask(state with { UserId = "S-1-5-18" }, executable));
+        Assert.True(StartupRegistration.IsDirectCommand("\"" + executable + "\" --tray", "\"" + executable + "\""));
+    }
+
     [Fact]
     public void Repair_migrates_direct_alias_and_preserves_launcher()
     {

@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (les applis plein écran sont ignorées selon le réglage)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Appuyez sur Entrée pour passer cette fenêtre au premier plan</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Une erreur s'est produite lors de la dernière étape. L'application continue de fonctionner ; les détails ont été écrits dans crash.log</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Échec du démarrage automatique. Le programme doit être protégé contre les modifications par les utilisateurs ordinaires pour démarrer avec élévation. Vérifiez le journal et la tâche, ou désactivez cette option.</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>Impossible de modifier le démarrage : {0}. Détails : %APPDATA%\WindowShuttle\crash.log.</value></data>
 </root>

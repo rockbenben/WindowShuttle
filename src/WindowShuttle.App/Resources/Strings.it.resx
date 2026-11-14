@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (le app a schermo intero sono escluse dall'impostazione)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>Premi Invio per portare questa finestra in primo piano</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>Si è verificato un errore nell'ultimo passaggio. L'app è ancora in esecuzione; i dettagli sono stati scritti in crash.log</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>Impostazione dell'avvio non riuscita. L'avvio elevato richiede un percorso protetto dalla scrittura degli utenti normali. Controlla il registro e l'attività oppure disattiva l'avvio elevato.</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>Impossibile modificare l’avvio: {0}. Dettagli: %APPDATA%\WindowShuttle\crash.log.</value></data>
 </root>

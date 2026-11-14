@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (सेटिंग के अनुसार फुल-स्क्रीन ऐप छोड़े जाते हैं)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>इस विंडो को सामने लाने के लिए Enter दबाएँ</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>पिछले चरण में कुछ गड़बड़ हुई। ऐप अभी भी चल रहा है; विवरण crash.log में लिखा गया है</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>स्टार्टअप सेटिंग विफल रही। उन्नत स्टार्टअप के लिए प्रोग्राम का स्थान सामान्य उपयोगकर्ताओं के लेखन से सुरक्षित होना चाहिए। लॉग और मौजूदा कार्य जाँचें या उन्नत स्टार्टअप बंद करें।</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>स्टार्टअप सेटिंग बदल नहीं सके: {0}। विवरण: %APPDATA%\WindowShuttle\crash.log.</value></data>
 </root>

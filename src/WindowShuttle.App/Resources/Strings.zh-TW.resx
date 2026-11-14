@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value>（依設定跳過全螢幕應用）</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>按 Enter 將該視窗帶到前景</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>剛剛有一步操作出錯。程式仍在照常執行；詳情已寫入 crash.log</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>自啟設定失敗。提權自啟需要將程式放在一般使用者無法改寫的目錄中。請檢查日誌和現有排程工作，或關閉提權自啟。</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>自啟設定失敗：{0}。詳細資訊見 %APPDATA%\WindowShuttle\crash.log。</value></data>
 </root>

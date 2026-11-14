@@ -97,5 +97,5 @@
   <data name="Main_NoMovableChips_Skip" xml:space="preserve"><value> (يتم تخطي تطبيقات ملء الشاشة حسب الإعداد)</value></data>
   <data name="Chip_EnterTip" xml:space="preserve"><value>اضغط Enter لجلب هذه النافذة إلى المقدمة</value></data>
   <data name="Crash_Recovered" xml:space="preserve"><value>حدث خطأ في الخطوة الأخيرة. ما زال التطبيق يعمل؛ كُتبت التفاصيل في crash.log</value></data>
-  <data name="Startup_ProtectedPath" xml:space="preserve"><value>فشل إعداد بدء التشغيل. يتطلب التشغيل بصلاحيات مرتفعة موقعًا محميًا من كتابة المستخدمين العاديين. افحص السجل والمهمة الحالية أو أوقف التشغيل المرتفع.</value></data>
+  <data name="Startup_Failed" xml:space="preserve"><value>تعذر تغيير إعدادات بدء التشغيل: {0}. التفاصيل: %APPDATA%\WindowShuttle\crash.log.</value></data>
 </root>
