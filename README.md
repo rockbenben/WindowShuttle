@@ -2,7 +2,9 @@
 
 > Move windows between monitors without dragging — one at a time, or a whole screen at once
 
-[⬇ Download for Windows](https://github.com/rockbenben/WindowShuttle/releases/latest) · [简体中文](README.zh.md)
+[⬇ Download for Windows](https://github.com/rockbenben/WindowShuttle/releases/latest)
+
+**English** · [简体中文](README.zh.md) · [繁體中文](docs/i18n/README.zh-Hant.md) · [日本語](docs/i18n/README.ja.md) · [한국어](docs/i18n/README.ko.md) · [Deutsch](docs/i18n/README.de.md) · [Español](docs/i18n/README.es.md) · [Français](docs/i18n/README.fr.md) · [Italiano](docs/i18n/README.it.md) · [Nederlands](docs/i18n/README.nl.md) · [Português](docs/i18n/README.pt.md) · [Русский](docs/i18n/README.ru.md) · [Türkçe](docs/i18n/README.tr.md) · [Tiếng Việt](docs/i18n/README.vi.md) · [ไทย](docs/i18n/README.th.md) · [Bahasa Indonesia](docs/i18n/README.id.md) · [हिन्दी](docs/i18n/README.hi.md) · [العربية](docs/i18n/README.ar.md)
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE) [![365 Open Source Plan #033](https://img.shields.io/badge/365%20Open%20Source%20Plan-%23033-1f6feb)](https://github.com/rockbenben/365opensource)
 
@@ -172,7 +174,7 @@ If WindowShuttle is already resident in the tray, running a CLI command relays i
 - **Windows on another virtual desktop are invisible to WindowShuttle, on purpose.** Windows marks a window as "cloaked" while its virtual desktop isn't the active one — the same flag used for suspended UWP apps — and WindowShuttle treats cloaked windows as not there, so they're excluded from every action, including `list`. This is deliberate, not a bug: `gather` reaching across desktops to yank a window onto your current screen would be more surprising than just leaving it where it is. Switch to that virtual desktop first if you want to move something on it.
 
 - **Desktop coordinates and recovery.** The map uses desktop pixel coordinates, including vertically stacked screens and gaps. Gather also brings fully off-screen windows back when only one screen remains. A failed move keeps the previous undo; a partially failed undo preserves the remaining targets. If saving the final snapshot fails, the next undo reads the recovery snapshot in `undo.json.pending`.
-- **Protected startup paths.** Elevated startup requires the executable and its parent directories to be protected from ordinary-user replacement. Existing unsafe tasks produce a warning and can be removed by turning off elevated startup. Startup changes report failures and leave unrelated startup entries intact.
+- **Portable elevated autostart.** Portable single-file builds support elevated logon tasks from user-writable locations without requiring Program Files; protected deployment remains recommended. Legacy task paths with surrounding quotes are normalized, and task registration/removal is verified before updating the Run entry. Operations report actual failure reasons in crash.log.
 - **Update verification.** Each update check downloads and verifies the release package again. Download-body reads share the check's deadline, and verification and extraction run away from the UI thread. Checks in one process are serialized.
 
 ## Languages

@@ -2,7 +2,9 @@
 
 > 在多块屏之间搬窗口，不用拖：一次一扇，或整块屏一起换
 
-[⬇ 下载 Windows 版](https://github.com/rockbenben/WindowShuttle/releases/latest) · [English](README.md)
+[⬇ 下载 Windows 版](https://github.com/rockbenben/WindowShuttle/releases/latest)
+
+[English](README.md) · **简体中文** · [繁體中文](docs/i18n/README.zh-Hant.md) · [日本語](docs/i18n/README.ja.md) · [한국어](docs/i18n/README.ko.md) · [Deutsch](docs/i18n/README.de.md) · [Español](docs/i18n/README.es.md) · [Français](docs/i18n/README.fr.md) · [Italiano](docs/i18n/README.it.md) · [Nederlands](docs/i18n/README.nl.md) · [Português](docs/i18n/README.pt.md) · [Русский](docs/i18n/README.ru.md) · [Türkçe](docs/i18n/README.tr.md) · [Tiếng Việt](docs/i18n/README.vi.md) · [ไทย](docs/i18n/README.th.md) · [Bahasa Indonesia](docs/i18n/README.id.md) · [हिन्दी](docs/i18n/README.hi.md) · [العربية](docs/i18n/README.ar.md)
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE) [![365 开源计划 #033](https://img.shields.io/badge/365%20%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92-%23033-1f6feb)](https://github.com/rockbenben/365opensource)
 
@@ -172,7 +174,7 @@
 - **另一个虚拟桌面上的窗口，对 WindowShuttle 来说是不存在的——这是故意的。** 一个窗口所在的虚拟桌面不是当前激活的那个时，Windows 会给它打上「cloaked」标记——挂起状态的 UWP 应用用的也是同一个标记——WindowShuttle 把带这个标记的窗口一律当作不存在，所有动作（包括 `list`）都看不到它。这是刻意的取舍，不是 bug：如果 `全部收拢` 跨虚拟桌面把窗口拽到你当前这块屏上，会比什么都不做更让人意外。想搬某个窗口，先切到它所在的那个虚拟桌面。
 
 - **桌面坐标与故障恢复。** 地图使用桌面像素坐标，保留上下叠放和屏幕间空隙。仅剩一块屏时，「全部收拢」也会接回完全离屏的窗口。搬运全部失败会保留原撤销；撤销部分失败会保留尚未恢复的目标。最终快照保存失败时，下次撤销会读取 `undo.json.pending` 恢复快照。
-- **提权自启路径保护。** 提权自启要求程序及其父目录受到保护，普通用户无法替换程序。已有不安全任务会给出提示，可通过关闭提权自启移除。自启更改失败会报告错误，其他程序的自启项会得到保留。
+- **便携单文件提权自启。** 绿色单文件支持从任意用户可写目录注册开机提权自启任务，不强求 Program Files；但仍建议放置在受保护目录。自动兼容外层带引号的旧任务路径，在回读校验任务成功后才切换注册表，失败时在 crash.log 中报告具体原因。
 - **更新校验与解包。** 每次检查更新都会重新下载并校验发布包。下载正文共用检查的截止时间，校验和解压在 UI 线程之外运行。同一进程内的检查依次执行。
 
 ## 语言

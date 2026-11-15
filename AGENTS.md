@@ -60,7 +60,7 @@ These are the rules the product is built on. Changing one is a product decision,
 - A user-visible change lands with its documentation **in the same change**. `README.md` / `README.zh.md` are the short version; `docs/design-notes.md` carries the reasoning; `docs/manual-checks.md` carries what still needs hands.
 - **Comments explain why, not what.** Do not write drifting line numbers, test counts, release versions or "this round" notes into comments or docs. A comment that names a file, a constant, a threshold or a test must still be true — when the code moves, the comment moves with it or it gets deleted. Do not leave pointers to documents that are not in the repository.
 - One XML `<summary>` per member. A second idea about the same member goes in `<remarks>`; a doc block that describes a *different* member belongs on that member.
-- The two READMEs are line-for-line mirrors. Change one, change the other in the same commit.
+- The two root READMEs (`README.md` and `README.zh.md`) are line-for-line mirrors. Change one, change the other in the same commit. All 18 supported languages have their matching localized READMEs in `docs/i18n/README.<lang>.md` aligned with `repo-facade` standards.
 
 ## 6. User data and safety
 
