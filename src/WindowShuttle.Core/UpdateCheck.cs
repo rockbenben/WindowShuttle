@@ -45,11 +45,12 @@ public static class UpdateCheck
     /// the framework-dependent one is never picked — a user who took it would get an exe that
     /// refuses to start with a message about a missing runtime.</para>
     /// </summary>
-    public static string? SelectSelfContainedAsset(IEnumerable<string> assetNames)
+    public static string? SelectSelfContainedAsset(IEnumerable<string> assetNames, System.Runtime.InteropServices.Architecture? architecture = null)
     {
+        string suffix = $"-win-{UpdatePackage.Cpu(architecture)}.zip";
         foreach (var name in assetNames)
         {
-            if (!name.EndsWith("-win-x64.zip", StringComparison.OrdinalIgnoreCase)) continue;
+            if (!name.EndsWith(suffix, StringComparison.OrdinalIgnoreCase)) continue;
             if (name.Contains("-needs-dotnet10", StringComparison.OrdinalIgnoreCase)) continue;
             return name;
         }

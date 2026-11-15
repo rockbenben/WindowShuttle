@@ -106,19 +106,20 @@ public static class UpdateService
             if (!UpdateCheck.IsNewer(tag, currentVersion))
                 return new(UpdateStatus.UpToDate, UpdateCheck.NormalizeVersion(tag), null, releaseUrl, null);
 
-            var assets = ReadAssets(root);
-            string? zipName = UpdateCheck.SelectSelfContainedAsset(assets.Select(a => a.Name));
-            string? zipUrl = zipName is null ? null : assets.FirstOrDefault(a => a.Name == zipName).Url;
-            string? sumsUrl = assets.FirstOrDefault(a => a.Name == ChecksumsAsset).Url;
-            if (zipName is null || zipUrl is null)
-                return new(UpdateStatus.Failed, null, null, releaseUrl, "the release has no self-contained win-x64 zip");
-            if (sumsUrl is null)
-                return new(UpdateStatus.Failed, null, null, releaseUrl, "the release has no " + ChecksumsAsset);
-
             string version = UpdateCheck.NormalizeVersion(tag);
             if (!System.Text.RegularExpressions.Regex.IsMatch(version, @"^\d+\.\d+\.\d+$"))
                 return new(UpdateStatus.Failed, null, null, releaseUrl, "invalid release version");
-            string destDir = Path.Combine(UpdatesRoot, version);
+
+            var assets = ReadAssets(root);
+            string? zipName = UpdatePackage.SelectZip(assets.Select(a => a.Name), "WindowShuttle", version);
+            string? zipUrl = zipName is null ? null : assets.FirstOrDefault(a => a.Name == zipName).Url;
+            string? sumsUrl = assets.FirstOrDefault(a => a.Name == ChecksumsAsset).Url;
+            if (zipName is null || zipUrl is null)
+                return new(UpdateStatus.Failed, null, null, releaseUrl, $"the release has no self-contained win-{UpdatePackage.Cpu()} zip");
+            if (sumsUrl is null)
+                return new(UpdateStatus.Failed, null, null, releaseUrl, "the release has no " + ChecksumsAsset);
+
+            string destDir = UpdatePackage.CacheDirectory(UpdatesRoot, version);
 
             tempDir = Path.Combine(Path.GetTempPath(), "WindowShuttle-update-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(tempDir);

@@ -53,6 +53,28 @@ public sealed class UpdateCacheTests : IDisposable
         Assert.NotNull(UpdateService.CachedExecutable(Cache));
     }
 
+    [Fact]
+    public void Architecture_isolated_cache_does_not_reuse_other_architecture_or_legacy_cache()
+    {
+        string updatesRoot = Path.Combine(_root, "Updates");
+        string x64Cache = UpdatePackage.CacheDirectory(updatesRoot, "1.0.0", System.Runtime.InteropServices.Architecture.X64);
+        string arm64Cache = UpdatePackage.CacheDirectory(updatesRoot, "1.0.0", System.Runtime.InteropServices.Architecture.Arm64);
+        string legacyCache = Path.Combine(updatesRoot, "1.0.0");
+
+        // Extracting into x64 cache marks only x64 complete; arm64 cache and legacy un-isolated cache remain empty
+        UpdateService.ExtractVerifiedArchive(Archive(("WindowShuttle.exe", "x64-payload")), x64Cache);
+        Assert.NotNull(UpdateService.CachedExecutable(x64Cache));
+        Assert.Null(UpdateService.CachedExecutable(arm64Cache));
+        Assert.Null(UpdateService.CachedExecutable(legacyCache));
+
+        // Conversely, a legacy un-isolated cache with a marker does not satisfy arm64 cache lookup
+        Directory.CreateDirectory(legacyCache);
+        File.WriteAllText(Path.Combine(legacyCache, "WindowShuttle.exe"), "legacy-payload");
+        File.WriteAllText(Path.Combine(legacyCache, ".complete-sha256"), UpdateCheck.ComputeSha256Hex(Path.Combine(legacyCache, "WindowShuttle.exe")));
+        Assert.NotNull(UpdateService.CachedExecutable(legacyCache));
+        Assert.Null(UpdateService.CachedExecutable(arm64Cache));
+    }
+
     private string Archive(params (string Name, string Content)[] files)
     {
         string path = Path.Combine(_root, Guid.NewGuid().ToString("N") + ".zip");
