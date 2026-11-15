@@ -37,7 +37,7 @@ public partial class NotificationOverlay : Window
 
     private static NotificationOverlay? _current;
 
-    /// <summary>停留段的倒计时（batch2 U1）。机制从「Storyboard 钟 + Pause()」换成 DispatcherTimer
+    /// <summary>停留段的倒计时。机制从「Storyboard 钟 + Pause()」换成 DispatcherTimer
     /// 是有原因的：Storyboard 的暂停请求要等下一个渲染 tick 才落到时钟上，测试宿主里泵不出渲染
     /// 就永远观测不到暂停——机制再小，测不到就不配叫机制。倒计时归计时器、外观归动画，
     /// 悬停暂停就是同步的 Stop/Start，生产和测试读同一个状态。</summary>
@@ -85,7 +85,7 @@ public partial class NotificationOverlay : Window
             Cursor = Cursors.Hand;
             Chevron.Visibility = Visibility.Visible;   // §a11y 不掉色也认得出"这张卡能点"（见 XAML 注释）
             Card.MouseLeftButtonUp += (_, _) => { _onClick?.Invoke(); Dismiss(); };
-            // batch2 U1：指针停在卡上就不许继续倒计时。6s 是给"瞥见"的，不是给"伸手"的——
+            // 指针停在卡上就不许继续倒计时。6s 是给"瞥见"的，不是给"伸手"的——
             // 淡出末尾在指针底下消失，等于把全应用唯一要求用户做决定的浮层做成抽奖。
             // 只给可操作卡：纯告知卡点击穿透，悬停这个事件根本不存在。
             Card.MouseEnter += (_, _) => PauseHold();
@@ -111,7 +111,7 @@ public partial class NotificationOverlay : Window
         // 不该在用户眼前闪东西），FadeIn 第一帧把 Opacity 设成 0，而 RenderTargetBitmap 照单渲染——
         // 截图会张张全透明，退出码照样是 0，只有真去看图才发现是空的（同一个坑见 Park 的注释）。
         if (App.InSelfCheck) return;
-        // _forcedMonitor 只给 round4 的 UIA harness/测试用（见 ShowOn）——挪鼠标去够某块屏是对
+        // _forcedMonitor 只给 UIA harness/测试用（见 ShowOn）——挪鼠标去够某块屏是对
         // 使用者正在用的物理鼠标指手画脚，落位逻辑本身不该为了"测哪块屏"而依赖真的把光标搬过去。
         var m = _forcedMonitor ?? SwapPlanner.MonitorAt(WindowProbe.GetCursor(), MonitorProbe.GetMonitors());
 

@@ -8,7 +8,7 @@ using Settings = WindowShuttle.App.Settings;
 
 namespace WindowShuttle.Core.Tests;
 
-/// <summary>Part 2 verification (§window-bounds-fit): the six real-world resolutions named in the
+/// <summary>Window bounds fitting verification: the six real-world resolutions checked three ways —
 /// task, checked three ways —
 ///  (a) <see cref="MainWindow.ComputeStartupBounds"/> is pure math, exercised directly against
 ///      synthetic <see cref="MonitorInfo"/> at each DPI (no real monitor at these exact six
@@ -240,8 +240,8 @@ public class MainWindowBoundsTests(WpfTestHost host)
             foreach (var (label, physW, physH, dpi, taskbarPx) in Resolutions)
             {
                 // 每档分辨率都要重新回到"从没存过窗口位置"这个起点——上一次迭代 Close() 时，
-                // MainWindow.OnClosing 会把那一次的真实收尾位置存回 App.Cfg（这正是 Part 2 要
-                // 交付的"记住上次位置"那部分功能本身），不重置的话，第二档开始测的就不再是
+                // MainWindow.OnClosing 会把那一次的真实收尾位置存回 App.Cfg（即"记住上次位置"
+                // 功能本身），不重置的话，第二档开始测的就不再是
                 // "首次启动"分支，而是意外撞上了"恢复上次位置"分支——同一个共享的 App.Cfg
                 // 是这条坑的根源，不是 ComputeStartupBounds 算错了。
                 global::WindowShuttle.App.App.Cfg = new Settings();
@@ -266,8 +266,8 @@ public class MainWindowBoundsTests(WpfTestHost host)
                 window.Close();
             }
 
-            // 最小尺寸本身也要过一遍同样的断言——"缩到最小也不能裁切/够不着"是 Part 2 的明确
-            // 要求，不只是六档分辨率恰好没踩到最小值这一件事。
+            // 最小尺寸本身也要过一遍同样的断言——"缩到最小也不能裁切/够不着"，
+            // 不只是六档分辨率恰好没踩到最小值这一件事。
             //
             // 跟循环体内一样必须先重置 App.Cfg：上一轮迭代 Close() 时 OnClosing 会把那次的收尾位置
             // 存进这个共享的 Settings，不重置的话这里根本走不到"首次启动"分支——窗口会被恢复成

@@ -22,7 +22,7 @@ using Strings = WindowShuttle.App.I18n.Strings;
 
 namespace WindowShuttle.UiaHarness;
 
-/// <summary>round4 Part 1 — a real UI Automation measurement tool, not a mock. Every rect it prints
+/// <summary>A real UI Automation measurement tool, not a mock. Every rect it prints
 /// comes from either (a) System.Windows.Automation.AutomationElement.BoundingRectangle, read from a
 /// thread this program itself asserted is PER_MONITOR_AWARE_V2 before trusting any number (the exact
 /// discipline OverlayWindow.xaml.cs's top comment and docs/manual-checks.md both describe — three

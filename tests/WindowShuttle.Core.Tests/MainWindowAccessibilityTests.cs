@@ -7,7 +7,7 @@ using Settings = WindowShuttle.App.Settings;
 
 namespace WindowShuttle.Core.Tests;
 
-/// <summary>Part 3 restrained pass (§a11y): a conflicted hotkey used to be told apart from a working
+/// <summary>Accessibility verification: a conflicted hotkey used to be told apart from a working
 /// one only by color (red border/text on the keycap). Confirms the non-color marker (a "!" glyph)
 /// actually renders for a conflicted cap and is absent for a normally-bound one — real MainWindow,
 /// real visual tree, never shown (see MainWindowBoundsTests.cs for why EnsureHandle/pure construction
@@ -89,7 +89,7 @@ public class MainWindowAccessibilityTests(WpfTestHost host)
             .SelectMany(grid => grid.Children.OfType<Border>())
             .First(b => (string?)b.Tag == actionKey);
 
-    /// <summary>batch3 F6：地图上的窗口条目是全应用最后一处只有鼠标能走的路。钉三件事——
+    /// <summary>地图上的窗口条目无障碍键盘导航验证。钉三件事——
     /// 可聚焦（Tab 走得到）、读屏 Name 就是窗口标题（不是"一个可拖的东西"）、Enter 走
     /// RaiseWindow 注入缝（记下 hwnd，绝不在测试里真抢跑测试的人的前台）。对照组：别的键
     /// 不许触发置前。缝是静态字段，finally 必恢复——脏了会毒到同集合的别的测试。</summary>

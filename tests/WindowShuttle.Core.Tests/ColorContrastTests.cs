@@ -2,7 +2,7 @@ using WindowShuttle.Core;
 
 namespace WindowShuttle.Core.Tests;
 
-/// <summary>Pure-math checks for the WCAG helper tools/UiaHarness's contrast table (round4 Part 1)
+/// <summary>Pure-math checks for the WCAG helper tools/UiaHarness's contrast table
 /// is built on — known reference values, not the app's own palette (that table already lives in
 /// Report.cs and is re-run by hand; duplicating every pair here would just be re-asserting the same
 /// arithmetic against itself).</summary>

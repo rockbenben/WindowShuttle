@@ -14,11 +14,11 @@ namespace WindowShuttle.App;
 
 public partial class MainWindow : FluentWindow
 {
-    // round4 Part 1: the app's own semantic palette (Beam = primary monitor, Live = cursor's monitor,
-    // plus the neutral Room/Panel/Ink/Dim/Faint scale) moved to AppTheme.cs, theme-aware and rebuilt
+    // The app's own semantic palette (Beam = primary monitor, Live = cursor's monitor,
+    // plus the neutral Room/Panel/Ink/Dim/Faint scale) is defined in AppTheme.cs, theme-aware and rebuilt
     // live on a system theme change — see that file's doc comment for why it's plain static fields
-    // rather than a ResourceDictionary. Map.cs/Hotkeys.cs read AppTheme.* directly at draw time instead
-    // of a field on this class.
+    // rather than a ResourceDictionary. MainWindow.Map.cs and MainWindow.Hotkeys.cs read AppTheme.* directly
+    // at draw time instead of a field on this class.
 
     /// <summary>标牌字：Windows 自带的 DIN 系 Bahnschrift，路牌和站台号用的就是这一类，而屏幕编号
     /// 恰好就是一个指路用的数字。全应用只在三处用它——地图卡片上的屏号、「屏幕序号」那块
@@ -119,7 +119,7 @@ public partial class MainWindow : FluentWindow
         BuildActionRows();
         LoadToggles();
         ApplyTheme();
-        // batch1 B2：ToolTip 第一行是人话（Repo_Tip），第二行是去掉协议头的 URL 备查——
+        // ToolTip 第一行是语义文本（Repo_Tip），第二行是去掉协议头的 URL 备查——
         // 裸链接单独当提示是给机器看的，不是给悬停的人看的。
         RepoButton.ToolTip = $"{Strings.Get("Repo_Tip")}\n{RepoUrl[(RepoUrl.IndexOf("//") + 2)..]}";
         AppTheme.Changed += ApplyTheme;
@@ -599,7 +599,7 @@ public partial class MainWindow : FluentWindow
     private int _lastLangIndex;
     private bool _applyingLang;   // 挡住程序化回退时再进一遍 SelectionChanged
 
-    /// <summary>语言下拉的取舍（batch1 B3）：**先问，确认了才落盘**。原来反过来——先写
+    /// <summary>语言下拉的取舍：**先问，确认了才落盘**。原来反过来——先写
     /// settings.json 再弹「现在重启？」，于是点「取消」的人两头都被骗：下拉框停在新语言上而界面
     /// 还是旧的（看着像没生效），配置却已经改了（下次开机真的换）。跟 UAC 被拒要把复选框拨回
     /// 真实状态是同一条规矩：界面说的必须是系统里真的。</summary>

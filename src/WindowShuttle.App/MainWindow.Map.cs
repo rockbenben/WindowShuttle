@@ -244,7 +244,7 @@ public partial class MainWindow
             LayoutCanvas.Children.Add(card);
             _cards[m.Index] = card;
         }
-        // 零窗口时的空态交代（batch1 B7）：几张干净的空卡读起来像「这工具不认我的窗口」，
+        // 零窗口时的空态交代：几张干净的空卡读起来像「这工具不认我的窗口」，
         // 而真相多半是「跳过全屏」把它们滤掉了——这话得此刻在这块画布上说，而不是等用户按下
         // 快捷键换回一句「没有可搬运的窗口」。只在零条目时现身；关掉命中测试，不抢卡片的拖放落点。
         if (windows.Count == 0)
@@ -394,7 +394,7 @@ public partial class MainWindow
         };
     }
 
-    /// <summary>Enter 键在窗口条目上的动作（batch3 F6）：把那扇窗带到前台。测试缝——
+    /// <summary>Enter 键在窗口条目上的动作：把那扇窗带到前台。测试缝——
     /// 真按 SetForegroundWindow 会在测试里抢走跑测试的人的前台。生产路径能成，恰因为
     /// 按下那一刻前台是我们自己的窗口：前台锁只罚后台进程。Core 的 Win32 是 internal，
     /// 这里自带一份 P/Invoke（本类已有 DWM/user32 的先例）。</summary>
@@ -498,7 +498,7 @@ public partial class MainWindow
         // 显示器增减那条由 OnDisplaySettingsChanged 负责。这里不再自己调 Refresh。
     }
 
-    /// <summary>零窗口时地图上的那句空态交代（batch1 B7）。「全屏被跳过」这半句只在开关真的
+    /// <summary>零窗口时地图上的那句空态交代。「全屏被跳过」这半句只在开关真的
     /// 开着时才接上——把不存在的原因讲出来也是谎。</summary>
     internal static string NoMovableNoteText(bool skipFullscreen)
         => Strings.Get("Main_NoMovableChips") + (skipFullscreen ? Strings.Get("Main_NoMovableChips_Skip") : "");

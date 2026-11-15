@@ -2,7 +2,7 @@ using MainWindow = WindowShuttle.App.MainWindow;
 
 namespace WindowShuttle.Core.Tests;
 
-/// <summary>地图零窗口空态那行的**合成规则**（batch1 B7）。画布落位依赖真实桌面枚举，测不到；
+/// <summary>地图零窗口空态那行的**合成规则**。画布落位依赖真实桌面枚举，测不到；
 /// 能测且必须测的是那句话本身的组成——括号段跟着「跳过全屏」开关走，不该出现时必须一个字符
 /// 都不多。断言全部相对基准句成立，不逐字钉译文（译文归 resx 覆盖闸与人工眼）。</summary>
 public class MainWindowEmptyNoteTests

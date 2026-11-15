@@ -4,7 +4,7 @@ using Settings = WindowShuttle.App.Settings;
 
 namespace WindowShuttle.Core.Tests;
 
-/// <summary>语言下拉的「先问，确认了才落盘」（batch1 B3）。被钉的是旧实现说谎的那两面：
+/// <summary>语言下拉的「先问，确认了才落盘」。被钉的是旧实现说谎的那两面：
 /// 旧顺序是先写 settings.json 再弹确认框，点「取消」之后配置已改（下次开机真的换语言），
 /// 而下拉框停在新语言上、界面仍是旧语言（看着像没生效）——两面各错各的。
 ///

@@ -72,7 +72,7 @@ public partial class App : Application
         // 所以镜像逐窗口设（Strings.Flow），谁建窗口谁负责。托盘菜单也一样——它压根不在任何窗口的
         // 可视树里，本来也继承不到。--shots 从一开始就是这么做的，这也是它没能替我发现这个缺陷的原因。
 
-        // round4 Part 1: follow the system light/dark theme. ApplicationThemeManager.Apply swaps the
+        // Follow the system light/dark theme. ApplicationThemeManager.Apply swaps the
         // ui:ThemesDictionary merged in App.xaml, which restyles every WPF-UI control (and the plain
         // CheckBox/ComboBox this app still uses — WPF-UI restyles those too) via their own
         // DynamicResource bindings, no per-window code needed. AppTheme.Apply mirrors the same flip
@@ -90,7 +90,7 @@ public partial class App : Application
         var args = e.Args.Where(a => a != "--tray").ToArray();
         if (args.Length > 0) AttachConsole(-1);        // WinExe 默认没控制台（§2.3）
 
-        // batch4 R3：--help 是提问，不是打错命令——Usage 走 stdout、退出码 0，
+        // --help 是提问，不是打错命令——Usage 走 stdout、退出码 0，
         // 排在 AttachConsole 之后（不然输出去了一个没人看得见的管道里），
         // 排在乱参数分支之前（不然它拿的是和真错误同一个 3）。
         if (CliParser.IsHelp(args))
@@ -229,8 +229,6 @@ public partial class App : Application
         if (Cfg.CheckUpdates) _ = CheckForUpdatesOnStartup();
 
         // ── 首次运行：只开普通自启，不碰提权那一档 ─────────────────────────────────────────
-        // （batch4 R4：这一块的旧开头还写着"首启直接尝试提权档"——那是已被否决的上一版，
-        // 而下文早已按新实现说话，自相矛盾。现在整块与实现对齐。）
         // 常驻型工具不自启等于每次开机都少一半功能，所以首启把「开机自启」勾上。
         // 不在首启请求提权：提权买到的只是"管理员程序的窗口搬得动 / 它们占前台时手势不死"两件事，
         // 撞不到这两条的人不必先付一次 UAC——一个未签名的 exe 先被 SmartScreen 拦、紧接着又被
@@ -409,7 +407,7 @@ public partial class App : Application
     }
 
 
-    /// <summary>CLI 结果行，恒英文（§12）。internal 是为了能测单复数两态（batch4 R2）。
+    /// <summary>CLI 结果行，恒英文（§12）。internal 便于单独测试单复数两态。
     /// «(s)» 这种写法在 UI 侧被 <see cref="I18n.Strings.Plural"/> 的注释明令禁止过——
     /// 真实产品里读起来就是没做完；CLI 是同一张脸，动词也跟着数走。</summary>
     internal static string Describe(ExecResult r)

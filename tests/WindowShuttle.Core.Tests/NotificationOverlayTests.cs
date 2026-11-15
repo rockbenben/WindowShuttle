@@ -4,7 +4,7 @@ using NotificationOverlay = WindowShuttle.App.NotificationOverlay;
 
 namespace WindowShuttle.Core.Tests;
 
-/// <summary>round4 Part 2 (§a11y): the actionable notification card used to be told apart from an
+/// <summary>Notification overlay accessibility verification: the actionable notification card used to be told apart from an
 /// informational one only by border color (amber vs gray) — the same gap MainWindow's hotkey conflict
 /// state had before it got a non-color "!" marker (see MainWindowAccessibilityTests.cs). Confirms the
 /// chevron glyph actually renders for the actionable card and stays hidden for a plain one, using
@@ -37,7 +37,7 @@ public class NotificationOverlayTests(WpfTestHost host)
         });
     }
 
-    /// <summary>batch2 U1：指针停在可操作卡上时倒计时必须让位给手。断言读的是承载倒计时的
+    /// <summary>指针停在可操作卡上时倒计时必须让位给鼠标交互。断言读的是承载倒计时的
     /// DispatcherTimer 的真实启用态（跑着 → 悬停停表 → 离开续跑），不量墙钟——量时间的测试
     /// 在这台机器上输不起 QuickEdit 冻结和调度抖动。前置断言（进悬停前表确实在跑）防的是
     /// "永远停着"这种假绿：没跑起来的表停它当然会"成功"。</summary>

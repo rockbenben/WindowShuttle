@@ -81,7 +81,7 @@ public class CliParserTests
         }
     }
 
-    /// <summary>batch4 R3：「问问题」和「打错命令」必须是两种结局。IsHelp 只认孤身一人的
+    /// <summary>「问问题」和「打错命令」必须是两种结局。IsHelp 只认孤身一人的
     /// --help/-h——`swap --help` 不是求助，是参数写错了，照旧走乱参数分支。</summary>
     [Theory]
     [InlineData(new[] { "--help" }, true)]

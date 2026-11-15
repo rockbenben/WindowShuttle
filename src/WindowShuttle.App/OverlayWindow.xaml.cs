@@ -63,7 +63,7 @@ public partial class OverlayWindow : Window
                 Visibility = m.IsPrimary ? Visibility.Visible : Visibility.Collapsed
             };
             if (m.IsPrimary) badgeText.Text = Strings.Get("Badge_Primary");
-            // round4: the UIA harness (tools/UiaHarness) measured this overlay's automation surface as
+            // The UIA harness (tools/UiaHarness) measured this overlay's automation surface as
             // 4 disconnected Text elements — a screen reader hears "1" then, separately, "Primary",
             // with nothing tying them together. AutomationProperties.Name on the numeral (confirmed
             // reachable via UI Automation — Border, two lines up, is not) gives one coherent
@@ -101,12 +101,11 @@ public partial class OverlayWindow : Window
         // 点击穿透 + 不抢焦点 + 不进 Alt-Tab（§10）——这扇窗纯展示，全程穿透。
         OverlayChrome.MakeOverlay(h, clickThrough: true);
 
-        // round1/round2 的坑都来自"窗口跨越 DPI 不同的屏"这一下：WM_DPICHANGED 一到，WPF 自己的默认
-        // 处理就会按它当时的缓存把 SetWindowPos 刚设的矩形覆盖掉，且钩子必须在触发它的 SetWindowPos
-        // 之前挂好（round2 实测：晚一步挂等于没挂）。round3 把窗口本身改成了铺满整个虚拟桌面、创建后
-        // 再也不移动的一扇窗——它这辈子只有一个 DPI，理论上不会再收到这条消息。这里留着钩子纯当兜底：
-        // 万一某个 Windows 版本仍然发了这条消息，也不会被 WPF 的默认处理覆盖，我们的矩形才是权威
-        // （这扇窗的唯一任务就是精确铺满量出来的虚拟桌面矩形，不听 lParam 里 Windows 建议的那个）。
+        // "窗口跨越 DPI 不同的屏"时：WM_DPICHANGED 一到，WPF 自己的默认处理就会按它当时的缓存
+        // 把 SetWindowPos 刚设的矩形覆盖掉，且钩子必须在触发它的 SetWindowPos 之前挂好。
+        // 本窗口铺满整个虚拟桌面、创建后再不移动——它这辈子只有一个 DPI，理论上不会再收到这条消息。
+        // 这里留着钩子纯当兜底：万一某个 Windows 版本仍然发了这条消息，也不会被 WPF 的默认处理覆盖，
+        // 我们的矩形才是权威（这扇窗的唯一任务就是精确铺满量出来的虚拟桌面矩形，不听 lParam 里 Windows 建议的那个）。
         _source = HwndSource.FromHwnd(h);
         _source.AddHook(DpiChangedHook);
 
@@ -151,8 +150,8 @@ public partial class OverlayWindow : Window
         }
     }
 
-    /// <summary>淡入 / 停留 / 淡出，毫秒（§10，batch1 B4 从 1.3s 放宽：这条动作的全部意义是扭头看
-    /// 实体机器再转回来对号，原来 700ms 停留不够转一次脖子）。提成常量是因为 UiaHarness 要报
+    /// <summary>淡入 / 停留 / 淡出，毫秒。总时长放宽到 2.4s 是因为这条动作的全部意义是扭头看
+    /// 实体机器再转回来对号，过短的停留时间不够转脖子。提成常量是因为 UiaHarness 要报
     /// 同一组数——逐字抄一份 nominal 进打印语句，改了这边那边就撒谎。</summary>
     internal const int FadeInMs = 400, HoldMs = 1600, FadeOutMs = 400;
 

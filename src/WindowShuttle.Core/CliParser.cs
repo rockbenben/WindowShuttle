@@ -29,7 +29,7 @@ public static class CliParser
         exit codes: 0 done, 1 nothing to do, 2 some windows failed, 3 error
         """;
 
-    /// <summary>「问问题」和「打错命令」必须是两种结局（batch4 R3）：--help/-h 单独出现时
+    /// <summary>「问问题」和「打错命令」必须是两种结局：--help/-h 单独出现时
     /// 打 Usage 到 stdout、退出码 0。纯函数放这里是为了能测；分流在 App.OnStartup。</summary>
     public static bool IsHelp(string[] args)
         => args.Length == 1 && args[0] is "--help" or "-h";

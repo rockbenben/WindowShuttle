@@ -8,7 +8,7 @@ using ConfirmDialog = WindowShuttle.App.ConfirmDialog;
 
 namespace WindowShuttle.Core.Tests;
 
-/// <summary>round4 Part 3: MessageBox.Show replaced with an in-app dialog. Real Window, real
+/// <summary>In-app confirmation dialog tests replacing MessageBox.Show. Real Window, real
 /// ShowDialog() modal pump — a queued Background-priority callback fires a button Click while the
 /// pump is running (the same trick real WPF test suites use for modal dialogs: BeginInvoke at
 /// Background priority still runs during ShowDialog's nested DispatcherFrame). Shares the collection's

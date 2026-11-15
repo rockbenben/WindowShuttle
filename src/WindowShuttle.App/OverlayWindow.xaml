@@ -4,7 +4,7 @@
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         ShowInTaskbar="False" ShowActivated="False" Topmost="True" ResizeMode="NoResize"
         WindowStartupLocation="Manual" SizeToContent="Manual">
-    <!-- 一整块虚拟桌面大小的窗口，每块屏一个徽章，代码里按量出来的缩放比摆放（§round3）
+    <!-- 一整块虚拟桌面大小的窗口，每块屏一个徽章，代码里按量出来的缩放比摆放。
 
          FlowDirection 钉死 LeftToRight，理由跟主窗口那块地图画布逐字相同：这不是文字，是显示器在
          桌面上的实物摆位。窗口那一级的 FlowDirection 是按语言设的（阿拉伯语就是 RightToLeft），

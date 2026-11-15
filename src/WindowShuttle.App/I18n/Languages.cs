@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace WindowShuttle.App.I18n;
 
-// 照抄 020-Clockwork 的 Languages（18 门全量清单）。加语言 = 放一个 Strings.<code>.resx + 加一行。
+// 18 门支持语言的全量清单。加语言 = 放一个 Strings.<code>.resx + 加一行。
 public static class Languages
 {
     public static readonly (string Native, string Code)[] All =

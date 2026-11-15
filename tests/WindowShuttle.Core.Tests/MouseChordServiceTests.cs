@@ -7,8 +7,8 @@ public class MouseChordServiceTests
 {
     // 只验证"一个都没绑就不装钩子"这一半——这半用真对象、真 Apply() 就能测，SetWindowsHookExW
     // 压根不会被调到。反过来"绑了就装"那一半经代码检视确认（Apply 里 needed && _hook==0 分支），
-    // 不在自动化测试里对着跑测试的这台机器挂一次真的全局鼠标钩子（哪怕转瞬即逝也不做，见
-    // ui-round2-report.md 里"逐条验证"那一节）。
+    // 不在自动化测试里对着跑测试的这台机器挂一次真的全局鼠标钩子（哪怕转瞬即逝也不做，
+    // 见 AGENTS.md 负载不变式）。
     [Fact] public void No_hook_installed_when_no_chord_is_bound()
     {
         var svc = new MouseChordService(Dispatcher.CurrentDispatcher);

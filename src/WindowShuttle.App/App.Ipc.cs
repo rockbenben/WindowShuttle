@@ -19,8 +19,8 @@ public partial class App
     private static extern nint SendMessageTimeoutW(nint hwnd, uint msg, nint wp, ref COPYDATASTRUCT lp,
         uint flags, uint timeout, out nint result);
 
-    // round4 Part 1: WPF-UI's own theme-change notification hooks a real Window (SystemThemeWatcher.
-    // Watch requires one — see the comment on CreateSink below for why that doesn't fit this app's
+    // WPF-UI's own theme-change notification hooks a real Window (SystemThemeWatcher.Watch
+    // requires one — see the comment on CreateSink below for why that doesn't fit this app's
     // tray-resident shape). Subscribing here instead means AppTheme (the app's own bespoke palette;
     // WPF-UI's Changed event only restyles its own controls) follows every Apply/ApplySystemTheme call
     // regardless of whether any window currently exists.
@@ -45,7 +45,7 @@ public partial class App
 
     private nint SinkHook(nint hwnd, int msg, nint wp, nint lp, ref bool handled)
     {
-        // round4 Part 1: the same four messages SystemThemeWatcher.Watch listens for on a real Window
+        // The same four messages SystemThemeWatcher.Watch listens for on a real Window
         // — this app's sink is a message-only HwndSource (CreateSink), not a Window, so it can't be
         // passed to that API. Re-deriving from the system here instead of hand-decoding wp/lp keeps
         // this in step with whatever WPF-UI itself considers "the theme" (dark/light + accent), and

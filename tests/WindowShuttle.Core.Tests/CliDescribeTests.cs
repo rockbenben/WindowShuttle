@@ -5,7 +5,7 @@ using ExecResult = WindowShuttle.App.ExecResult;
 
 namespace WindowShuttle.Core.Tests;
 
-/// <summary>CLI 结果行的单复数（batch4 R2）。UI 侧的 «(s)» 被 Strings.Plural 的注释明令禁过——
+/// <summary>CLI 结果行的单复数。UI 侧的 «(s)» 被 Strings.Plural 的注释明令禁过——
 /// 「真实产品里读起来就是没做完」；CLI 是同一张脸，同一个标准。钉的是用户/脚本真会看到的整行：
 /// 数词、名词、动词（need/needs）三处都跟着数走。枚举名那一支（nothing to do: X）是脚本 grep
 /// 的稳定契约，同样钉住——它被"成人化"了就该红。</summary>

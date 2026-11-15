@@ -80,7 +80,7 @@ public sealed class TrayService : IDisposable
                 // 单文件自包含宿主）就指到别处，图标静默变空。资源键是全小写的 assets/windowshuttle.ico。
                 new Uri("pack://application:,,,/WindowShuttle;component/assets/windowshuttle.ico")),
             ToolTipText = Strings.Lf("Tray_Tip", Strings.Get("App_Name")),
-            // 上面那句是 batch1 B6：光有产品名，新用户不知道这个图标左键是打开、右键是菜单。
+            // 托盘提示包含左右键指引（Tray_Tip）：光有产品名，新用户不知道这个图标左键是打开、右键是菜单。
             // shell 提示有 127 字符上限（Win10+），新语言的译文超了会被悄悄截尾——加语言时量一眼。
             ContextMenu = menu,
         };
