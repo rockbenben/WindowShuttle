@@ -439,7 +439,7 @@ public static class StartupRegistration
         return (state.Exists, state.Definite);
     }
 
-    private static StartupTask ReadElevatedTask()
+    internal static StartupTask ReadElevatedTask(string taskName = TaskName)
     {
         if (ReadTaskOverride is { } read) return read();
         object? service = null, folder = null, task = null, definition = null, actions = null, action = null, principal = null;
@@ -449,8 +449,9 @@ public static class StartupRegistration
             dynamic scheduler = service!;
             scheduler.Connect();
             folder = scheduler.GetFolder(@"\");
-            try { task = ((dynamic)folder).GetTask(TaskName); }
-            catch (System.Runtime.InteropServices.COMException ex) when (ex.HResult == unchecked((int)0x80070002))
+            try { task = ((dynamic)folder).GetTask(taskName); }
+            // .NET COM interop can surface ERROR_FILE_NOT_FOUND as FileNotFoundException.
+            catch (Exception ex) when (ex.HResult == unchecked((int)0x80070002))
             { return new(false, true); }
             definition = ((dynamic)task!).Definition;
             actions = ((dynamic)definition).Actions;
@@ -463,7 +464,7 @@ public static class StartupRegistration
         }
         catch (Exception ex)
         {
-            App.Log("Query startup task WindowShuttle", ex);
+            App.Log($"Query startup task {taskName}", ex);
             return new(false, false);
         }
         finally

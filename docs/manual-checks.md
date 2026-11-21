@@ -183,7 +183,7 @@
 | 抬升的两步法、置顶豁免、KeepBelow | `RaiseTests` `RaiseCoversForegroundTests` |
 | 出厂手势表、重复绑定、裸按钮策略、老配置迁移 | `SettingsStoreTests` `ChordPolicyTests` |
 | 钩子的吞咽账本、装不装钩子、跑在哪个线程 | `MouseChordSwallowTests` `MouseChordServiceTests` |
-| 自启注册表格式、路径引号、任务回读、未知状态不写入、模拟 UAC 同意/拒绝与任务失败回滚 | `StartupRegistrationTests` |
+| 自启注册表格式、路径引号、任务回读、只读查询不存在的计划任务、未知状态不写入、模拟 UAC 同意/拒绝与任务失败回滚 | `StartupRegistrationTests` |
 | 发布标签输入、重复发布与版本倒退、第二页 release 的预检 | `ReliabilityRegressionTests` 中的发布策略回归 |
 | 提示卡该不该响、错误 vs 可点、托盘菜单顺序 | `TrayNotifyRulesTests` `TrayMenuTests` |
 | 窗口尺寸记忆、1080p150 不溢出、最小尺寸下的可见性（**逐语言**，不只默认那门） | `MainWindowBoundsTests` `MainWindowCompactLayoutTests` |

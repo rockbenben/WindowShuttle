@@ -157,7 +157,9 @@ privileges. Readback verifies the requesting user, executable, --tray argument, 
 before removing the old Run value. Legacy task paths with surrounding quotes are normalized.
 UAC refusal retains the old startup mode; registration, removal and readback failures report
 their actual stage and details in the notification and crash.log rather than a path-policy error.
-Task Scheduler COM distinguishes missing tasks from unknown service or permission failures.
+Only `GetTask` returning `0x80070002` confirms task absence. .NET COM interop can surface
+that HRESULT as `FileNotFoundException`. Service, folder and task-definition failures still
+leave the startup state unknown.
 Registry tests use temporary HKCU keys; the UIA harness uses SettingsStore.HomeOverride.
 Release tags enter scripts through environment variables. The shared release policy rejects
 published tags and non-increasing versions before publishing; publication jobs are serialized.
@@ -166,8 +168,9 @@ cannot be hidden behind recent drafts or prereleases. An offline regression exec
 workflow's actual preflight against a simulated paginated response.
 Startup transition tests drive the real settings method with a simulated UAC result and a
 temporary registry key. Acceptance, refusal and task-operation failure cover both directions;
-Registration/readback regressions use substituted task operations and a temporary registry key;
-actual Task Scheduler writes, consent and a real logon remain manual checks.
+Registration/readback regressions use substituted task operations and a temporary registry key.
+A read-only Task Scheduler query covers the real missing-task response with a unique name.
+Actual Task Scheduler writes, consent and a real logon remain manual checks.
 
 ## Desktop topology and update checks
 

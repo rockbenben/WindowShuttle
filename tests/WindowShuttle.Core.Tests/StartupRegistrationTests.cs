@@ -70,6 +70,14 @@ public class StartupRegistrationTests(WpfTestHost host) : IDisposable
     }
 
     [Fact]
+    public void Task_scheduler_reports_a_missing_task_as_definitely_absent()
+    {
+        var state = StartupRegistration.ReadElevatedTask($"WindowShuttle.Tests.{Guid.NewGuid():N}");
+        Assert.False(state.Exists);
+        Assert.True(state.Definite);
+    }
+
+    [Fact]
     public void Removing_the_task_is_verified_without_registering_a_new_one()
     {
         StartupRegistration.RunTaskOverride = args =>
